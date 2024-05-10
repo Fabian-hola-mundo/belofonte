@@ -1,0 +1,30 @@
+<nav class="surface-variant">
+  <ul>
+    <li>
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="Example icon button with a home icon"
+        (click)="changeSidebar()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+    </li>
+    <li><img src="../../../../../assets/layout/logo-horiz.png" alt="" /></li>
+    <li>
+      <div matRipple class="avatar" [matMenuTriggerFor]="menu">
+        <p>{{ "A" }}</p>
+      </div>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>face</mat-icon>
+          <span>Perfil</span>
+        </button>
+      </mat-menu>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,64 @@
+<mat-sidenav-container
+  class="example-container"
+  hasBackdrop="true"
+  class="surface-200"
+>
+  <mat-sidenav-content
+    ><main class="surface">
+      <section>
+        <h1>Pedidos</h1>
+      </section>
+
+      <section>
+        <table mat-table [dataSource]="orders" class="">
+          <mat-text-column name="title" headerText="Título"></mat-text-column>
+
+          <mat-text-column name="id" headerText="id"></mat-text-column>
+          <mat-text-column
+            name="description"
+            headerText="Descripción"
+          ></mat-text-column>
+          <mat-text-column
+            name="price"
+            justify="end"
+            headerText="Precio"
+          ></mat-text-column>
+          <mat-text-column
+            name="category"
+            headerText="Categoría"
+          ></mat-text-column>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            (click)="setProductOnRow(row)"
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+          ></tr>
+        </table>
+      </section>
+    </main>
+  </mat-sidenav-content>
+
+  <mat-sidenav
+    #seeProduct
+    [opened]="side1"
+    (closed)="clearSides()"
+    mode="over"
+    position="end"
+  >
+    <div class="close">
+      <h3>Ver producto</h3>
+      <button
+        (click)="side1 = false"
+        mat-icon-button
+        color="primary"
+        aria-label="Example icon button with a home icon"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <app-see-product [product]="selectedProduct"></app-see-product>
+  </mat-sidenav>
+
+
+</mat-sidenav-container>

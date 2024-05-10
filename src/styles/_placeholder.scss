@@ -1,0 +1,41 @@
+@import './variables';
+
+%basicFlex {
+  display: flex;
+  width: 100%;
+}
+
+%module {
+  width: 100%;
+  height: -webkit-fill-available;
+  overflow-y: auto;
+  & main {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+%regularPadding {
+  padding-left: $bigPadding !important;
+  padding-right: $bigPadding !important;
+  @media (max-width:1007px) {
+    padding-left: $smallPadding !important;
+    padding-right: $smallPadding !important;
+  }
+}
+
+%fullPadding {
+  padding: $bigPadding !important;
+  @media (max-width:1007px) {
+    padding: $smallPadding !important;
+  }
+}
+
+%verticalRegularPadding {
+  padding-top: $bigPadding !important;
+  padding-bottom: $bigPadding !important;
+  @media (max-width:1007px) {
+    padding-top: $smallPadding !important;
+    padding-bottom: $smallPadding !important;
+  }
+}

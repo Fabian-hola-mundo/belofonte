@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  main {
+    width: 100%;
+    height: 90dvh;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    & mat-drawer-container {
+      width: 100%;
+      box-sizing: content-box;
+      & mat-drawer {
+        ::ng-deep {
+          ::-webkit-scrollbar {
+            display: none !important;
+          }
+        }
+      }
+    }
+  }
+}

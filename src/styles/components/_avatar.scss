@@ -1,0 +1,16 @@
+$size: 32px;
+
+.avatar {
+  height: $size;
+  display: flex;
+  aspect-ratio: 1/1;
+  align-items: center;
+  justify-content: center;
+  background-color: #00796B; /* Cambia el color de fondo según tus preferencias */
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  & p {
+    color: white;
+  }
+}

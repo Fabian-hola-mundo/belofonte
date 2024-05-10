@@ -1,0 +1,14 @@
+<section>
+  <div class="title-container">
+    <h1>{{product.title}}</h1>
+    <h2>{{product.price | currency:'COP $' }}</h2>
+  </div>
+  <mat-chip color="primary">{{product.category.name}}</mat-chip>
+  <button mat-raised-button>Editar</button>
+  <p>{{product.description}}</p>
+  <div class="images-container">
+    <div class="images-container--grap" *ngFor="let img of burnImg">
+      <img [src]="img" alt="">
+    </div>
+  </div>
+</section>

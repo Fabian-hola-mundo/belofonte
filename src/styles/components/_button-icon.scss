@@ -1,0 +1,5 @@
+.mat-mdc-icon-button {
+  & mat-icon {
+    @extend .primary-text;
+  }
+}

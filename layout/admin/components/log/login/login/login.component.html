@@ -1,0 +1,39 @@
+<main class="surface">
+  <div>
+    <img src="../../../../../../assets/layout/logo.png" alt="" />
+    <h1>Iniciar sesión</h1>
+    <form action="">
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>{{ input[0].label }}</mat-label>
+        <input
+          class="w-full"
+          matInput
+          [placeholder]="input[0].placeholder"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>{{ input[1].label }}</mat-label>
+        <input
+          class="w-full"
+          matInput
+          [placeholder]="input[1].placeholder"
+          required
+          [type]="hide ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
+    <button routerLink="/admin/panel" mat-raised-button class="primary button">
+      Iniciar sesión
+    </button>
+  </div>
+</main>

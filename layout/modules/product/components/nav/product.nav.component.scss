@@ -1,0 +1,25 @@
+@import '../../../../../src/styles.scss';
+
+:host {
+  width: 100%;
+  @extend %fullPadding;
+  display: flex;
+  & .product-nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 4px;
+  & .product-name {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    & p {
+      text-overflow: ellipsis;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+}
+}

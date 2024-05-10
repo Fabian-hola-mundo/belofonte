@@ -1,0 +1,67 @@
+//Components
+
+@import "./components/avatar";
+@import "./components/button";
+@import "./components/tables";
+@import "./components/button-icon";
+
+//Maqeuta
+
+@import "./variables";
+@import "./mixin";
+@import "./placeholder";
+
+html {
+  main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    section {
+      max-width: $maxWidth;
+      margin-top: 70px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+.w-auto {
+  width: auto !important;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.flex_center {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  border-radius: 24px !important;
+}
+
+.mat-mdc-dialog-content {
+  max-height: 99vh !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+  caret-color: auto !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__leading,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__notch,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: white !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label--float-above {
+  color: white !important;
+}

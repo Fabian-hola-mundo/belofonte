@@ -1,0 +1,49 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: all 200ms;
+  border: 2px solid transparent;
+  & .product--data {
+    mat-icon {
+      color: white;
+    }
+    & .title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+
+    }
+  }
+  .product--img {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    object-fit: cover;
+  }
+  &:hover {
+    transition: all 200ms;
+    border: 2px solid white;
+    transform: scale(1.02);
+    .product--data {
+      flex-direction: column;
+      transition: all 200ms;
+      justify-content: space-between;
+      z-index: 1;
+      display: flex;
+      background-color: rgba(#000000, 0.8);
+      align-items: flex-end;
+      padding: 12px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

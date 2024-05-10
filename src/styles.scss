@@ -1,1 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./styles/base";
+@import "./styles/tokens/tokens";
+@import "./styles/tokens/colors.module";
+@import "./styles/tokens/typography.module";
+@import "./styles/tokens/theme.light";
+@import "./styles/tokens/theme.dark";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  @extend .background;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 !important;
+  @extend .on-primary-container-text;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 500 !important;
+}
+
+p,
+ul,
+li,
+td {
+  margin: 0 !important;
+  color: var(--md-ref-palette-neutral-variant40);
+}
+
+ul {
+  list-style-type: none;
+}
+
+h1 {
+  @extend .display-large;
+}
+
+h2 {
+  @extend .headline-large;
+}
+
+h3 {
+  @extend .headline-medium;
+  line-height: normal;
+}
+
+h6 {
+  @extend .title-small;
+  line-height: normal;
+};
+
+.fill-svg {
+  @extend .primary-fill;
+}

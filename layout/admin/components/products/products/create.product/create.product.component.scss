@@ -1,0 +1,13 @@
+:host {
+  ::ng-deep {
+    input,
+    mat-form-field {
+      width: 100%;
+    }
+    .mat-horizontal-content-container {
+      padding: 24px;
+    }
+  }
+  .mat-horizontal-stepper-header-container {
+  }
+}
