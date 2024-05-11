@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "f.portfolio": {
+    "belofonte": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/f.portfolio",
+            "outputPath": "dist/belofonte",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -68,10 +68,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "f.portfolio:build:production"
+              "buildTarget": "belofonte:build:production"
             },
             "development": {
-              "buildTarget": "f.portfolio:build:development"
+              "buildTarget": "belofonte:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +79,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "f.portfolio:build"
+            "buildTarget": "belofonte:build"
           }
         },
         "test": {
@@ -101,6 +101,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "belofonte:build:production",
+              "serveTarget": "belofonte:serve:production"
+            },
+            "development": {
+              "buildTarget": "belofonte:build:development",
+              "serveTarget": "belofonte:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

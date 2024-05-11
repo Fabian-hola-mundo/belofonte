@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { appRoute } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -24,6 +25,6 @@ export const appConfig: ApplicationConfig = {
         })),
         provideFirestore(() => getFirestore()),
     ]),
-    provideAnimations()
+    provideAnimations(), importProvidersFrom(provideFirebaseApp(() => initializeApp({"projectId":"belofonte-sw","appId":"1:149350714862:web:c73d7f37ec7fc89ba812ff","storageBucket":"belofonte-sw.appspot.com","apiKey":"AIzaSyCBk20I8RH96ZSP-SmkgAN1_VGolzBQwoA","authDomain":"belofonte-sw.firebaseapp.com","messagingSenderId":"149350714862","measurementId":"G-QSY5PVXTLJ"}))), importProvidersFrom(provideDatabase(() => getDatabase()))
 ],
 };

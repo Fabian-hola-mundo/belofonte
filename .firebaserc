@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "belofonte-sw"
+  },
+  "targets": {
+    "belofonte-sw": {
+      "hosting": {
+        "belofonte": [
+          "belofonte-sw"
+        ]
+      }
+    }
   }
 }

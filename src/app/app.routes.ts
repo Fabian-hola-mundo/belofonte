@@ -5,12 +5,12 @@ export const appRoute: Route[] = [
   {
     path: '',
     loadChildren: () =>
-      import('../../layout/lib.routes').then((m) => m.layutRoutes),
+      import('../../core/modules/user/routes/lib.routes').then((m) => m.layutRoutes),
     title: 'Belofonte',
   },
   { path: '**', pathMatch: 'full', redirectTo: 'inicio' },
   {
     path: 'admin',
-    loadChildren: () => import('../../layout/admin/routes/admin.routing').then((m) => m.adminRoutes),
+    loadChildren: () => import('../../core/modules/admin/routes/admin.routing').then((m) => m.adminRoutes),
   }
 ];
