@@ -16,13 +16,10 @@ import { ProductsService } from '../../../../../../services/products.service';
 })
 export class AboveTheFoldComponent {
 
-  product?
 
   constructor(
     productService: ProductsService
   ){
-    this.product = productService.getProduct()
-    console.log(this.product);
 
   }
 

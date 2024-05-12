@@ -16,6 +16,7 @@ import { DataModel } from '../../../interface/forms.model';
 import { MatInputModule } from '@angular/material/input';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatButtonModule } from '@angular/material/button';
+import { CATEGORIES } from '../../../constants/catergorys';
 
 const MAT = [
   MatFormFieldModule,
@@ -24,6 +25,7 @@ const MAT = [
   MatCheckboxModule,
   MatButtonModule,
   MatSelectModule,
+  TextFieldModule,
 ]
 
 @Component({
@@ -31,7 +33,6 @@ const MAT = [
   standalone: true,
   imports: [
     CommonModule,
-    TextFieldModule,
     FormsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -42,8 +43,9 @@ const MAT = [
 
 })
 export class CreateProductComponent implements OnInit {
-  formulario!: any;
   productForm!: FormGroup;
+
+  categories = CATEGORIES
   rates: any = [1, 2, 3, 4, 5];
 
   firstData!: DataModel[];
@@ -56,14 +58,16 @@ export class CreateProductComponent implements OnInit {
   }
 
   constructor(private productService: ProductsService) {
-    this.formulario = new FormGroup({
+    this.productForm = new FormGroup({
       title: new FormControl(),
       description: new FormControl(),
+      category: new FormControl(),
       price: new FormControl(),
       image: new FormGroup({
         image1: new FormControl(),
         image2: new FormControl(),
         image3: new FormControl(),
+        image4: new FormControl(),
       }),
       place: new FormControl(),
       stateOfProduct: new FormControl(),
@@ -81,7 +85,7 @@ export class CreateProductComponent implements OnInit {
         required: true,
       },
       {
-        input: 'textarea',
+        input: 'input',
         label: 'Descripción',
         placeholder: 'Guitarra Mela',
         formControlName: 'description',
@@ -99,9 +103,8 @@ export class CreateProductComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log(this.formulario.value);
     const response = await this.productService.addProduct(
-      this.formulario.value
+      this.productForm.value
     );
     console.log(response);
   }

@@ -4,7 +4,8 @@
   class="surface-200"
 >
   <mat-sidenav-content
-    ><main class="surface">
+    >
+    <main class="surface">
       <section>
         <h1>Productos</h1>
         <button mat-raised-button (click)="createdProductSide = true">
@@ -13,7 +14,7 @@
       </section>
 
       <section>
-        <table mat-table [dataSource]="products" class="">
+        <table mat-table [dataSource]="testProducts" class="">
           <mat-text-column name="title" headerText="Título"></mat-text-column>
 
           <mat-text-column name="id" headerText="id"></mat-text-column>

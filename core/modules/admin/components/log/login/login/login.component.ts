@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { RouterModule } from '@angular/router';
+import { simboloBelofonte } from '../../../../../../constants/svg-logo';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+  logoBelofonte = simboloBelofonte
   hide = true;
 
   input = [

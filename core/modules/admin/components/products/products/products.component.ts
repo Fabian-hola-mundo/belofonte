@@ -21,6 +21,7 @@ import { GetFakeProductsService } from '../../../services/get-fake-products.serv
 import { ProductsService } from '../../../../../services/products.service';
 import { SidebarService } from '../../../services/sidebar.service';
 import { CreateProductComponent } from '../create.product/create.product.component';
+import { log } from 'console';
 
 const MAT = [
   MatRadioModule,
@@ -55,19 +56,31 @@ const MAT = [
 })
 export class ProductsComponent {
   products: any | Product[] = [];
+  testProducts!: any
   dataSource: any;
   clickedRows = new Set<Product>();
+  headerText = 'Test Title';
+  mode = new FormControl('over' as MatDrawerMode);
+  hasBackdrop = new FormControl(true as null | boolean);
+  position = new FormControl('end' as 'start' | 'end');
 
   selectedProduct: Product = {
     title: '',
-    category: {
-      id: '',
-      name: '',
+    category: [
+
+    ],
+    control: {
+      id: 0,
+      ref: '',
+      count: 0
     },
-    id: 0,
     description: '',
     price: 0,
-    images: [],
+    characteristics: {
+      images : [
+
+      ]
+    }
   };
 
   selectedProductSide: boolean = false;
@@ -86,29 +99,21 @@ export class ProductsComponent {
   }
 
   constructor(
-    private fakeProducts: GetFakeProductsService,
     private productsService: ProductsService,
     private sidebarService: SidebarService
-  ) {}
+  ) {
 
-  ngOnInit(): void {
-    this.fakeProducts.getAllProducts().subscribe((data) => {
-      this.products = data;
-      this.dataSource = new MatTableDataSource(this.products);
-      console.log(this.products);
-    });
   }
+
+  async ngOnInit() {
+    this.testProducts = await this.productsService.getDataFromCollection('products')
+    console.log(this.testProducts);
+  }
+
   displayedColumns: string[] = [
-    'id',
     'title',
     'description',
     'price',
-    'category',
+    'category'
   ];
-
-  headerText = 'Test Title';
-
-  mode = new FormControl('over' as MatDrawerMode);
-  hasBackdrop = new FormControl(true as null | boolean);
-  position = new FormControl('end' as 'start' | 'end');
 }

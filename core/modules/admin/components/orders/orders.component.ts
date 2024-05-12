@@ -27,14 +27,21 @@ export class OrdersComponent {
 
   selectedProduct : Product  = {
     title: '',
-    category: {
-      id: '',
-      name: '',
+    category: [
+
+    ],
+    control: {
+      id: 0,
+      ref: '',
+      count: 0
     },
-    id: 0,
     description: '',
     price: 0,
-    images: []
+    characteristics: {
+      images : [
+
+      ]
+    }
   }
   setProductOnRow(row: Product) {
     this.selectedProduct = row

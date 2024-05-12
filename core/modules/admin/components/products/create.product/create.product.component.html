@@ -1,36 +1,28 @@
 <mat-stepper #stepper>
-  <!-- First Step  -->
-
   <form [formGroup]="productForm">
     <mat-step errorMessage="Name is required.">
       <ng-template matStepLabel>Datos básicos</ng-template>
       <div *ngFor="let input of firstData" class="w-full">
-        <mat-form-field
-          class="w-full"
-          appearance="outline"
-        >
-          <!-- <mat-label>{{ input.label }}</mat-label> -->
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>{{ input.label }}</mat-label>
           <input
             class="w-full"
             matInput
-            [placeholder]="input.placeholder"
-            formControlName="title"
+            [placeholder]="input.formControlName"
+            [formControlName]="input.formControlName"
           />
           <mat-error *ngIf="input.matError">{{ input.matError }}</mat-error>
         </mat-form-field>
-        <mat-form-field
-          *ngIf="input.input === 'textarea'"
-          class="w-full"
-          appearance="outline"
-        >
-          <mat-label>{{ input.label }}</mat-label>
-          <textarea
-            matInput
-            [placeholder]="input.placeholder"
-            [formControlName]="input.formControlName"
-          ></textarea>
-        </mat-form-field>
       </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Estado del producto</mat-label>
+        <mat-icon matTextSuffix>grade</mat-icon>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
       <div>
         <button mat-raised-button matStepperNext color="primary">
           Siguiente
@@ -38,18 +30,16 @@
       </div>
     </mat-step>
 
-    <!-- Second Step  -->
-
     <mat-step>
       <ng-template matStepLabel>Imágenes</ng-template>
-      <div *ngFor="let input of secondData" >
+      <div *ngFor="let input of secondData" formGroupName="image">
         <mat-form-field appearance="outline">
-          <mat-label>{{ input.label }}</mat-label>
+          <mat-label>{{ input.formControlName }}</mat-label>
           <input
-          type="text"
-          matInput
-          placeholder="https://www.image.com/"
-          [formControlName]="input.formControlName"
+            type="text"
+            matInput
+            placeholder="https://www.image.com/"
+            [formControlName]="input.formControlName"
           />
         </mat-form-field>
       </div>
@@ -57,27 +47,7 @@
       <button mat-raised-button matStepperNext color="primary">
         Siguiente
       </button>
-    </mat-step>
-
-    <!-- Thirt Step  -->
-
-    <mat-step>
-      <ng-template matStepLabel>Done</ng-template>
-      <mat-checkbox class="example-margin">Entrega inmediata</mat-checkbox>
-      <mat-form-field appearance="outline">
-        <mat-label>Estado del producto</mat-label>
-        <mat-icon matTextSuffix>grade</mat-icon>
-        <mat-select formControlName="stateOfProduct">
-          <mat-option *ngFor="let rate of rates" [value]="rate">
-            {{ rate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div>
-        <button mat-button matStepperPrevious>Volver</button>
-        <button mat-raised-button (click)="onSubmit()">Crear</button>
-      </div>
+      <button mat-raised-button (click)="onSubmit()">Crear</button>
     </mat-step>
   </form>
 </mat-stepper>

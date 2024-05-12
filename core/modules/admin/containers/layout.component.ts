@@ -38,7 +38,7 @@ import { SidebarComponent } from '../components/layout/sidebar/sidebar.component
 })
 export class AdminLayoutComponent {
   sidebar!: boolean | false;
-  screenWidth: number = window.innerWidth;
+  screenWidth: number = 0
   modeSidebar: 'side' | 'over' = 'side';
   widthSidebar: '90' | 'auto' = 'auto';
 
@@ -49,6 +49,12 @@ export class AdminLayoutComponent {
       this.widthSidebar = '90';
     } else {
       this.sidebar = true;
+    }
+  }
+
+  constructor(){
+    if (typeof window !== 'undefined') {
+      this.screenWidth = window.innerWidth;
     }
   }
 

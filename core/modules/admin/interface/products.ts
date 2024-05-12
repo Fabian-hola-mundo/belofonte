@@ -3,16 +3,25 @@ export interface Category {
   name: string;
 }
 
-export interface Product {
-  category: Category;
+export interface characteristics {
+  size?: string,
+  color?: string
+  images: string[];
+  height?: number,
+  weight?: number
+}
+
+export interface control {
   id: number;
+  ref: string;
+  count: number;
+}
+
+export interface Product {
+  category: string[];
   title: string;
   description: string;
   price: number;
-  images: string[];
-  place?: number;
-  rating?: {
-    rate?: number;
-    count?: number;
-  };
+  characteristics: characteristics;
+  control: control
 }

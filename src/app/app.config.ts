@@ -12,7 +12,6 @@ export const appConfig: ApplicationConfig = {
     providers: [
     provideRouter(appRoute),
     provideHttpClient(),
-    provideClientHydration(),
     importProvidersFrom([
         provideFirebaseApp(() => initializeApp({
           apiKey: "AIzaSyCBk20I8RH96ZSP-SmkgAN1_VGolzBQwoA",
