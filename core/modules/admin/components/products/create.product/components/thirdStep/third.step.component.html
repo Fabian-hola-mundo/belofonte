@@ -1,0 +1,109 @@
+<!--   <div formArrayName="inventory" class="inventory">
+    <div
+      *ngFor="
+    let item of productForm.get('inventory')?.touched;
+        let i = index
+      "
+      [formGroupName]="i"
+      class="inventory__item"
+    >
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>SubRef</mat-label>
+        <input
+          class="w-full"
+          matInput
+          placeholder="producto01"
+          formControlName="subRef"
+        />
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        class="div-color__input input-inventory"
+      >
+        <mat-label>Tamaño</mat-label>
+        <mat-select formControlName="size">
+          <mat-option *ngFor="let size of sizes" [value]="size.name">
+            {{ size.name }}
+          </mat-option>
+          <button
+            mat-flat-button
+            (click)="openCreateSizeDialog()"
+            style="
+              width: 100%;
+              border-top: 1px solid rgba(0, 0, 0, 0.8);
+              background: rgba(0, 0, 0, 0.3);
+              padding: 24px;
+              border-radius: 0;
+            "
+          >
+            Nuevo Tamaño
+          </button>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="div-color__input">
+        <mat-label>Color</mat-label>
+        <mat-select multiple="true" formControlName="color">
+          <mat-option *ngFor="let color of colors" [value]="color">
+            <mat-icon [style]="{ color: color.hexa }">circle</mat-icon>
+            {{ color.name }}
+          </mat-option>
+          <button
+            mat-flat-button
+            (click)="openCreateColorDialog()"
+            class="div-color__button"
+            style="
+              width: 100%;
+              border-top: 1px solid rgba(0, 0, 0, 0.8);
+              background: rgba(0, 0, 0, 0.3);
+              padding: 24px;
+              border-radius: 0;
+            "
+          >
+            Nuevo Color
+          </button>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="outline">
+        <mat-label>Stock</mat-label>
+        <input
+          type="number"
+          class="w-full"
+          matInput
+          [placeholder]="'count'"
+          formControlName="count"
+        />
+      </mat-form-field>
+      <div formArrayName="images" class="images">
+        <div
+          class="images__item"
+          *ngFor="let image of item.get('images').controls; let j = index"
+          [formGroupName]="j"
+        >
+          <input (change)="uploadFile($event)" type="file" formControlName="url">
+          <mat-form-field class="w-full" appearance="outline">
+            <mat-label>Texto Alternativo</mat-label>
+            <input
+              class="w-full"
+              matInput
+              placeholder="Alt Text"
+              formControlName="alt"
+            />
+          </mat-form-field>
+        </div>
+        <button mat-raised-button (click)="addImageItem(i)" color="primary">
+          Añadir otra imagen
+        </button>
+      </div>
+    </div>
+    <button mat-raised-button (click)="addInventoryItem()" color="primary">
+      Añadir otra combinación
+    </button>
+  </div>
+  <button mat-button matStepperPrevious color="primary">Atrás</button>
+  <button mat-raised-button matStepperNext color="primary">
+    Siguiente
+  </button>
+ -->

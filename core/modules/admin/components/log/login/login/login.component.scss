@@ -1,3 +1,5 @@
+@import '../../../../../../../src/styles.scss';
+
 :host {
   main {
     width: 100%;
@@ -6,8 +8,8 @@
     place-content: center;
     & div {
       width: 90dvw;
+      @extend .surface-variant;
       max-width: 700px;
-      background-color: white;
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
       border-radius: 42px;
       padding: 48px 48px (48px + 12px) 48px;
@@ -16,10 +18,9 @@
       flex-direction: column;
       align-items: center;
       gap: 24px;
-      
+
 
       & h1 {
-        text-transform: uppercase;
         font-weight: 500;
       }
       & img {

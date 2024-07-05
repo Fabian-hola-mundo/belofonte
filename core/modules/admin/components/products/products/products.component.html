@@ -73,7 +73,7 @@
     [position]="position.value!"
     class="side-create"
   >
-  <div class="close">
+  <div class="header">
       <h3>Crear producto</h3>
       <button
         (click)="createdProductSide = false"
@@ -84,6 +84,11 @@
         <mat-icon>close</mat-icon>
       </button>
     </div>
-    <app-create-product></app-create-product>
+    <bel-create-product></bel-create-product>
+    <div class="footer">
+      <button mat-button color="primary" (click)="createdProductSide = false">Atrás</button>
+      <button mat-button color="primary" (click)="createdProductSide = false">Siguiente</button>
+      <button mat-raised-button color="primary" (click)="createdProductSide = false">Crear</button>
+    </div>
   </mat-sidenav>
 </mat-sidenav-container>

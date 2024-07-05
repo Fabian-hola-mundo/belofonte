@@ -1,0 +1,15 @@
+.mat-expansion-panel {
+  @extend .surface-container-low;
+  & .mat-expansion-panel-header {
+    & .mat-content {
+      & .mat-expansion-panel-header-title {
+      }
+    }
+  }
+  & .mat-expansion-panel-content {
+    & .mat-expansion-panel-body {
+      & p {
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+::ng-deep {
+  .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+    @extend .primary-text;
+  }
+
+  .mat-mdc-option-active .mdc-list-item__primary-text {
+    @extend .primary-text;
+  }
+}

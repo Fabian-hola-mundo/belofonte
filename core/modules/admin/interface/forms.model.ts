@@ -1,4 +1,4 @@
-export interface DataModel {
+export interface FormsDataModel {
   input: 'textarea' | 'input';
   label?: string;
   type?: string;

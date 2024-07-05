@@ -35,13 +35,6 @@
             width: fit-content;
             height: fit-content;
           }
-          & .description {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            opacity: 0;
-            transition: all 200ms;
-          }
         }
         & .action {
           border-radius: 100px;
@@ -56,6 +49,14 @@
           .description {
             opacity: 1;
           }
+        }
+        & .image {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          top: 0;
+          left: 0;
+          object-fit: contain;
         }
       }
       & .module__square:nth-child(1) {

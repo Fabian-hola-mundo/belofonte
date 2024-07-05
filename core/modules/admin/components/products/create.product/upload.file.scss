@@ -1,0 +1,54 @@
+@import '../../../../../../src/styles.scss';
+
+/* Estilo del contenedor del input file */
+.file-upload {
+  position: relative;
+  display: flex;
+}
+
+/* Estilo del input file (oculto) */
+.file-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+}
+
+/* Estilo de la etiqueta que contiene el botón y el texto */
+.file-upload-label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  @extend .surface-variant;
+  transition: background-color 0.3s;
+}
+
+/* Estilo del botón */
+.file-upload-button {
+  @extend .primary;
+  @extend .on-primary-text;
+  @extend %fullPadding;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.file-upload-button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo del texto que muestra el nombre del archivo */
+.file-upload-text {
+  text-align: center;
+}
+
+.file-upload-label:hover {
+  background-color: #f0f0f0;
+}

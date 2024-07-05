@@ -16,7 +16,7 @@
           max-width: none;
           margin-top: 0;
           display: flex;
-          justify-content: space-between;
+          justify-content: space-close;
           flex-wrap: wrap;
           align-items: center;
           gap: 24px;
@@ -46,7 +46,7 @@
       }
     }
     & mat-sidenav {
-      & .close {
+      & .header {
         padding: 8px 24px;
         box-shadow: 0 7px 12px rgb(0 0 0 / 12%);
         z-index: 11;
@@ -56,6 +56,25 @@
         position: sticky;
         top: 0;
       }
+      & bel-create-product {
+        display: flow-root;
+        height: 100%;
+        & ::ng-deep {
+          & mat-stepper {
+            padding-bottom: 48px !important;
+          }
+        }
+      }
+      & .footer {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        display: flex;
+        z-index: 11;
+        padding: 8px 24px;
+        justify-content: flex-end;
+      }
+
     }
     ::ng-deep {
       & .side-create {

@@ -1,0 +1,10 @@
+mat-drawer-container {
+  & mat-sidenav {
+    & .header {
+      @extend .surface-variant;
+    }
+    & .footer {
+      @extend .surface-variant;
+    }
+  }
+}

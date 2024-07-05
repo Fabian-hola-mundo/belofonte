@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Crear nuevo Color</h2>
+<form [formGroup]="colorForm">
+<mat-dialog-content>
+  <div class="sample" [ngStyle]="{'background-color': data.hexa }" *ngIf="data.hexa"></div>
+  <mat-form-field appearance="outline">
+    <mat-label>Nombre del color</mat-label>
+    <input required formControlName="name" matInput [(ngModel)]="data.name">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Código Hexadecimal</mat-label>
+    <input type="color" required formControlName="hexa" placeholder="#000000" matInput [(ngModel)]="data.hexa">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button (click)="saveColor()" [mat-dialog-close]="data" [disabled]="colorForm.invalid" cdkFocusInitial>Guardar Color</button>
+</mat-dialog-actions>
+</form>

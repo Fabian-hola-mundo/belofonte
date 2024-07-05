@@ -1,27 +1,46 @@
+import { Color } from "./color";
+
 export interface Category {
   id: string;
   name: string;
 }
 
-export interface characteristics {
-  size?: string,
-  color?: string
-  images: string[];
-  height?: number,
-  weight?: number
+export interface Images {
+  url: string,
+  alt: string,
 }
 
-export interface control {
-  id: number;
-  ref: string;
+export interface Characteristics {
+  height?: number;
+  broad?: number;
+  weight?: number;
+}
+
+export interface InventoryItem {
+  subRef?: string;
+  stock?: stock[];
+  images?: Images[];
+  color?: Color;
   count: number;
 }
 
+export interface stock {
+  size : string,
+  quantity: number
+}
+
 export interface Product {
+  id: string;
   category: string[];
+  subcategory?: string[];
+  slug: string;
   title: string;
   description: string;
   price: number;
-  characteristics: characteristics;
-  control: control
+  characteristics: Characteristics;
+  inventory: InventoryItem[];
+  control: {
+    ref: string;
+    totalStock: number;
+  };
 }

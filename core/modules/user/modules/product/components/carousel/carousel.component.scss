@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  figure {
+    position: relative;
+    display: flex;
+    overflow: auto;
+    scroll-snap-type: x mandatory; /* Habilitar el scroll snap */
+    scrollbar-width: none; /* Ocultar scrollbar en Firefox */
+    -ms-overflow-style: none;  /* Ocultar scrollbar en IE y Edge */
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    & img {
+      width: 100dvw;
+      height: 80vh;
+      object-fit: cover;
+      scroll-snap-align: center;
+    }
+  }
+}

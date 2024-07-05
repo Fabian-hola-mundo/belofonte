@@ -8,43 +8,74 @@ import { SeeProductComponent } from '../products/products/see-product/see-produc
 
 @Component({
   selector: 'app-orders',
-  standalone:  true,
-  imports: [CommonModule, MatSidenavModule, MatTableModule, MatIconModule, SeeProductComponent],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatSidenavModule,
+    MatTableModule,
+    MatIconModule,
+    SeeProductComponent,
+  ],
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss']
+  styleUrls: ['./orders.component.scss'],
 })
 export class OrdersComponent {
-
   orders: any | Product[] = [];
-  displayedColumns: string[] = ['id', 'title', 'description', 'price', 'category'];
-  side1: boolean = false
-
-
+  displayedColumns: string[] = [
+    'id',
+    'title',
+    'description',
+    'price',
+    'category',
+  ];
+  side1: boolean = false;
 
   clearSides() {
     this.side1 = false;
   }
 
-  selectedProduct : Product  = {
+  selectedProduct: Product = {
+    id: '',
+    category: [''],
+    subcategory: [''],
+    slug: '',
     title: '',
-    category: [
-
-    ],
-    control: {
-      id: 0,
-      ref: '',
-      count: 0
-    },
     description: '',
     price: 0,
     characteristics: {
-      images : [
+      height: 0,
+      weight: 0,
+    },
+    inventory: [
+      {
+        subRef: '',
+        stock: [
+          {
+            size: '',
+            quantity: 0
+          }
+        ],
+        images: [
+          {
+            url: '',
+            alt: ''
+          }
+        ],
+        color: {
+          name: '',
+          hexa: ''
+        },
+        count: 0
+      }
+    ],
+    control: {
+      ref: '0',
+      totalStock: 0,
+    },
+  };
 
-      ]
-    }
-  }
   setProductOnRow(row: Product) {
-    this.selectedProduct = row
-    this.side1 = true
+    this.selectedProduct = row;
+    this.side1 = true;
   }
 }
