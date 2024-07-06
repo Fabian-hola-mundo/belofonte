@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { Product } from '../../../../../../admin/interface/products';
+import { CommonModule } from '@angular/common';
 
 export interface producInterface {
   name: string;
@@ -10,7 +12,7 @@ export interface producInterface {
 @Component({
   selector: 'bel-product-card',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, CommonModule],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss'
 })
@@ -18,6 +20,6 @@ export interface producInterface {
 
 export class ProductCardComponent {
 
-  @Input() product?: producInterface
+  @Input() product?: Product
 
 }

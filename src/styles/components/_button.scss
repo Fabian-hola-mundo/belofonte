@@ -1,15 +1,22 @@
-button.mat-mdc-raised-button {
-  text-transform: uppercase !important;
-  @extend .primary, .on-primary-text;
-  height: auto !important;
-  padding: 12px 24px;
-  border-radius: 48px;
-}
+::ng-deep {
+  button.mat-mdc-raised-button {
+    text-transform: uppercase !important;
+    @extend .primary, .on-primary-text;
+    height: auto !important;
+    padding: 12px 24px;
+    border-radius: 48px;
+  }
 
-button.mat-mdc-button {
-  text-transform: uppercase !important;
-  height: auto !important;
-  border-radius: 48px;
-  padding: 12px 24px;
-  @extend .primary-text;
+  button.mat-mdc-button {
+    text-transform: uppercase !important;
+    height: auto !important;
+    border-radius: 48px;
+    padding: 12px 24px;
+    @extend .primary-text;
+  }
+
+  button.mat-mdc-button-disabled{
+    @extend .on-surface, .surface-text;
+  }
+
 }

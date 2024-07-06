@@ -1,0 +1,27 @@
+<div [formGroupName]="'control'">
+  <mat-form-field class="w-full" appearance="outline">
+    <mat-label>{{ stepFourthForm.label }}</mat-label>
+    <input
+      class="w-full"
+      matInput
+      [placeholder]="stepFourthForm.placeholder"
+      [formControlName]="'ref'"
+    />
+  </mat-form-field>
+</div>
+<button mat-button matStepperPrevious color="primary">Atrás</button>
+<button mat-raised-button (click)="(onSubmit)">Crear</button>
+<!--
+<div [formGroupName]="'control'">
+  <mat-form-field class="w-full" appearance="outline">
+    <mat-label>{{'stepFourthForm.label'}}</mat-label>
+    <input
+      class="w-full"
+      matInput
+      [placeholder]="'stepFourthForm.placeholder'"
+      [formControlName]="'ref'"
+    />
+  </mat-form-field>
+</div>
+<button mat-button matStepperPrevious color="primary">Atrás</button>
+<button mat-raised-button (click)="(onSubmitEmitter())">Crear</button> -->

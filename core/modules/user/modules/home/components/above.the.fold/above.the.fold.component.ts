@@ -26,16 +26,7 @@ export class AboveTheFoldComponent {
   cardServices: CardServices[] = [
     {
       title: 'Hombres',
-      content: {
-        description:'Get an innovative UI and UX design for your website and mobile app, with visual elements that captivate your users and reflect your brand.',
-        list: [
-          'Design systems',
-          'Responsive website',
-          'Digital products',
-          'Motion & interaction',
-          'Graphics design',
-        ]
-      },
+      image: 'assets/landing/manInit-min.png',
       color: {
         baseColor: 'var(--md-sys-color-on-secondary-container)',
         onBase: 'var(--md-sys-color-on-secondary)',
@@ -43,16 +34,7 @@ export class AboveTheFoldComponent {
     },
     {
       title: 'Accesorios',
-      content: {
-        description:'Get an innovative UI and UX design for your website and mobile app, with visual elements that captivate your users and reflect your brand.',
-        list: [
-          'Design systems',
-          'Responsive website',
-          'Digital products',
-          'Motion & interaction',
-          'Graphics design',
-        ]
-      },
+      image: 'assets/landing/accesory-min.png',
       color: {
         baseColor: 'var(--md-sys-color-on-primary-container)',
         onBase: 'var(--md-sys-color-on-primary)',
@@ -60,16 +42,7 @@ export class AboveTheFoldComponent {
     },
     {
       title: 'Mujeres',
-      content: {
-        description:'Get an innovative UI and UX design for your website and mobile app, with visual elements that captivate your users and reflect your brand.',
-        list: [
-          'Design systems',
-          'Responsive website',
-          'Digital products',
-          'Motion & interaction',
-          'Graphics design',
-        ]
-      },
+      image: 'assets/landing/womenInit-min.png',
       color: {
         baseColor: 'var(--md-sys-color-on-tertiary-container)',
         onBase: 'var(--md-sys-color-on-tertiary)',

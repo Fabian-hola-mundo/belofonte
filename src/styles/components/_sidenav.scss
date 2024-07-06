@@ -1,0 +1,28 @@
+mat-drawer-container {
+  & mat-sidenav {
+    & .header {
+      @extend .surface-variant;
+    }
+    & .footer {
+      @extend .surface-variant;
+    }
+  }
+}
+::ng-deep {
+  .mat-drawer-content {
+    margin: 0 !important;
+    margin-left: 0 !important;
+    width: 100% !important;
+    flex: 1 !important;
+  }
+
+  .mat-drawer {
+    width: auto !important;
+    position: relative !important;
+  }
+
+  .mat-drawer-container {
+    display: flex !important;
+    height: 90dvh;
+  }
+}

@@ -11,8 +11,6 @@ import {
   where,
   setDoc,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { Product } from '../modules/admin/interface/products';
 
 @Injectable({
   providedIn: 'root',
@@ -40,10 +38,7 @@ export class ProductsService {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log('Document data:', docSnap.data());
     } else {
-      // docSnap.data() will be undefined in this case
-      console.log('No such document!');
     }
   }
 
@@ -52,7 +47,7 @@ export class ProductsService {
     let products: any[] = []; // Puedes ajustar el tipo de 'products' según los datos esperados
     try {
       const querySnapshot = await getDocs(collection(this.firestore, db));
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((doc: any) => {
         products.push(doc.data()); // Agrega los datos del documento al array 'products'
       });
     } catch (error) {
@@ -67,7 +62,7 @@ export class ProductsService {
     const q = query(collection(this.firestore, "products"), where("title", "!=", ''));
 
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach((doc: any) => {
       // doc.data() is never undefined for query doc snapshots
       console.log(doc.id, " => ", doc.data());
     });

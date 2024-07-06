@@ -1,7 +1,21 @@
 <mat-stepper #stepper>
   <form [formGroup]="productForm">
-    <mat-step errorMessage="Name is required.">
+    <!-- Paso 1: Datos básicos -->
+    <mat-step>
       <ng-template matStepLabel>Datos básicos</ng-template>
+
+      <div formGroupName="control">
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Referencia</mat-label>
+          <input
+            class="w-full"
+            matInput
+            [placeholder]="'ref'"
+            formControlName="ref"
+          />
+        </mat-form-field>
+      </div>
+
       <div *ngFor="let input of firstData" class="w-full">
         <mat-form-field class="w-full" appearance="outline">
           <mat-label>{{ input.label }}</mat-label>
@@ -11,12 +25,10 @@
             [placeholder]="input.formControlName"
             [formControlName]="input.formControlName"
           />
-          <mat-error *ngIf="input.matError">{{ input.matError }}</mat-error>
         </mat-form-field>
       </div>
       <mat-form-field appearance="outline">
-        <mat-label>Estado del producto</mat-label>
-        <mat-icon matTextSuffix>grade</mat-icon>
+        <mat-label>Categoría</mat-label>
         <mat-select formControlName="category">
           <mat-option *ngFor="let category of categories" [value]="category">
             {{ category }}
@@ -30,23 +42,233 @@
       </div>
     </mat-step>
 
+    <!-- Paso 2: Características e Imágenes -->
     <mat-step>
-      <ng-template matStepLabel>Imágenes</ng-template>
-      <div *ngFor="let input of secondData" formGroupName="image">
-        <mat-form-field appearance="outline">
-          <mat-label>{{ input.formControlName }}</mat-label>
+      <ng-template matStepLabel>Características e Imágenes</ng-template>
+      <div formGroupName="characteristics">
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Alto</mat-label>
           <input
-            type="text"
+            class="w-full"
             matInput
-            placeholder="https://www.image.com/"
-            [formControlName]="input.formControlName"
+            placeholder="40cm"
+            formControlName="height"
+          />
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Ancho</mat-label>
+          <input
+            class="w-full"
+            matInput
+            placeholder="30cm"
+            formControlName="broad"
+          />
+        </mat-form-field>
+        <mat-form-field class="w-full" appearance="outline">
+          <mat-label>Peso</mat-label>
+          <input
+            class="w-full"
+            matInput
+            placeholder="1kg"
+            formControlName="weight"
           />
         </mat-form-field>
       </div>
-      <button mat-button matStepperPrevious color="primary">Atras</button>
+      <button mat-button matStepperPrevious color="primary">Atrás</button>
       <button mat-raised-button matStepperNext color="primary">
         Siguiente
       </button>
+    </mat-step>
+
+    <!-- Paso 3: Inventario -->
+    <mat-step>
+      <ng-template matStepLabel>Inventario</ng-template>
+
+      <div class="button-add">
+        <button mat-raised-button (click)="addInventoryItem()" color="primary">
+          Añadir otra combinación
+        </button>
+      </div>
+      <div formArrayName="inventory" class="inventory">
+        <mat-accordion>
+          <mat-expansion-panel
+            *ngFor="
+              let subRefItem of productForm.get('inventory').controls;
+              let i = index
+            "
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title> subRefItem {{ i }} </mat-panel-title>
+              <mat-panel-description>
+                {{ "Referencia: " + subRefItem.get("subRef")?.value }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="inventory__item--form-container" [formGroupName]="i">
+              <mat-form-field class="w-full" appearance="outline">
+                <mat-label>SubRef</mat-label>
+                <input
+                  class="w-full"
+                  matInput
+                  placeholder="producto01"
+                  formControlName="subRef"
+                />
+              </mat-form-field>
+            </div>
+
+            <!-- Color -->
+
+            <div [formArrayName]="i" class="inventory__item">
+              <div
+                formGroupName="color"
+                class="inventory__item--color-container"
+              >
+                <div
+                  class="color-item add-color"
+                  matRipple
+                  (click)="openCreateColorDialog()"
+                >
+                  <mat-icon>add</mat-icon>
+                  <h6>Añadir Color</h6>
+                </div>
+                <div
+                  *ngFor="let color of colors; let c = index"
+                  class="color-item"
+                  (click)="setColorOption(color, i)"
+                  [ngClass]="{ colorActive: selectedColors[i] === color.hexa }"
+                >
+                  <div
+                    matRipple
+                    class="color-item__hexa"
+                    [ngStyle]="{ background: color.hexa }"
+                  ></div>
+                  <h5>{{ color.name }}</h5>
+                  <p>{{ color.hexa }}</p>
+                </div>
+              </div>
+
+              <!-- Images -->
+
+              <div
+                class="inventory__item--images-container"
+              >
+                <div class="file-upload">
+                  <label for="file-input-{{ i }}" class="file-upload-label">
+                    <span class="file-upload-button">Seleccionar archivos</span>
+                    <mat-icon>add</mat-icon>
+
+                    <span
+                      class="file-upload-text"
+                      *ngIf="getImagesFormArray(i).length === 0"
+                      >Ningún archivo seleccionado</span
+                    >
+                    <span
+                      class="file-upload-text"
+                      *ngIf="getImagesFormArray(i).length > 0"
+                      >{{ getImagesFormArray(i).length }} archivos
+                      seleccionados</span
+                    >
+                  </label>
+
+                  <input
+                    #fileInput
+                    (change)="uploadFiles($event, i)"
+                    type="file"
+                    [id]="'file-input-' + i"
+                    class="file-input"
+                    multiple
+                  />
+                </div>
+
+                <div class="images" *ngIf="getImagesFormArray(i).length > 0">
+                  <div
+                    class="images__card"
+                    *ngFor="
+                      let imageItem of getImagesFormArray(i).controls;
+                      let j = index
+                    "
+                  >
+                    <img
+                      class="images__card--img"
+                      [src]="imageItem.get('url')?.value"
+                      [alt]="'Product Image ' + j"
+                      style="background: gray"
+                    />
+                    <mat-progress-bar
+                      class="images__card--progress"
+                      mode="determinate"
+                      [value]="imageItem.get('progress')?.value"
+                    ></mat-progress-bar>
+                    <button
+                      class="images__card--button"
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteImage(i, j)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sizes -->
+
+              <div class="sizes">
+                <div formArrayName="stock" class="stock">
+                  <div
+                  class="stock__container"
+                    *ngFor="
+                      let stockItem of getStockFormArray(i).controls;
+                      let j = index
+                    "
+                    [formGroupName]="j"
+                  >
+                    <mat-form-field class="w-full stock__container--size" appearance="outline">
+                      <mat-label>Tamaño</mat-label>
+                      <mat-select formControlName="size">
+                        <mat-option
+                          *ngFor="let size of sizes"
+                          [value]="size.name"
+                        >
+                          {{ size.name }}
+                        </mat-option>
+                        <button
+                          mat-flat-button
+                          (click)="openCreateSizeDialog()"
+                          style="
+                            width: 100%;
+                            border-top: 1px solid rgba(0, 0, 0, 0.8);
+                            background: rgba(0, 0, 0, 0.3);
+                            padding: 24px;
+                            border-radius: 0;
+                          "
+                        >
+                          Nuevo Tamaño
+                        </button>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="w-full stock__container--quantity" appearance="outline">
+                      <mat-label>Cantidad</mat-label>
+                      <input
+                        class="w-full"
+                        matInput
+                        type="number"
+                        placeholder="0"
+                        formControlName="quantity"
+                      />
+                      <span matTextSuffix>C</span>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <button (click)="addSizeItem(i)" mat-button>
+                  Añadir Cantidad
+                </button>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <button mat-button matStepperPrevious color="primary">Atrás</button>
       <button mat-raised-button (click)="onSubmit()">Crear</button>
     </mat-step>
   </form>

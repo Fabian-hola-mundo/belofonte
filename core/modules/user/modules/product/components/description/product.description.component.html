@@ -1,0 +1,60 @@
+<main>
+  <div class="basic">
+    <p>{{ data.title }}</p>
+    <b>{{ data.price | currency : "COP" }}</b>
+  </div>
+  <div class="shop-options">
+    <mat-form-field appearance="outline" class="shop-options__size">
+      <mat-label>Tamaño</mat-label>
+      <mat-select [(value)]="availableSizes[0]">
+        <mat-option *ngFor="let size of availableSizes" [value]="size">{{
+          size
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="shop-options__color">
+      <mat-label>Color</mat-label>
+      <mat-select [(value)]="colors[0].name">
+        <mat-option
+        *ngFor="let option of colors"
+        [value]="option.name"
+        (click)="changeProductRef(option.name)"
+        >
+          <mat-icon [ngStyle]="{ color: option.hexa }">circle</mat-icon>
+          {{ option.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <p>{{colors | json}}</p>
+    <button mat-raised-button>AÑADIR</button>
+  </div>
+  <div>
+    <strong>{{ "Ref " + data.control.ref }}</strong
+    ><br />
+    <strong>{{ "Ref " + subRefSelected.subRef }}</strong>
+    <p>{{ data.description }}</p>
+  </div>
+
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Condiciones de envío </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        Envío Standard: Recibe tu pedido en 5-7 días hábiles. Haz el seguimiento
+        de tu pedido en tiempo real. Envío Gratis a partir de $222.000. <br />
+        <br />
+        Consulta nuestros términos y condiciones para más detalles
+      </p>
+    </mat-expansion-panel>
+    <!--     <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Métodos de pago </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>
+        Envío Standard: Recibe tu pedido en 5-7 días hábiles. Haz el seguimiento de tu pedido en tiempo real. Envío Gratis a partir de $222.000. <br> <br>
+        Consulta nuestros términos y condiciones para más detalles</p>
+    </mat-expansion-panel> -->
+  </mat-accordion>
+</main>

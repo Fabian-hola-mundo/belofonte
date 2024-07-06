@@ -2,13 +2,13 @@ import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { SeeProductComponent } from './see-product/see-product.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatFormFieldControl, MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
@@ -17,11 +17,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
 import { Product } from '../../../interface/products';
-import { GetFakeProductsService } from '../../../services/get-fake-products.service';
 import { ProductsService } from '../../../../../services/products.service';
 import { SidebarService } from '../../../services/sidebar.service';
 import { CreateProductComponent } from '../create.product/create.product.component';
-import { log } from 'console';
 
 const MAT = [
   MatRadioModule,
@@ -36,6 +34,10 @@ const MAT = [
   MatSelectModule,
   MatButtonModule,
   MatSidenavModule,
+];
+
+const CRUD = [
+  CreateProductComponent
 ]
 
 @Component({
@@ -49,14 +51,16 @@ const MAT = [
     MatRippleModule,
     SeeProductComponent,
     CreateProductComponent,
-    ...MAT
+    ...MAT,
+    ...CRUD
   ],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
+  host: {'ngSkipHydration': ''}
 })
 export class ProductsComponent {
   products: any | Product[] = [];
-  testProducts!: any
+  testProducts!: any;
   dataSource: any;
   clickedRows = new Set<Product>();
   headerText = 'Test Title';
@@ -65,27 +69,48 @@ export class ProductsComponent {
   position = new FormControl('end' as 'start' | 'end');
 
   selectedProduct: Product = {
+    id: '',
+    category: [''],
+    subcategory: [''],
+    slug: '',
     title: '',
-    category: [
-
-    ],
-    control: {
-      id: 0,
-      ref: '',
-      count: 0
-    },
     description: '',
     price: 0,
     characteristics: {
-      images : [
-
-      ]
-    }
+      height: 0,
+      weight: 0,
+    },
+    inventory: [
+      {
+        subRef: '',
+        stock: [
+          {
+            size: '',
+            quantity: 0
+          }
+        ],
+        images: [
+          {
+            url: '',
+            alt: ''
+          }
+        ],
+        color: {
+          name: '',
+          hexa: ''
+        },
+        count: 0
+      }
+    ],
+    control: {
+      ref: '0',
+      totalStock: 0,
+    },
   };
 
   selectedProductSide: boolean = false;
   createdProductSide: boolean = false;
-
+  dataLoaded = false;
   clearSidebar = this.sidebarService.clearSides();
 
   clearSides() {
@@ -101,19 +126,20 @@ export class ProductsComponent {
   constructor(
     private productsService: ProductsService,
     private sidebarService: SidebarService
-  ) {
-
-  }
+  ) {}
 
   async ngOnInit() {
-    this.testProducts = await this.productsService.getDataFromCollection('products')
-    console.log(this.testProducts);
+    this.testProducts = await this.productsService.getDataFromCollection(
+      'products'
+    );
+    this.dataLoaded = true
   }
 
   displayedColumns: string[] = [
+    'id',
     'title',
     'description',
     'price',
-    'category'
+    'category',
   ];
 }

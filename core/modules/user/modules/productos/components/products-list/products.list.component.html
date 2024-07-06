@@ -1,9 +1,9 @@
 <main>
   <ng-container *ngFor="let groupOfProducts of groupedProducts">
     <div class="group">
-      <ng-container *ngFor="let product of groupOfProducts">
+      <ng-container *ngFor="let product of groupOfProducts; let i as index">
         <div class="product">
-          <bel-product-card [routerLink]="['/producto']" routerLinkActive="router-link-active"  matRipple [product]="product">
+          <bel-product-card (click)="openProduct(product)" routerLinkActive="router-link-active"  matRipple [product]="product">
           </bel-product-card>
         </div>
       </ng-container>

@@ -27,7 +27,7 @@ export const layutRoutes: Route[] = [
     ],
   },
   {
-    path: 'producto',
+    path: 'producto/:slug',
     component: ProductContainer,
   },
 ];
