@@ -19,7 +19,7 @@
         <mat-option
         *ngFor="let option of colors"
         [value]="option.name"
-        (click)="changeProductRef(option)"
+        (click)="changeProductRef(option.name)"
         >
           <mat-icon [ngStyle]="{ color: option.hexa }">circle</mat-icon>
           {{ option.name }}</mat-option

@@ -20,9 +20,9 @@ import { url } from 'inspector';
   }
   `,
   template: `
-    <bel-product-nav />
+   <bel-product-nav />
     <bel-product-carousel [images]="images" />
-    <bel-product-description [data]="selectedProduct" />
+    <bel-product-description [data]="selectedProduct" (toParentRefSelecter)="testEmiter()" />
   `,
   imports: [
     ProductNavComponent,
@@ -75,6 +75,10 @@ export class ProductContainer {
   };
   images = this.selectedProduct.inventory[0].images
 
+  testEmiter() {
+    console.log('testEmiter');
+
+  }
 
   constructor(
     private productService: ProductsService,
@@ -89,8 +93,6 @@ export class ProductContainer {
       this.slug = params.get('slug');
       this.loadData();
     });
-    this.selectedProduct = this.selectedProductService.getSelectedProduct();
-    this.images = this.selectedProduct.inventory[0].images
   }
 
   async loadData(): Promise<void> {
@@ -98,8 +100,19 @@ export class ProductContainer {
       'products'
     );
     this.getActiveData();
+    this.assignImages(); // Call the function to assign images
     window.scroll(0, 0);
   }
+
+  assignImages() {
+    if (this.selectedProduct.inventory && this.selectedProduct.inventory.length > 0) {
+      this.images = this.selectedProduct.inventory[0].images;
+    } else {
+      // Handle the case where inventory is undefined or empty
+      this.images = [];
+    }
+  }
+
 
   getActiveData(): void {
     if (this.slug) {

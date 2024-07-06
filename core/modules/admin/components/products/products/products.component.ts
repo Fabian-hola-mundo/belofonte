@@ -56,6 +56,7 @@ const CRUD = [
   ],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
+  host: {'ngSkipHydration': ''}
 })
 export class ProductsComponent {
   products: any | Product[] = [];
@@ -109,7 +110,7 @@ export class ProductsComponent {
 
   selectedProductSide: boolean = false;
   createdProductSide: boolean = false;
-
+  dataLoaded = false;
   clearSidebar = this.sidebarService.clearSides();
 
   clearSides() {
@@ -131,6 +132,7 @@ export class ProductsComponent {
     this.testProducts = await this.productsService.getDataFromCollection(
       'products'
     );
+    this.dataLoaded = true
   }
 
   displayedColumns: string[] = [

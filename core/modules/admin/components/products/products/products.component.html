@@ -14,7 +14,7 @@
       </section>
 
       <section>
-        <table mat-table [dataSource]="testProducts" class="">
+        <table *ngIf="dataLoaded" mat-table [dataSource]="testProducts" class="">
           <mat-text-column name="title" headerText="Título"></mat-text-column>
 
           <mat-text-column name="id" headerText="id"></mat-text-column>
@@ -48,7 +48,7 @@
     [opened]="selectedProductSide"
     (closed)="clearSides()"
     [mode]="mode.value!"
-    [position]="position.value!"
+    position="start"
     *ngIf="!createdProductSide"
   >
     <div class="close">
@@ -69,9 +69,9 @@
     *ngIf="!selectedProductSide"
     [opened]="createdProductSide"
     (closed)="clearSides()"
-    [mode]="mode.value!"
-    [position]="position.value!"
+    [mode]="'over'"
     class="side-create"
+    position="end"
   >
   <div class="header">
       <h3>Crear producto</h3>

@@ -24,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoute),
     provideHttpClient(),
     provideAnimations(),
+    provideClientHydration(),
     importProvidersFrom(
       provideFirebaseApp(() => {
         try {
