@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  input,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -67,16 +74,8 @@ export class ProductDescriptionComponent implements OnInit {
       totalStock: 0,
     },
   };
-  @Output() toParentRefSelecter = new EventEmitter();
-  colors: any[] = [];
-  firstColor: {} = {};
 
-  sendData() {
-    this.toParentRefSelecter.emit(this.subRefSelected);
-    console.log('fromEmitter' + this.selectedProduct);
-  }
-
-  subRefSelected: InventoryItem = {
+  @Input() subRefSelected: InventoryItem = {
     subRef: '',
     stock: [
       {
@@ -97,50 +96,31 @@ export class ProductDescriptionComponent implements OnInit {
     count: 0,
   };
 
+  @Input() allSubRef!: InventoryItem[];
+  @Input() colors: any[] = [];
+  @Output() newRef = new EventEmitter();
+  firstColor: {} = {};
+
+  sendNewRefSelected() {
+    /* this.toParentRefSelecter.emit(this.subRefSelected); */
+    /* console.log('fromEmitter' + this.selectedProduct); */
+  }
+
+  // llamar al primer subRef
+
+  fistSubref!: InventoryItem;
+
   selectedProduct = {};
   availableSizes: any[] = [];
 
   ngOnInit() {
-    this.extractColors();
-    console.log(this.data);
-    this.getSubRef();
   }
 
-  getSubRef() {
-    this.data.inventory.forEach((subRef) => {
-      if (this.firstColor === subRef.color) {
-        this.subRefSelected = subRef;
-        console.log(this.subRefSelected);
+  changeProductRef(color: Color) {
+    this.allSubRef.forEach((newSubRef) => {
+      if (color.hexa === newSubRef.color?.hexa) {
+        this.newRef.emit(newSubRef)
       }
-    });
-  }
-
-  changeProductRef(color: any) {
-    this.availableSizes = [];
-    this.data.inventory.forEach((subRef) => {
-      if (subRef.color === color) {
-        /*       this.availableSizes.push(subRef.size) */
-        this.subRefSelected = subRef;
-        console.log(this.subRefSelected);
-        this.sendData();
-      } else {
-      }
-    });
-  }
-
-  extractColors2() {
-    this.data.inventory.forEach((subRef) => {
-      if (subRef.color) {
-        this.colors.push(subRef.color);
-        console.log(subRef.color);
-      }
-    });
-  }
-
-  extractColors() {
-    this.colors = this.data.inventory
-      .map((item) => item.color)
-      .filter((color): color is Color => color !== undefined);
-    this.firstColor = this.colors[0];
+    })
   }
 }

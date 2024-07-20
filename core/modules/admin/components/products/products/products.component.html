@@ -84,11 +84,15 @@
         <mat-icon>close</mat-icon>
       </button>
     </div>
-    <bel-create-product></bel-create-product>
+    <bel-create-product
+    #createProductComponent
+    (stepperIndexChange)="onStepperIndexChange($event)"
+    (formSubmit)="onSubmit($event)"
+    ></bel-create-product>
     <div class="footer">
-      <button mat-button color="primary" (click)="createdProductSide = false">Atrás</button>
-      <button mat-button color="primary" (click)="createdProductSide = false">Siguiente</button>
-      <button mat-raised-button color="primary" (click)="createdProductSide = false">Crear</button>
+      <button mat-button color="primary" *ngIf="stepperIndex >= 1" (click)="goBack(createProductComponent)">Atrás</button>
+      <button mat-button color="primary" *ngIf="stepperIndex <= 1" (click)="goForward(createProductComponent)">Siguiente</button>
+      <button mat-raised-button color="primary" *ngIf="stepperIndex === 2" (click)="createProductComponent.submitForm()">Crear</button>
     </div>
   </mat-sidenav>
 </mat-sidenav-container>

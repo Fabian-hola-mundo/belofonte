@@ -2,7 +2,7 @@ import { Component, Pipe } from '@angular/core';
 import { ProductNavComponent } from '../components/nav/product.nav.component';
 import { CarouselComponent } from '../components/carousel/carousel.component';
 import { ProductsService } from '../../../../../services/products.service';
-import { Product } from '../../../../admin/interface/products';
+import { InventoryItem, Product } from '../../../../admin/interface/products';
 import { SelectedProductService } from '../../../services/selected-product.service';
 import { ProductDescriptionComponent } from '../components/description/product.description.component';
 import { ActivatedRoute } from '@angular/router';
@@ -20,9 +20,15 @@ import { url } from 'inspector';
   }
   `,
   template: `
-   <bel-product-nav />
+    <bel-product-nav />
     <bel-product-carousel [images]="images" />
-    <bel-product-description [data]="selectedProduct" (toParentRefSelecter)="testEmiter()" />
+    <bel-product-description
+      [subRefSelected]="subRefSelected"
+      [colors]="colors"
+      [allSubRef]="allSubRef"
+      [data]="selectedProduct"
+      (newRef)="getNewRefSelected($event)"
+    />
   `,
   imports: [
     ProductNavComponent,
@@ -34,6 +40,8 @@ import { url } from 'inspector';
 export class ProductContainer {
   slug!: any;
   dataFromCollection!: any;
+  colors: any[] = [];
+  allSubRef : InventoryItem [] = []
   selectedProduct: Product = {
     id: '',
     category: [''],
@@ -52,41 +60,60 @@ export class ProductContainer {
         stock: [
           {
             size: '',
-            quantity: 0
-          }
+            quantity: 0,
+          },
         ],
         images: [
           {
             url: '',
-            alt: ''
-          }
+            alt: '',
+          },
         ],
         color: {
           name: '',
-          hexa: ''
+          hexa: '',
         },
-        count: 0
-      }
+        count: 0,
+      },
     ],
     control: {
       ref: '0',
       totalStock: 0,
     },
   };
-  images = this.selectedProduct.inventory[0].images
+  images = this.selectedProduct.inventory[0].images;
 
-  testEmiter() {
-    console.log('testEmiter');
+  subRefSelected: InventoryItem = {
+    subRef: '',
+    stock: [
+      {
+        size: '',
+        quantity: 0,
+      },
+    ],
+    images: [
+      {
+        url: '',
+        alt: '',
+      },
+    ],
+    color: {
+      name: '',
+      hexa: '',
+    },
+    count: 0,
+  };
 
+  getNewRefSelected(newRef: InventoryItem) {
+    this.subRefSelected = newRef
+    this.images = newRef.images
   }
 
   constructor(
     private productService: ProductsService,
     private selectedProductService: SelectedProductService,
     private activeRoute: ActivatedRoute
-  ) {
-
-  }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     this.activeRoute.paramMap.subscribe((params) => {
@@ -95,24 +122,44 @@ export class ProductContainer {
     });
   }
 
+  async getSubRef() {
+    this.subRefSelected = this.selectedProduct.inventory[0]
+  }
+
+
+
+  extractAllSubRef() {
+    this.selectedProduct.inventory.forEach((subRef) => {
+      if (this.allSubRef) {
+        this.allSubRef.push(subRef)
+      }
+    });
+    console.log(this.allSubRef);
+  }
+
   async loadData(): Promise<void> {
     this.dataFromCollection = await this.productService.getDataFromCollection(
       'products'
     );
     this.getActiveData();
-    this.assignImages(); // Call the function to assign images
+    this.assignImages();
+    this.getSubRef()
+    this.extractAllSubRef()
+    this.extractColors()
     window.scroll(0, 0);
   }
 
   assignImages() {
-    if (this.selectedProduct.inventory && this.selectedProduct.inventory.length > 0) {
+    if (
+      this.selectedProduct.inventory &&
+      this.selectedProduct.inventory.length > 0
+    ) {
       this.images = this.selectedProduct.inventory[0].images;
     } else {
       // Handle the case where inventory is undefined or empty
       this.images = [];
     }
   }
-
 
   getActiveData(): void {
     if (this.slug) {
@@ -124,5 +171,12 @@ export class ProductContainer {
       } else {
       }
     }
+  }
+
+  extractColors() {
+    this.allSubRef.forEach((color) => {
+      this.colors.push(color.color);
+    });
+    console.log(this.colors);
   }
 }
