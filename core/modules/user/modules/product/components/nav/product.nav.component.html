@@ -1,11 +1,11 @@
-<nav class="product-nav">
+<nav class="product-nav" [ngClass]="{ 'product-nav--active' : isScrolledHalfway}">
   <button routerLink="/productos" mat-icon-button>
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <div class="product-name">
-    <p>Un nombre de un producto que puede llegar a se muy largo</p>
+  <div class="product-name" *ngIf="isScrolledHalfway">
+    <p>{{title}}</p>
   </div>
-  <button mat-icon-button>
+  <button mat-icon-button (click)="openDialog()">
     <mat-icon>shopping_cart</mat-icon>
   </button>
 </nav>

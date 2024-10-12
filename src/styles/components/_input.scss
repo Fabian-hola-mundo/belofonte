@@ -1,0 +1,9 @@
+mat-form-field {
+  width: 100%;
+  & mat-icon, span {
+    color: var(--md-sys-color-primary);
+  }
+  span {
+    padding-right: 8px;
+  }
+}

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { LayoutComponent } from '../containers/layout.component';
 import LandingPageComponent from '../modules/home/containers';
 import { ProductContainer } from '../modules/product/containers/product.container';
+import { OrderCheckoutContainer } from '../modules/order-checkout/containers/order.checkout.container';
 
 export const layutRoutes: Route[] = [
   {
@@ -30,6 +31,11 @@ export const layutRoutes: Route[] = [
     path: 'producto/:slug',
     component: ProductContainer,
   },
+  {
+    path: 'checkout',
+    component: OrderCheckoutContainer,
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({

@@ -1,7 +1,6 @@
 import {
   Component,
   EventEmitter,
-  input,
   Input,
   OnInit,
   Output,
@@ -100,11 +99,6 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() colors: any[] = [];
   @Output() newRef = new EventEmitter();
   firstColor: {} = {};
-
-  sendNewRefSelected() {
-    /* this.toParentRefSelecter.emit(this.subRefSelected); */
-    /* console.log('fromEmitter' + this.selectedProduct); */
-  }
 
   // llamar al primer subRef
 

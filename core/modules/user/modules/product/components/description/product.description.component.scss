@@ -25,6 +25,7 @@
     & .shop-options {
       display: flex;
       flex-wrap: wrap;
+      gap: 12px;
       flex-direction: row;
       &__color {
         flex-grow: 1;
@@ -40,4 +41,23 @@
       }
     }
   }
+  @media (min-width: 1007px) {
+    main {
+      & .basic {
+        & p {
+        }
+        & b {
+        }
+      }
+      & .shop-options {
+        &__color {
+        }
+        &__size {
+        }
+        & button {
+        }
+      }
+    }
+  }
 }
+

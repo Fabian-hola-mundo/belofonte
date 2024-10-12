@@ -1,4 +1,4 @@
-import { Component, Pipe } from '@angular/core';
+import { Component, HostListener, Pipe } from '@angular/core';
 import { ProductNavComponent } from '../components/nav/product.nav.component';
 import { CarouselComponent } from '../components/carousel/carousel.component';
 import { ProductsService } from '../../../../../services/products.service';
@@ -20,7 +20,9 @@ import { url } from 'inspector';
   }
   `,
   template: `
-    <bel-product-nav />
+    <bel-product-nav
+    [isScrolledHalfway]="isScrolledHalfway"
+    [title]="selectedProduct.title" />
     <bel-product-carousel [images]="images" />
     <bel-product-description
       [subRefSelected]="subRefSelected"
@@ -41,6 +43,7 @@ export class ProductContainer {
   slug!: any;
   dataFromCollection!: any;
   colors: any[] = [];
+  isScrolledHalfway: boolean = false;
   allSubRef : InventoryItem [] = []
   selectedProduct: Product = {
     id: '',
@@ -179,4 +182,31 @@ export class ProductContainer {
     });
     console.log(this.colors);
   }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+
+    if (scrollPosition > documentHeight / 1.3 - windowHeight) {
+      this.isScrolledHalfway = true
+
+    } else {
+      this.isScrolledHalfway = false
+    }
+  }
+
+  //Código para scroll down and up
+
+
+/*   lastScrollPosition = 0;
+  isScrollingUp = true;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const currentScrollPosition = window.pageYOffset;
+    this.isScrollingUp = currentScrollPosition < this.lastScrollPosition;
+    this.lastScrollPosition = currentScrollPosition;
+  } */
 }

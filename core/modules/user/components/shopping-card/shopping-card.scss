@@ -1,0 +1,63 @@
+@import "../../../../../src/styles.scss";
+
+:host {
+  .header {
+    border-bottom: 1px solid;
+    border-color: var(--md-sys-color-outline-variant);
+    box-shadow: 0px 7px 20px 14px rgba(0, 0, 0, 0.72);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .mat-mdc-icon-button.mat-mdc-button-base {
+      $size: 38px;
+      width: $size;
+      height: $size;
+      padding: 8px;
+    }
+    & .label {
+      width: 100%;
+    }
+  }
+
+  ::ng-deep {
+    mat-dialog-content {
+      &:hover > :not(:hover) {
+        opacity: 0.7;
+      }
+    }
+  }
+
+  mat-dialog-actions {
+    border-top: 1px solid;
+    border-color: var(--md-sys-color-outline-variant);
+    & .actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      &__price {
+        text-align: center;
+      }
+      & button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .classDialog {
+    .mat-mdc-dialog-title {
+      @extend %fullPadding;
+      display: flex;
+    }
+    .mat-mdc-dialog-container .mdc-dialog__surface {
+      @extend .surface;
+    }
+
+    .mat-mdc-dialog-content {
+      padding: 0;
+    }
+  }
+}

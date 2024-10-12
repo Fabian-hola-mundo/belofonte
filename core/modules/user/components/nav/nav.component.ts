@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { ShoppingCardComponent } from '../shopping-card/shopping-card';
+import { DialogService } from '../shopping-card/shopping-card-config';
 
 @Component({
   selector: 'bel-nav',
@@ -51,7 +54,7 @@ import { RouterModule } from '@angular/router';
           <div>
             <ul>
               <li matRipple role="navigation">
-                <button mat-icon-button>
+                <button mat-icon-button (click)="openDialog()">
                   <mat-icon>shopping_cart</mat-icon>
                 </button>
               </li>
@@ -62,4 +65,12 @@ import { RouterModule } from '@angular/router';
     </nav>
   `,
 })
-export class NavComponent {}
+export class NavComponent {
+
+  constructor(private dialogService: DialogService) {}
+
+  openDialog() {
+    this.dialogService.openShoppingCardDialog();
+  }
+
+}

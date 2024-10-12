@@ -6,10 +6,10 @@
   <div class="shop-options">
     <mat-form-field appearance="outline" class="shop-options__size">
       <mat-label>Tamaño</mat-label>
-      <mat-select [value]="subRefSelected.stock?.[0]?.size">
-        <mat-option *ngFor="let size of subRefSelected.stock" [value]="size">{{
-          size.size
-        }}</mat-option>
+      <mat-select [value]="subRefSelected.stock?.[0]">
+        <mat-option *ngFor="let size of subRefSelected.stock" [value]="size">
+          {{size.size}}
+        </mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -17,16 +17,16 @@
       <mat-label>Color</mat-label>
       <mat-select [value]="colors[0]">
         <mat-option
-        *ngFor="let option of colors"
-        [value]="option"
-        (click)="changeProductRef(option)"
+          *ngFor="let option of colors"
+          [value]="option"
+          (click)="changeProductRef(option)"
         >
           <mat-icon [ngStyle]="{ color: option.hexa }">circle</mat-icon>
           {{ option.name }}</mat-option
         >
       </mat-select>
     </mat-form-field>
-<!--     <pre style="background-color: white;">
+    <!--     <pre style="background-color: white;">
       <code>{{colors | json}}</code>
     </pre> -->
     <button mat-raised-button>AÑADIR</button>
@@ -34,8 +34,7 @@
   <div>
     <strong>{{ "Ref " + data.control.ref }}</strong
     ><br />
-    <strong>{{ "Ref " + subRefSelected.subRef }}</strong>
-    <strong>{{ "Ref Color" + subRefSelected.color?.hexa }}</strong>
+    <strong>{{ "SubRef " + subRefSelected.subRef }}</strong>
     <p>{{ data.description }}</p>
   </div>
 

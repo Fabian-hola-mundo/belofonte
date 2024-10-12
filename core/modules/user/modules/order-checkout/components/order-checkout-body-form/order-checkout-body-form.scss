@@ -1,0 +1,24 @@
+@import '../../../../../../../src/styles.scss';
+
+:host {
+  padding: 0;
+  width: 100%;
+  .pac-container {
+    background-color: red;
+  }
+  & section {
+    & form {
+      ::ng-deep {
+        & mat-stepper {
+          background: transparent;
+          & .mat-horizontal-stepper-wrapper {
+            gap: 12px;
+            & .mat-horizontal-content-container {
+              @extend %fullPadding;
+            }
+          }
+        }
+      }
+    }
+  }
+}
