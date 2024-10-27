@@ -140,59 +140,62 @@ export class OrderCheckoutBodyFormStep2Component implements AfterViewInit {
   // Carga la funcionalidad de autocompletado de Google Places
   loadGooglePlacesAutocomplete() {
     const input = this.autocompleteInput.nativeElement;
+    if (typeof document !== 'undefined') {
+      if (google && google.maps && google.maps.places) {
+        this.autocomplete = new google.maps.places.Autocomplete(input, {
+          componentRestrictions: { country: 'co' }, // Restringir a Colombia
+          types: ['geocode'], // Solo sugerencias de direcciones
+        });
 
-    if (google && google.maps && google.maps.places) {
-      this.autocomplete = new google.maps.places.Autocomplete(input, {
-        componentRestrictions: { country: 'co' }, // Restringir a Colombia
-        types: ['geocode'], // Solo sugerencias de direcciones
-      });
+        // Agrega un listener para cuando se selecciona un lugar
+        this.autocomplete.addListener('place_changed', () => {
+          const place = this.autocomplete.getPlace();
+          if (place.geometry) {
+            // Extraer y asignar la dirección completa
+            this.formGroup.get('address')?.setValue(place.formatted_address);
 
-      // Agrega un listener para cuando se selecciona un lugar
-      this.autocomplete.addListener('place_changed', () => {
-        const place = this.autocomplete.getPlace();
-        if (place.geometry) {
-          // Extraer y asignar la dirección completa
-          this.formGroup.get('address')?.setValue(place.formatted_address);
+            // Extraer los componentes de la dirección
+            const addressComponents = place.address_components;
+            let departamento = '';
+            let municipio = '';
+            let postalCode = '';
 
-          // Extraer los componentes de la dirección
-          const addressComponents = place.address_components;
-          let departamento = '';
-          let municipio = '';
-          let postalCode = '';
+            // Iterar sobre los componentes de la dirección para encontrar los valores necesarios
+            addressComponents.forEach(
+              (component: { types: any[]; long_name: string }) => {
+                const componentType = component.types[0];
 
-          // Iterar sobre los componentes de la dirección para encontrar los valores necesarios
-          addressComponents.forEach(
-            (component: { types: any[]; long_name: string }) => {
-              const componentType = component.types[0];
-
-              if (componentType === 'administrative_area_level_1') {
-                departamento = component.long_name; // Nivel de departamento
-              } else if (
-                componentType === 'locality' ||
-                componentType === 'administrative_area_level_2'
-              ) {
-                municipio = component.long_name; // Nivel de ciudad o municipio
-              } else if (componentType === 'postal_code') {
-                postalCode = component.long_name; // Código postal
+                if (componentType === 'administrative_area_level_1') {
+                  departamento = component.long_name; // Nivel de departamento
+                } else if (
+                  componentType === 'locality' ||
+                  componentType === 'administrative_area_level_2'
+                ) {
+                  municipio = component.long_name; // Nivel de ciudad o municipio
+                } else if (componentType === 'postal_code') {
+                  postalCode = component.long_name; // Código postal
+                }
               }
-            }
-          );
+            );
 
-          // Asignar los valores extraídos a los controles del formulario
-          this.formGroup.get('departamento')?.setValue(departamento);
-          this.formGroup.get('municipio')?.setValue(municipio);
-          this.formGroup.get('municipio')?.enable();
-          this.formGroup.get('postalCode')?.setValue(postalCode);
+            // Asignar los valores extraídos a los controles del formulario
+            this.formGroup.get('departamento')?.setValue(departamento);
+            this.formGroup.get('municipio')?.setValue(municipio);
+            this.formGroup.get('municipio')?.enable();
+            this.formGroup.get('postalCode')?.setValue(postalCode);
 
-          console.log('Dirección completa:', place.formatted_address);
-          console.log('Departamento:', departamento);
-          console.log('Municipio:', municipio);
-          console.log('Código Postal:', postalCode);
-        }
-      });
-    } else {
-      console.error('Google Maps API no está disponible.');
+            console.log('Dirección completa:', place.formatted_address);
+            console.log('Departamento:', departamento);
+            console.log('Municipio:', municipio);
+            console.log('Código Postal:', postalCode);
+          }
+        });
+      } else {
+        console.error('Google Maps API no está disponible.');
+      }
     }
+
+
   }
 
   onDepartamentoChange(departamento: string) {
