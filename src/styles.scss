@@ -74,3 +74,25 @@ h6 {
 .fill-svg {
   @extend .primary-fill;
 }
+
+::ng-deep {
+  .pac-container {
+  @extend .surface;
+  box-shadow: 0px 6px 20px rgb(0 0 0 / 81%);
+  @extend .outline-variant-line;
+  border-radius: 8px;
+  & .pac-icon {
+    @extend .on-surface-text;
+  }
+  & .pac-item {
+    @extend .outline-variant-line;
+    padding: 8px 8px;
+    & .pac-item-query {
+      @extend .on-surface-text;
+      & .pac-matched {
+        @extend .primary-text;
+      }
+    }
+  }
+}
+}

@@ -1,8 +1,9 @@
 import {
   Component,
   ElementRef,
-  OnDestroy,
+  EventEmitter,
   OnInit,
+  Output,
   ViewChild,
   inject,
 } from '@angular/core';
@@ -18,7 +19,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductsService } from '../../../../../services/products.service';
@@ -88,6 +89,9 @@ export class CreateProductComponent implements OnInit {
   sizes!: { name: string }[];
   size!: { name: string };
   lengthOfAllProducts!: number;
+  @Output() stepperIndexChange = new EventEmitter<number>(); // index of mat-step
+  @Output() formSubmit = new EventEmitter<FormGroup>(); // form data
+  @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   productForm!: any;
@@ -110,7 +114,7 @@ export class CreateProductComponent implements OnInit {
     private side: MatSidenav,
     private configurationSizeService: ConfigurationSizeService,
     private formBuilder: FormBuilder,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     this.productForm = this.formBuilder.group({
       id: [''],
@@ -127,8 +131,8 @@ export class CreateProductComponent implements OnInit {
       }),
       inventory: this.formBuilder.array([this.createInventoryItem()]),
       control: this.formBuilder.group({
-        ref: ['', [Validators.required]],
-        totalStock: [0, [Validators.required, Validators.min(0)]],
+        ref: [''],
+        totalStock: [''],
       }),
     });
 
@@ -164,6 +168,50 @@ export class CreateProductComponent implements OnInit {
       .replace(/[^\w-]+/g, '');
   }
 
+  // Control de botones inicio
+
+  nextStep() {
+    this.stepperIndexChange.emit(this.stepper.selectedIndex + 1);
+    this.stepper.next();
+  }
+
+  previousStep() {
+    if (this.stepper.selectedIndex > 0) { // Only allow going back if not on the first step
+      this.stepperIndexChange.emit(this.stepper.selectedIndex - 1);
+      this.stepper.previous();
+    }
+  }
+
+  submitForm() {
+    if (this.productForm.valid) {
+      this.onSubmit()
+      console.log('Es válido');
+    } else {
+      console.log('no es válido');
+
+    }
+  }
+
+  async onSubmit(): Promise<DocumentReference<any, DocumentData> | undefined> {
+    try {
+      const response = await this.productService.addProduct(
+        this.productForm.value
+      );
+      this.updateProductId();
+      this.openSnackBar(`El producto ha sido creado`, 'Cerrar');
+      this.side.close();
+      this.productForm.reset(); // Reinicia el formulario
+      console.log('woks' + this.productForm.value);
+
+      return response as DocumentReference<any, DocumentData>;
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
+      return undefined; // O null, dependiendo de lo que prefieras como valor de retorno en caso de error
+    }
+  }
+
+  // Control de botones Fin
+
   createFirstStep() {
     this.firstData = [
       {
@@ -191,21 +239,7 @@ export class CreateProductComponent implements OnInit {
     ];
   }
 
-  async onSubmit(): Promise<DocumentReference<any, DocumentData> | undefined> {
-    try {
-      const response = await this.productService.addProduct(
-        this.productForm.value
-      );
-      this.updateProductId();
-      this.openSnackBar(`El producto ha sido creado`, 'Cerrar');
-      this.side.close();
-      this.productForm.reset(); // Reinicia el formulario
-      return response as DocumentReference<any, DocumentData>;
-    } catch (error) {
-      console.error('Error al enviar el formulario:', error);
-      return undefined; // O null, dependiendo de lo que prefieras como valor de retorno en caso de error
-    }
-  }
+
 
   createSecondStep() {
     this.secondData = [
@@ -245,7 +279,6 @@ export class CreateProductComponent implements OnInit {
     const inventoryItem = inventoryArray.at(inventoryItemIndex) as FormGroup;
     inventoryItem.get('color')?.setValue(newColor);
   }
-
 
   openCreateColorDialog(): void {
     const dialogRef = this.dialog.open(CreateColorComponent, {
@@ -328,35 +361,37 @@ export class CreateProductComponent implements OnInit {
     images.push(this.createImageItem());
   }
 
-createInventoryItem(): FormGroup {
+  createInventoryItem(): FormGroup {
     return this.formBuilder.group({
-        subRef: ['', [Validators.required]],
-        color: new FormGroup({
-          name: new FormControl(''),
-          hexa: new FormControl(''),
-        }),
-        images: this.formBuilder.array([this.createImageItem()]),
-        stock: this.formBuilder.array([this.createStockItem()]),
+      subRef: ['', [Validators.required]],
+      color: new FormGroup({
+        name: new FormControl(''),
+        hexa: new FormControl(''),
+      }),
+      images: this.formBuilder.array([this.createImageItem()]),
+      stock: this.formBuilder.array([this.createStockItem()]),
     });
-}
+  }
 
-createStockItem(): FormGroup {
-  return this.formBuilder.group({
-    size: [''],
-    quantity: [''],
-  });
-}
+  createStockItem(): FormGroup {
+    return this.formBuilder.group({
+      size: [''],
+      quantity: [''],
+    });
+  }
 
-addSizeItem(inventoryItemIndex: number) {
-  this.getStockFormArray(inventoryItemIndex).push(this.createStockItem());
-}
+  addSizeItem(inventoryItemIndex: number) {
+    this.getStockFormArray(inventoryItemIndex).push(this.createStockItem());
+  }
 
   get inventoryFormArray(): FormArray {
     return this.productForm.get('inventory') as FormArray;
   }
 
   getStockFormArray(inventoryItemIndex: number): FormArray {
-    const inventoryItem = this.inventoryFormArray.at(inventoryItemIndex) as FormGroup;
+    const inventoryItem = this.inventoryFormArray.at(
+      inventoryItemIndex
+    ) as FormGroup;
     return inventoryItem.get('stock') as FormArray;
   }
 
@@ -373,9 +408,9 @@ addSizeItem(inventoryItemIndex: number) {
 
   createImageItem(): FormGroup {
     return this.formBuilder.group({
-      url: new FormControl( '' , Validators.required),
-      alt: new FormControl('', Validators.required),
-      progress: [0]
+      url: new FormControl(''),
+      alt: new FormControl(''),
+      progress: [0],
     });
   }
 

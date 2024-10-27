@@ -1,6 +1,6 @@
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -56,7 +56,7 @@ const CRUD = [
   ],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
-  host: {'ngSkipHydration': ''}
+  host: {'ngSkipHydration': 'true'}
 })
 export class ProductsComponent {
   products: any | Product[] = [];
@@ -67,6 +67,7 @@ export class ProductsComponent {
   mode = new FormControl('over' as MatDrawerMode);
   hasBackdrop = new FormControl(true as null | boolean);
   position = new FormControl('end' as 'start' | 'end');
+  stepperIndex = -1
 
   selectedProduct: Product = {
     id: '',
@@ -122,6 +123,28 @@ export class ProductsComponent {
     this.selectedProduct = row;
     this.selectedProductSide = true;
   }
+
+  // Control de botones para creación de form inicio
+
+  onStepperIndexChange(index: number) {
+    this.stepperIndex = index; // Update the stepperIndex whenever the child component emits the event
+    // This method will be called whenever the stepperIndexChange event is emitted from the child component.
+    // Update the UI to reflect the current step if needed
+  }
+
+  onSubmit(formData: FormGroup) {
+    // Handle form submission from here (send to backend, etc.)
+  }
+
+  goBack(createProductComponent: CreateProductComponent) {
+    createProductComponent.previousStep();
+  }
+
+  goForward(createProductComponent: CreateProductComponent) {
+    createProductComponent.nextStep();
+  }
+
+  // Cierre control de botones para creación de form inicio
 
   constructor(
     private productsService: ProductsService,

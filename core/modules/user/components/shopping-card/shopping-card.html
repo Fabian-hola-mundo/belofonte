@@ -1,0 +1,17 @@
+<div class="header" mat-dialog-title>
+  <h3 class="label">Carrito</h3>
+  <button mat-icon-button [matDialogClose]="true">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<mat-dialog-content class="mat-typography">
+  <bel-items-added/>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="actions">
+    <h4 class="actions__price">Total $24.000 COP</h4>
+    <button [routerLink]="['/checkout']" matDialogClose routerLinkActive="router-link-active"  mat-raised-button cdkFocusInitial>
+      Gestionar Pedido
+    </button>
+  </div>
+</mat-dialog-actions>

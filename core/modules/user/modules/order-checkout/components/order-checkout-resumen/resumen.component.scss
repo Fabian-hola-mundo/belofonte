@@ -1,0 +1,30 @@
+@import '../../../../../../../src/styles.scss';
+
+:host {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  @extend .surface;
+  width: 100%;
+  ::ng-deep {
+    & mat-accordion {
+      & .mat-expansion-panel-header {
+        @extend %regularPadding;
+      }
+      & .mat-expansion-panel-body {
+        overflow: auto;
+        padding: 0;
+        max-height: 60dvh;
+      }
+    }
+  }
+  & .cta {
+    @extend %fullPadding;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    & button {
+      width: 100%;
+    }
+  }
+}

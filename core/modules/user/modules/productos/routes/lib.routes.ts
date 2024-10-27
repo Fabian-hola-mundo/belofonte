@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ProductsPageComponent } from '../containers/products/products.page.component';
 import { ProductsListComponent } from '../components/products-list/products.list.component';
 import { NotFoundComponent } from '../../extra/not-found/not-found.component';
+import { OrderCheckoutContainer } from '../../order-checkout/containers/order.checkout.container';
 
 export const layutRoutes: Route[] = [
   {
@@ -18,9 +19,12 @@ export const layutRoutes: Route[] = [
       {
         path:'**',
         component: NotFoundComponent
-      }
+      },
+
     ],
+
   },
+
 ];
 
 @NgModule({

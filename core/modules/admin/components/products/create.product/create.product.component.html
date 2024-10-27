@@ -35,11 +35,6 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <div>
-        <button mat-raised-button matStepperNext color="primary">
-          Siguiente
-        </button>
-      </div>
     </mat-step>
 
     <!-- Paso 2: Características e Imágenes -->
@@ -74,10 +69,6 @@
           />
         </mat-form-field>
       </div>
-      <button mat-button matStepperPrevious color="primary">Atrás</button>
-      <button mat-raised-button matStepperNext color="primary">
-        Siguiente
-      </button>
     </mat-step>
 
     <!-- Paso 3: Inventario -->
@@ -255,6 +246,7 @@
                         type="number"
                         placeholder="0"
                         formControlName="quantity"
+                        autocomplete="false"
                       />
                       <span matTextSuffix>C</span>
                     </mat-form-field>
@@ -268,8 +260,6 @@
           </mat-expansion-panel>
         </mat-accordion>
       </div>
-      <button mat-button matStepperPrevious color="primary">Atrás</button>
-      <button mat-raised-button (click)="onSubmit()">Crear</button>
     </mat-step>
   </form>
 </mat-stepper>

@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +17,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { Color } from '../../../../../admin/interface/color';
+import { CartService } from '../../../../services/cart.service';
 
 @Component({
   selector: 'bel-product-description',
@@ -67,16 +74,8 @@ export class ProductDescriptionComponent implements OnInit {
       totalStock: 0,
     },
   };
-  @Output() toParentRefSelecter = new EventEmitter();
-  colors: any[] = [];
-  firstColor: {} = {};
 
-  sendData() {
-    this.toParentRefSelecter.emit(this.subRefSelected);
-    console.log('fromEmitter' + this.selectedProduct);
-  }
-
-  subRefSelected: InventoryItem = {
+  @Input() subRefSelected: InventoryItem = {
     subRef: '',
     stock: [
       {
@@ -97,50 +96,37 @@ export class ProductDescriptionComponent implements OnInit {
     count: 0,
   };
 
+  @Input() allSubRef!: InventoryItem[];
+  @Input() colors: any[] = [];
+  @Output() newRef = new EventEmitter();
+  firstColor: {} = {};
+  fistSubref!: InventoryItem;
   selectedProduct = {};
   availableSizes: any[] = [];
 
+  constructor(private cartService: CartService) {
+
+  }
+
   ngOnInit() {
-    this.extractColors();
-    console.log(this.data);
-    this.getSubRef();
   }
-
-  getSubRef() {
-    this.data.inventory.forEach((subRef) => {
-      if (this.firstColor === subRef.color) {
-        this.subRefSelected = subRef;
-        console.log(this.subRefSelected);
-      }
+/*
+  addToCart() {
+    this.cartService.addToCart({
+      productId: this.data.id,
+      name: this.data.title,
+      quantity: this.quantity,
+      price: this.data.price,
+      size: this.selectedSize,
+      color: this.selectedColor,
     });
-  }
+  } */
 
-  changeProductRef(color: any) {
-    this.availableSizes = [];
-    this.data.inventory.forEach((subRef) => {
-      if (subRef.color === color) {
-        /*       this.availableSizes.push(subRef.size) */
-        this.subRefSelected = subRef;
-        console.log(this.subRefSelected);
-        this.sendData();
-      } else {
+  changeProductRef(color: Color) {
+    this.allSubRef.forEach((newSubRef) => {
+      if (color.hexa === newSubRef.color?.hexa) {
+        this.newRef.emit(newSubRef)
       }
-    });
-  }
-
-  extractColors2() {
-    this.data.inventory.forEach((subRef) => {
-      if (subRef.color) {
-        this.colors.push(subRef.color);
-        console.log(subRef.color);
-      }
-    });
-  }
-
-  extractColors() {
-    this.colors = this.data.inventory
-      .map((item) => item.color)
-      .filter((color): color is Color => color !== undefined);
-    this.firstColor = this.colors[0];
+    })
   }
 }

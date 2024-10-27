@@ -8,7 +8,7 @@ export const layutRoutes: Route[] = [
     component: LayoutComponent,
     loadChildren: () =>
       import('../../routes/lib.routes').then((m) => m.layutRoutes),
-    title: 'Fabián Miranda',
+    title: 'Belofonte',
   },
 ];
 
