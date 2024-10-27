@@ -129,4 +129,19 @@ export class ProductDescriptionComponent implements OnInit {
       }
     })
   }
+
+  addToCart() {
+    this.cartService.addToCart({
+      productId: this.data.id,
+      name: this.data.title,
+      images: this.subRefSelected.images?.[0].url,
+      slug: this.data.slug,
+      uniqueId: `${this.data.id}-${this.subRefSelected.stock?.[0]?.size}-${this.subRefSelected.color?.hexa}` || '',
+      price: this.data.price,
+      size: this.subRefSelected.stock?.[0]?.size || '',  // Toma el tamaño seleccionado
+      color: this.subRefSelected.color?.hexa || '',      // Toma el color seleccionado
+      quantity: 1                                  // Cantidad predeterminada (1)
+    });
+  }
+
 }

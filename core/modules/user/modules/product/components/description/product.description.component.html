@@ -1,7 +1,7 @@
 <main>
   <div class="basic">
     <p>{{ data.title }}</p>
-    <b>{{ data.price | currency : "COP" }}</b>
+    <b>{{ data.price | currency : "COP $" }}</b>
   </div>
   <div class="shop-options">
     <mat-form-field appearance="outline" class="shop-options__size">
@@ -29,7 +29,7 @@
     <!--     <pre style="background-color: white;">
       <code>{{colors | json}}</code>
     </pre> -->
-    <button mat-raised-button>AÑADIR</button>
+    <button mat-raised-button (click)="addToCart()">AÑADIR</button>
   </div>
   <div>
     <strong>{{ "Ref " + data.control.ref }}</strong
