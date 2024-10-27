@@ -17,6 +17,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { Color } from '../../../../../admin/interface/color';
+import { CartService } from '../../../../services/cart.service';
 
 @Component({
   selector: 'bel-product-description',
@@ -99,16 +100,27 @@ export class ProductDescriptionComponent implements OnInit {
   @Input() colors: any[] = [];
   @Output() newRef = new EventEmitter();
   firstColor: {} = {};
-
-  // llamar al primer subRef
-
   fistSubref!: InventoryItem;
-
   selectedProduct = {};
   availableSizes: any[] = [];
 
+  constructor(private cartService: CartService) {
+
+  }
+
   ngOnInit() {
   }
+/*
+  addToCart() {
+    this.cartService.addToCart({
+      productId: this.data.id,
+      name: this.data.title,
+      quantity: this.quantity,
+      price: this.data.price,
+      size: this.selectedSize,
+      color: this.selectedColor,
+    });
+  } */
 
   changeProductRef(color: Color) {
     this.allSubRef.forEach((newSubRef) => {
