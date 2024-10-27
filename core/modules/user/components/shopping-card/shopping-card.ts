@@ -5,6 +5,8 @@ import { ShoppingItemComponent } from './shopping-item/shopping-item.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ItemsAddedComponent } from './items-added/items.added.component';
 import { RouterModule } from '@angular/router';
+import { CartService } from '../../services/cart.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'bel-shopping-card',
@@ -15,9 +17,16 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     ShoppingItemComponent,
     MatIconModule,
+    CommonModule,
     RouterModule,
     ItemsAddedComponent,
   ],
   templateUrl: './shopping-card.html',
 })
-export class ShoppingCardComponent {}
+export class ShoppingCardComponent {
+
+  constructor(public cartService: CartService) {
+
+  }
+
+}

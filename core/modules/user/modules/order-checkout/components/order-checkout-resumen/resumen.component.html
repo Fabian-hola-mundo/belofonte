@@ -4,13 +4,14 @@
       <mat-expansion-panel-header>
         <mat-panel-title> Resumen del pedido </mat-panel-title>
         <mat-panel-description>
-          $ 30.000 COP
+          {{cartService.getTotalPrice() | currency: 'COP $'}}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <bel-items-added/>
     </mat-expansion-panel>
   </mat-accordion>
   <div class="cta">
+    <button (click)="startCheckout()" mat-raised-button>test</button>
     <button (click)="continuar()" mat-raised-button>Continuar</button>
     <button *ngIf="orderCheckoutBodyForm.stepper.selectedIndex > 0" (click)="atras()" mat-button>Atrás</button>
   </div>
