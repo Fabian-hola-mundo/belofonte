@@ -4,6 +4,7 @@ import { LayoutComponent } from '../containers/layout.component';
 import LandingPageComponent from '../modules/home/containers';
 import { ProductContainer } from '../modules/product/containers/product.container';
 import { OrderCheckoutContainer } from '../modules/order-checkout/containers/order.checkout.container';
+import { OrderCheckoutResultContainer } from '../modules/order-checkout/containers/order.checkout.result.container';
 
 export const layutRoutes: Route[] = [
   {
@@ -34,6 +35,11 @@ export const layutRoutes: Route[] = [
   {
     path: 'checkout',
     component: OrderCheckoutContainer,
+    pathMatch: 'full'
+  },
+  {
+    path: 'checkout/:id',
+    component: OrderCheckoutResultContainer,
     pathMatch: 'full'
   }
 ];

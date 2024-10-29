@@ -85,4 +85,10 @@ export class CartService {
       0
     );
   }
+
+  generateUniqueReference(): string {
+    const timestamp = Date.now().toString(36); // Parte de tiempo en base 36
+    const randomString = Math.random().toString(36).substring(2, 10); // Cadena aleatoria
+    return `${timestamp}_${randomString}`;
+  }
 }

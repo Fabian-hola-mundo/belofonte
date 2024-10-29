@@ -24,7 +24,7 @@ import { MatStepper } from '@angular/material/stepper';
     CommonModule,
     OrderCheckoutBodyComponent,
     ResumenComponent,
-    OrderCheckoutHeaderComponent
+    OrderCheckoutHeaderComponent,
 ],
 })
 export class OrderCheckoutContainer {
@@ -40,6 +40,14 @@ export class OrderCheckoutContainer {
       resumenComponent.stepper = this.stepper;
     }
   }
+/*
+  ngOnInit(): void {
+    this.getIntegrity()
+  }
 
+  getIntegrity(){
+    const functions = require('firebase-functions');
+    console.log('integriti:' + functions);
 
+  } */
 }

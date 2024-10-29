@@ -1,5 +1,5 @@
 <section>
-  <form action="">
+  <form [formGroup]="formCheckout">
     <mat-stepper linear #stepper>
       <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
         <form [formGroup]="firstFormGroup">
@@ -14,11 +14,10 @@
         </form>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Método de pago</ng-template>
-        <p>Selecciona tu método de pago</p>
+        <ng-template matStepLabel>Resumen</ng-template>
+        <p>Resumen de tu pedido</p>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button (click)="stepper.reset()">Reset</button>
+          <bel-order-checkout-body-form-step-3-wompi/>
         </div>
       </mat-step>
     </mat-stepper>

@@ -11,8 +11,8 @@
     </mat-expansion-panel>
   </mat-accordion>
   <div class="cta">
-    <button (click)="startCheckout()" mat-raised-button>test</button>
-    <button (click)="continuar()" mat-raised-button>Continuar</button>
+    <button *ngIf="orderCheckoutBodyForm.stepper.selectedIndex <= 1" (click)="continuar()" mat-raised-button>Continuar</button>
+    <button *ngIf="orderCheckoutBodyForm.stepper.selectedIndex == 2" (click)="startCheckout()" mat-raised-button>IR A PAGAR</button>
     <button *ngIf="orderCheckoutBodyForm.stepper.selectedIndex > 0" (click)="atras()" mat-button>Atrás</button>
   </div>
 </section>

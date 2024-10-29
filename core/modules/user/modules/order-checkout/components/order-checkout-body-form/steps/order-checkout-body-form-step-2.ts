@@ -134,7 +134,7 @@ export class OrderCheckoutBodyFormStep2Component implements AfterViewInit {
 
   // Método para cargar el autocompletado de Google Places después de que la vista esté inicializada
   ngAfterViewInit(): void {
-    this.loadGooglePlacesAutocomplete();
+    /* this.loadGooglePlacesAutocomplete(); */
   }
 
   // Carga la funcionalidad de autocompletado de Google Places
