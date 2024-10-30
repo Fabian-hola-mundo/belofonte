@@ -1,5 +1,5 @@
 <section>
-  <form [formGroup]="formCheckout">
+  <form #wompiForm [formGroup]="formCheckout" action="https://checkout.wompi.co/p/" method="GET">
     <mat-stepper linear #stepper>
       <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
         <form [formGroup]="firstFormGroup">
@@ -21,5 +21,6 @@
         </div>
       </mat-step>
     </mat-stepper>
+
   </form>
 </section>

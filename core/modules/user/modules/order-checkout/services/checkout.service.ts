@@ -7,7 +7,13 @@ import { CartService } from '../../../services/cart.service';
 export class CheckoutService {
   private publicKey = 'pub_test_d5HTl4x5n04GURQiukcHmIW2QLouM3wg';
   private scriptLoaded = false;
+  private validForm = false
+
   constructor(private cartService: CartService) {}
+
+  setValidToTrue() {
+    this.validForm = true;
+  }
 
   initiatePayment() {
     const reference = this.cartService.generateUniqueReference();

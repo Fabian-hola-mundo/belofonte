@@ -18,7 +18,7 @@ import { MatStepper } from '@angular/material/stepper';
   template: `
   <bel-order-checkout-header/>
   <bel-order-checkout-body #orderBodyForm/>
-  <bel-resumen [orderCheckoutBodyForm]="orderBodyForm.orderCheckoutBodyForm"/>
+  <bel-resumen (payClicked)="onPayClicked()" [orderCheckoutBodyForm]="orderBodyForm.orderCheckoutBodyForm"/>
   `,
   imports: [
     CommonModule,
@@ -29,7 +29,7 @@ import { MatStepper } from '@angular/material/stepper';
 })
 export class OrderCheckoutContainer {
   @ViewChild('stepper') stepper!: MatStepper;  // Accedemos al mat-stepper
-
+  @ViewChild(OrderCheckoutBodyComponent) orderBodyForm!: OrderCheckoutBodyComponent;
   constructor(private cdr: ChangeDetectorRef) {
   }
   ngAfterViewInit() {
@@ -39,6 +39,11 @@ export class OrderCheckoutContainer {
     if (resumenComponent) {
       resumenComponent.stepper = this.stepper;
     }
+  }
+
+  onPayClicked() {
+    // Llamamos al método submitToWompi desde el componente OrderCheckoutBodyFormComponent
+    this.orderBodyForm.orderCheckoutBodyForm.submitToWompi(this.orderBodyForm.orderCheckoutBodyForm.wompiForm.nativeElement);
   }
 /*
   ngOnInit(): void {

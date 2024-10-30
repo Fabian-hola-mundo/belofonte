@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Renderer2, signal, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,10 +11,6 @@ import { OrderCheckoutBodyFormStep1Component } from "./steps/order-checkout-body
 import { OrderCheckoutBodyFormStep2Component } from "./steps/order-checkout-body-form-step-2";
 import { OrderCheckoutBodyFormStep3WompiComponent } from "./steps/order-checkout-body-form-step-3-wompi";
 import { CartService } from '../../../../services/cart.service';
-import { AngularFireFunctions } from '@angular/fire/compat/functions';
-import { AngularFireModule } from '@angular/fire/compat';
-
-import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCBk20I8RH96ZSP-SmkgAN1_VGolzBQwoA",
@@ -54,15 +50,15 @@ export class OrderCheckoutBodyFormComponent {
   productForm!: any;
   private _formBuilder = inject(FormBuilder);
   @ViewChild('stepper') stepper!: MatStepper;
+  @ViewChild('wompiForm') wompiForm!: ElementRef<HTMLFormElement>;
   isEditable = true;
+  private renderer = inject(Renderer2);
 test = ''
   constructor(private formBuilder: FormBuilder,
     private cartService: CartService,
-    private fns: AngularFireFunctions
+    /* private fns: AngularFireFunctions */
   ) {
     /* this.loadIntegrity() */
-    console.log();
-
   }
 
   nextStep() {
@@ -72,13 +68,21 @@ test = ''
     this.stepper.previous();
   }
 
-  async loadIntegrity() {
+  goToPay(){
+    if (this.formCheckout.valid) {
+    }
+    else {
+      console.log('form invalid');
+    }
+  }
+
+ /*  async loadIntegrity() {
     const integrity = await this.fns.httpsCallable('getIntegrityKey')({}).toPromise();
     this.shoppingCart.patchValue({ integrity: integrity.integrity });
     this.test = integrity
     console.log(this.test);
 
-  }
+  } */
 
 
   secondFormGroup = this._formBuilder.group({
@@ -92,17 +96,17 @@ test = ''
   firstFormGroup = this._formBuilder.group({
     mailCtrl: ['', [Validators.required, Validators.email]],
     nameCtrl: ['', Validators.required],
-    phoneCtrl: ['', [Validators.required, Validators.pattern('^[0-9]+$')]], // solo números
+    phoneCtrl: ['', [Validators.required]], // solo números
     legalIdTypeCtrl: ['', Validators.required],
     idCtrl: ['', []],
   });
 
   shoppingCart = this._formBuilder.group({
-    totalPrice: [this.cartService.getTotalPrice(), [Validators.required]],
+    totalPrice: [this.cartService.getTotalPrice() * 100, [Validators.required]],
     uniqueReference: [this.cartService.generateUniqueReference(), [Validators.required]],
     currency: ['COP',  [Validators.required]],
     publicKey: ['pub_test_d5HTl4x5n04GURQiukcHmIW2QLouM3wg', [Validators.required]],
-    integrity: ['']
+    integrity: ['test_integrity_6PPJu8LcFTB7UgWkbb9CBd4U9WBaYNXG']
   })
 
   formCheckout = this._formBuilder.group({
@@ -111,7 +115,49 @@ test = ''
     shoppingCart: this.shoppingCart,
   });
 
+  submitToWompi(form: HTMLFormElement) {
+    if (this.formCheckout.valid) {
+      // Limpia cualquier campo previo
+      while (form.firstChild) {
+        form.removeChild(form.firstChild);
+      }
 
+      // Añade los campos requeridos
+      this.addHiddenInput(form, 'public-key', this.shoppingCart.get('publicKey')?.value ?? '');
+      this.addHiddenInput(form, 'currency', this.shoppingCart.get('currency')?.value ?? '');
+      this.addHiddenInput(form, 'amount-in-cents', this.shoppingCart.get('totalPrice')?.value?.toString() ?? ''); // Convierte a string si es número
+      this.addHiddenInput(form, 'reference', this.shoppingCart.get('uniqueReference')?.value ?? '');
+      this.addHiddenInput(form, 'signature:integrity', this.shoppingCart.get('integrity')?.value ?? '');
 
+      // Añade datos opcionales
+      this.addHiddenInput(form, 'redirect-url', 'https://mi-sitio.com/resultado');
+      this.addHiddenInput(form, 'customer-data:email', this.firstFormGroup.get('mailCtrl')?.value ?? '');
+      this.addHiddenInput(form, 'customer-data:full-name', this.firstFormGroup.get('nameCtrl')?.value ?? '');
+      this.addHiddenInput(form, 'customer-data:phone-number', this.firstFormGroup.get('phoneCtrl')?.value ?? '');
+      this.addHiddenInput(form, 'customer-data:legal-id', this.firstFormGroup.get('idCtrl')?.value ?? '');
+      this.addHiddenInput(form, 'customer-data:legal-id-type', this.firstFormGroup.get('legalIdTypeCtrl')?.value ?? '');
+
+      this.addHiddenInput(form, 'shipping-address:address-line-1', this.secondFormGroup.get('address')?.value ?? '');
+      this.addHiddenInput(form, 'shipping-address:city', this.secondFormGroup.get('municipio')?.value ?? '');
+      this.addHiddenInput(form, 'shipping-address:region', this.secondFormGroup.get('departamento')?.value ?? '');
+      this.addHiddenInput(form, 'shipping-address:country', 'CO');
+      this.addHiddenInput(form, 'shipping-address:phone-number', this.firstFormGroup.get('phoneCtrl')?.value ?? '');
+
+      // Envía el formulario
+      form.submit();
+    } else {
+      console.log('Formulario no válido');
+    }
+  }
+
+  private addHiddenInput(form: HTMLFormElement, name: string, value: string | null) {
+    if (value !== null) { // Verifica que el valor no sea null antes de crear el input
+      const input = this.renderer.createElement('input');
+      this.renderer.setAttribute(input, 'type', 'hidden');
+      this.renderer.setAttribute(input, 'name', name);
+      this.renderer.setAttribute(input, 'value', value);
+      this.renderer.appendChild(form, input);
+    }
+  }
 
 }
