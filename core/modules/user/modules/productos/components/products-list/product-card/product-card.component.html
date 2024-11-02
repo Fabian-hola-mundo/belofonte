@@ -1,5 +1,22 @@
 <div class="product--data">
-  <mat-icon>open_in_full</mat-icon>
-  <h1 class="title">{{ product?.title }}</h1>
+  <ng-container>
+    <figure class="figure" (scroll)="onScroll($event)">
+      <img *ngFor="let image of product?.inventory?.[0]?.images; let i = index"
+           [src]="image.url"
+           [alt]="image.alt"
+           class="product--img"
+           [class.active]="i === activeImageIndex">
+    </figure>
+  </ng-container>
+  <div class="miniature">
+    <figure class="miniature__figure">
+      <img *ngFor="let image of product?.inventory?.[0]?.images; let i = index"
+           [src]="image.url"
+           alt=""
+           class="miniature__figure--image"
+           [class.active]="i === activeImageIndex"
+           (click)="selectImage(i)">
+    </figure>
+  </div>
 </div>
-<img [src]="(product?.inventory?.[0]?.images?.[0]?.url)" [alt]="product?.inventory?.[0]?.images?.[0]?.alt" class="product--img">
+<h3 class="title">{{ product?.title }}</h3>

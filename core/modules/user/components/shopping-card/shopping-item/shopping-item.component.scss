@@ -1,12 +1,17 @@
 @import '../../../../../../src/styles.scss';
 
 :host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   .shop-item-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     border-block: 1px solid;
     @extend %fullPadding;
     @extend .outline-variant-line;
     border-block-color: var(--md-sys-color-outline-variant);
-    max-width: 520px;
     transition: all 200ms;
     &:hover {
       background-color: var(--md-sys-color-surface-variant);

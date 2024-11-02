@@ -4,7 +4,7 @@
 
 @media (max-width: 1007px) {
   .cdk-overlay-pane.mat-mdc-dialog-panel {
-    max-width: max-content !important;
+    max-width: none !important;
   }
 }
 

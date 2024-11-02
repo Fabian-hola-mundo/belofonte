@@ -6,6 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ProductsService } from '../../../../../../services/products.service';
 import { Product } from '../../../../../admin/interface/products';
 import { SelectedProductService } from '../../../../services/selected-product.service';
+import { SkeletonService } from '../../../../../../services/skeleton.service';
 
 
 @Component({
@@ -16,14 +17,16 @@ import { SelectedProductService } from '../../../../services/selected-product.se
   styleUrl: './products.list.component.scss'
 })
 export class ProductsListComponent implements OnInit {
-
+  isLoading =  true
+  data: any;
   products: Product[] = []
   groupedProducts: Product[][] = []
 
   constructor(
     private productService: ProductsService,
     private selectedProductService: SelectedProductService,
-    private router: Router
+    private router: Router,
+    public skeletonService: SkeletonService
   ){
 
   }
@@ -38,6 +41,10 @@ export class ProductsListComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.products = await this.productService.getDataFromCollection('products')
     this.groupedProducts = this.groupProducts(4)
+    this.skeletonService.getData().subscribe((response) => {
+      this.data = response;
+      this.isLoading = false; // Cambia isLoading a false cuando los datos están listos
+    });
   }
 
 

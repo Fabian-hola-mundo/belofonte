@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 
 export interface CartItem {
   uniqueId?: string;
@@ -20,6 +20,9 @@ export class CartService {
   private cartKey = 'cart_items';
   private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
   cartItems$ = this.cartItemsSubject.asObservable();
+  totalItems$ = this.cartItems$.pipe(
+    map(items => items.reduce((total, item) => total + item.quantity, 0))
+  );
 
   constructor() {
     this.loadCartFromLocalStorage();
@@ -66,12 +69,17 @@ export class CartService {
   }
 
   // Función para eliminar un ítem del carrito
-  deleteItem(uniqueId: string) {
-    const updatedCart = this.cartItemsSubject.value.filter(
-      (item) => item.uniqueId !== uniqueId
-    );
-    this.cartItemsSubject.next(updatedCart); // Emitir el nuevo valor
-    this.saveCartToLocalStorage();
+  deleteItem(uniqueId: string): CartItem | undefined {
+    const cartItems = this.cartItemsSubject.value;
+    const itemToDelete = cartItems.find(item => item.uniqueId === uniqueId);
+
+    if (itemToDelete) {
+      const updatedCart = cartItems.filter(item => item.uniqueId !== uniqueId);
+      this.cartItemsSubject.next(updatedCart); // Emitir el nuevo valor
+      this.saveCartToLocalStorage();
+    }
+
+    return itemToDelete; // Devuelve el ítem eliminado para poder restaurarlo
   }
 
   clearCart() {
@@ -91,4 +99,9 @@ export class CartService {
     const randomString = Math.random().toString(36).substring(2, 10); // Cadena aleatoria
     return `${timestamp}_${randomString}`;
   }
+
+  getTotalItems(): number {
+    return this.cartItemsSubject.value.reduce((total, item) => total + item.quantity, 0);
+  }
 }
+

@@ -1,12 +1,32 @@
 <main>
-  <ng-container *ngFor="let groupOfProducts of groupedProducts">
-    <div class="group">
-      <ng-container *ngFor="let product of groupOfProducts; let i as index">
-        <div class="product">
-          <bel-product-card (click)="openProduct(product)" routerLinkActive="router-link-active"  matRipple [product]="product">
-          </bel-product-card>
-        </div>
-      </ng-container>
-    </div>
+  <ng-container *ngIf="isLoading; else content">
+    <ng-container *ngFor="let groupOfProducts of groupedProducts">
+      <div class="group">
+        <ng-container *ngFor="let product of groupOfProducts; let i; as: index">
+          <div class="product">
+            <div class="skeleton-card skeleton-line product__card"></div>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
   </ng-container>
+
+  <ng-template #content>
+    <ng-container *ngFor="let groupOfProducts of groupedProducts">
+      <div class="group">
+        <ng-container *ngFor="let product of groupOfProducts; let i; as: index">
+          <div class="product">
+            <bel-product-card
+              class="product__card"
+              (click)="openProduct(product)"
+              routerLinkActive="router-link-active"
+              matRipple
+              [product]="product"
+            >
+            </bel-product-card>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-template>
 </main>

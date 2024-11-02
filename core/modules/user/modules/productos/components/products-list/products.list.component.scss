@@ -15,17 +15,24 @@
       flex-basis: 230px;
       gap: 12px;
     }
-    & .group:nth-child(odd) {
-      & .product:nth-child(even) {
-        & bel-product-card {
-          height: 400px;
+
+  }
+}
+::ng-deep {
+  & .group:nth-child(odd) {
+    & .product:nth-child(even) {
+      & .product__card, .skeleton-card {
+        & .product--data {
+          height: 500px;
         }
       }
     }
-    & .group:nth-child(even) {
-      & .product:nth-child(odd) {
-        & bel-product-card {
-          height: 400px;
+  }
+  & .group:nth-child(even) {
+    & .product:nth-child(odd) {
+      & .product__card, .skeleton-card {
+        & .product--data {
+          height: 500px;
         }
       }
     }

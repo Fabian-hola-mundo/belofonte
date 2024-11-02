@@ -2,10 +2,10 @@
   <button routerLink="/productos" mat-icon-button>
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <div class="product-name" *ngIf="isScrolledHalfway">
+  <div class="product-name" >
     <p>{{title}}</p>
   </div>
   <button mat-icon-button (click)="openDialog()">
-    <mat-icon>shopping_cart</mat-icon>
+    <mat-icon [matBadge]="totalItems">shopping_cart</mat-icon>
   </button>
 </nav>

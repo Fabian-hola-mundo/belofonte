@@ -13,4 +13,10 @@ import { ProductNavComponent } from "../../../product/components/nav/product.nav
 })
 export class OrderCheckoutHeaderComponent {
   readonly panelOpenState = signal(false);
+
+  header = ''
+
+  ngOnInit(): void {
+    this.header = 'Checkout'
+  }
 }

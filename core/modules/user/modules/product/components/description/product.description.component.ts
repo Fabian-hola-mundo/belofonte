@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +12,9 @@ import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { Color } from '../../../../../admin/interface/color';
 import { CartService } from '../../../../services/cart.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DialogModule } from '@angular/cdk/dialog';
+import { DialogService } from '../../../../components/shopping-card/shopping-card-config';
 
 @Component({
   selector: 'bel-product-description',
@@ -104,30 +101,20 @@ export class ProductDescriptionComponent implements OnInit {
   selectedProduct = {};
   availableSizes: any[] = [];
 
-  constructor(private cartService: CartService) {
+  constructor(
+    private cartService: CartService,
+    private _snackBar: MatSnackBar,
+    private dialogService: DialogService
+  ) {}
 
-  }
-
-  ngOnInit() {
-  }
-/*
-  addToCart() {
-    this.cartService.addToCart({
-      productId: this.data.id,
-      name: this.data.title,
-      quantity: this.quantity,
-      price: this.data.price,
-      size: this.selectedSize,
-      color: this.selectedColor,
-    });
-  } */
+  ngOnInit() {}
 
   changeProductRef(color: Color) {
     this.allSubRef.forEach((newSubRef) => {
       if (color.hexa === newSubRef.color?.hexa) {
-        this.newRef.emit(newSubRef)
+        this.newRef.emit(newSubRef);
       }
-    })
+    });
   }
 
   addToCart() {
@@ -136,12 +123,24 @@ export class ProductDescriptionComponent implements OnInit {
       name: this.data.title,
       images: this.subRefSelected.images?.[0].url,
       slug: this.data.slug,
-      uniqueId: `${this.data.id}-${this.subRefSelected.stock?.[0]?.size}-${this.subRefSelected.color?.hexa}` || '',
+      uniqueId:
+        `${this.data.id}-${this.subRefSelected.stock?.[0]?.size}-${this.subRefSelected.color?.hexa}` ||
+        '',
       price: this.data.price,
-      size: this.subRefSelected.stock?.[0]?.size || '',  // Toma el tamaño seleccionado
-      color: this.subRefSelected.color?.hexa || '',      // Toma el color seleccionado
-      quantity: 1                                  // Cantidad predeterminada (1)
+      size: this.subRefSelected.stock?.[0]?.size || '', // Toma el tamaño seleccionado
+      color: this.subRefSelected.color?.hexa || '', // Toma el color seleccionado
+      quantity: 1, // Cantidad predeterminada (1)
     });
+    this.openSnackBar();
   }
 
+  openSnackBar() {
+    const snackBarRef = this._snackBar.open('Producto Añadido', 'Ver Carrito', {
+      duration: 4000,
+      horizontalPosition: 'end',
+    });
+    snackBarRef.onAction().subscribe(() => {
+        this.dialogService.openShoppingCardDialog();
+    })
+  }
 }

@@ -19,7 +19,34 @@ export interface producInterface {
 
 
 export class ProductCardComponent {
-
+  activeImageIndex = 0;
   @Input() product?: Product
+
+  selectImage(index: number) {
+    this.activeImageIndex = index;
+    const container = document.querySelector('.figure');
+    if (container) {
+      const activeImage = container.querySelectorAll('.product--img')[index];
+      activeImage.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+    }
+  }
+
+   onScroll(event: Event) {
+    const container = event.target as HTMLElement;
+    const images = container.querySelectorAll('.product--img');
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    images.forEach((image, index) => {
+      const rect = image.getBoundingClientRect();
+      const distance = Math.abs(rect.left - container.getBoundingClientRect().left);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    this.activeImageIndex = closestIndex;
+  }
 
 }

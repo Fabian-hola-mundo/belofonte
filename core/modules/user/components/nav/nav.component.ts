@@ -1,11 +1,11 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { ShoppingCardComponent } from '../shopping-card/shopping-card';
 import { DialogService } from '../shopping-card/shopping-card-config';
+import {MatBadgeModule} from '@angular/material/badge';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'bel-nav',
@@ -16,6 +16,7 @@ import { DialogService } from '../shopping-card/shopping-card-config';
     MatRippleModule,
     MatButtonModule,
     RouterModule,
+    MatBadgeModule,
     MatIconModule,
   ],
   template: `
@@ -55,7 +56,7 @@ import { DialogService } from '../shopping-card/shopping-card-config';
             <ul>
               <li matRipple role="navigation">
                 <button mat-icon-button (click)="openDialog()">
-                  <mat-icon>shopping_cart</mat-icon>
+                  <mat-icon [matBadge]="totalItems">shopping_cart</mat-icon>
                 </button>
               </li>
             </ul>
@@ -66,8 +67,17 @@ import { DialogService } from '../shopping-card/shopping-card-config';
   `,
 })
 export class NavComponent {
+  totalItems: number = 0;
 
-  constructor(private dialogService: DialogService) {}
+  constructor(
+    private dialogService: DialogService,
+    private cartService: CartService) {
+    this.cartService.cartItems$.subscribe(items => {
+      this.totalItems = items.reduce((total, item) => total + item.quantity, 0);
+    });
+  }
+
+
 
   openDialog() {
     this.dialogService.openShoppingCardDialog();

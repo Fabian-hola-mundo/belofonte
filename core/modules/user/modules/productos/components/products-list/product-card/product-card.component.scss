@@ -1,48 +1,76 @@
+@import '../../../../../../../../src/styles.scss';
+
 :host {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  height: 300px;
-  overflow: hidden;
-  border-radius: 12px;
   cursor: pointer;
   position: relative;
+  gap: 8px;
   transition: all 200ms;
   border: 2px solid transparent;
+
   & .product--data {
-    mat-icon {
-      color: white;
-    }
-    & .title {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-  }
-  .product--img {
+    flex-direction: column;
+    border-radius: 12px;
+    display: flex;
+    height: 350px;
+    overflow: hidden;
+    position: relative;
     width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    object-fit: cover;
-  }
-  &:hover {
-    transition: all 200ms;
-    border: 2px solid white;
-    transform: scale(1.02);
-    .product--data {
-      flex-direction: column;
-      transition: all 200ms;
-      justify-content: space-between;
-      z-index: 1;
-      display: flex;
-      background-color: rgba(#000000, 0.8);
-      align-items: flex-end;
-      padding: 12px;
+
+    & .figure {
       width: 100%;
       height: 100%;
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory; /* Habilita el scroll snap */
+      scrollbar-width: none; /* Oculta scrollbar en Firefox */
+      -ms-overflow-style: none; /* Oculta scrollbar en IE y Edge */
+
+      &::-webkit-scrollbar {
+        display: none; /* Oculta scrollbar en Webkit */
+      }
+
+      .product--img {
+        width: 100%;
+        object-fit: cover;
+        scroll-snap-align: center;
+        transition: transform 200ms;
+      }
     }
+
+    & .miniature {
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      @extend %fullPadding;
+      display: flex;
+      gap: 4px;
+      z-index: 2;
+      &__figure {
+        display: flex;
+
+        &--image {
+          width: 40px;
+          height: 60px;
+          object-fit: cover;
+          border: 1px solid transparent;
+          transition: border-color 200ms;
+
+          &.active {
+            border-color: red;
+          }
+        }
+      }
+    }
+  }
+
+  & .title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 }
