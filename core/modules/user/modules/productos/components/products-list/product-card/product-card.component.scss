@@ -50,16 +50,19 @@
       z-index: 2;
       &__figure {
         display: flex;
-
+        gap: 4px;
         &--image {
           width: 40px;
           height: 60px;
           object-fit: cover;
           border: 1px solid transparent;
-          transition: border-color 200ms;
-
+          transition: all 200ms;
+          opacity: 0.3;
+          border-radius: 4px;
+          filter: blur(0.8px);
           &.active {
-            border-color: red;
+            filter: blur(0);
+            opacity: 1;
           }
         }
       }

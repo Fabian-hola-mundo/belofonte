@@ -6,7 +6,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-import { SeeProductComponent } from './see-product/see-product.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,10 +15,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
-import { Product } from '../../../interface/products';
-import { ProductsService } from '../../../../../services/products.service';
-import { SidebarService } from '../../../services/sidebar.service';
-import { CreateProductComponent } from '../create.product/create.product.component';
+import { ProductsService } from '../../../../../../services/products.service';
+import { SeeProductComponent } from '../see-product/see-product.component';
+import { Product } from '../../../../interface/products';
+import { SidebarService } from '../../../../services/sidebar.service';
+import { CreateProductComponent } from '../../create.product/create.product.component';
 
 const MAT = [
   MatRadioModule,

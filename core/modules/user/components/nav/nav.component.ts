@@ -1,4 +1,4 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, Inject, inject, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { DialogService } from '../shopping-card/shopping-card-config';
 import {MatBadgeModule} from '@angular/material/badge';
 import { CartService } from '../../services/cart.service';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { SwichThemeComponent } from "../swich-theme/swich-theme.component";
 
 @Component({
   selector: 'bel-nav',
@@ -18,7 +20,8 @@ import { CartService } from '../../services/cart.service';
     RouterModule,
     MatBadgeModule,
     MatIconModule,
-  ],
+    SwichThemeComponent
+],
   template: `
     <nav>
       <ul class="navigation">
@@ -51,9 +54,12 @@ import { CartService } from '../../services/cart.service';
             </defs>
           </svg>
         </li>
-        <li class="navigation--actions">
-          <div>
-            <ul>
+        <li>
+          </li>
+          <li class="navigation--actions">
+            <div>
+              <ul>
+              <bel-swich-theme/>
               <li matRipple role="navigation">
                 <button mat-icon-button (click)="openDialog()">
                   <mat-icon [matBadge]="totalItems">shopping_cart</mat-icon>
@@ -66,21 +72,45 @@ import { CartService } from '../../services/cart.service';
     </nav>
   `,
 })
-export class NavComponent {
+
+export class NavComponent implements OnInit {
   totalItems: number = 0;
+  private isDarkMode = false;
+  private isBrowser: boolean;
 
   constructor(
     private dialogService: DialogService,
-    private cartService: CartService) {
+    private cartService: CartService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2,
+    @Inject(PLATFORM_ID) private platformId: any
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId); // Determina si estamos en el navegador
+  }
+
+  ngOnInit(): void {
+    // Solo en el navegador
+    if (this.isBrowser) {
+      // Recupera el tema guardado en localStorage
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        this.isDarkMode = savedTheme === 'dark';
+      } else {
+        // Si no hay un tema guardado, usa la preferencia del sistema
+        this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+      /* this.applyTheme(); */
+    }
+
+    // Escucha cambios en el carrito para actualizar el total de items
     this.cartService.cartItems$.subscribe(items => {
       this.totalItems = items.reduce((total, item) => total + item.quantity, 0);
     });
   }
 
-
-
   openDialog() {
-    this.dialogService.openShoppingCardDialog();
+    if (this.isBrowser) {
+      this.dialogService.openShoppingCardDialog();
+    }
   }
-
 }

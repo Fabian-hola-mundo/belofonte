@@ -12,7 +12,7 @@ export interface producInterface {
 @Component({
   selector: 'bel-product-card',
   standalone: true,
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule,],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss'
 })

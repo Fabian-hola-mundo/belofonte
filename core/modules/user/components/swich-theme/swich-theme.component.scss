@@ -1,0 +1,58 @@
+
+
+/* Estilos para el label que actúa como interruptor */
+label {
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  background-color: var(--md-sys-color-on-surface);
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Contenedor de los iconos */
+.icon-container {
+  position: absolute;
+  top: 50%;
+  left: -5px;
+  width: 20px;
+  transform: translateY(-50%);
+  transition: left 0.3s ease;
+}
+
+/* Estilos para los iconos */
+.icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  background: var(--md-sys-color-surface-variant);
+  box-shadow: var(--md-shadow);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 50%;
+  color: var(--md-sys-color-on-surface);
+  padding: 4px;
+}
+
+/* Ocultar el icono de la luna por defecto */
+.moon-icon {
+  display: none;
+}
+
+/* Cambiar estilos cuando el checkbox está seleccionado */
+#theme-toggle:checked + label {
+  background-color: #333;
+}
+
+#theme-toggle:checked + label .icon-container {
+  left: 35px;
+}
+
+#theme-toggle:checked + label .sun-icon {
+  display: none;
+}
+
+#theme-toggle:checked + label .moon-icon {
+  display: block;
+}

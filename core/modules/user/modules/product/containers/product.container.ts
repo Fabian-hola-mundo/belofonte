@@ -12,25 +12,22 @@ import { url } from 'inspector';
 @Component({
   selector: 'bel-product-container',
   standalone: true,
-  styles: `
-  @import '../../../../../../src/styles.scss';
-  :host {
-    width: 100%;
-    max-width: $maxWidth;
-  }
-  `,
+  styleUrl: './product.container.scss',
   template: `
     <bel-product-nav
-    [isScrolledHalfway]="isScrolledHalfway"
-    [title]="selectedProduct.title" />
-    <bel-product-carousel [images]="images" />
-    <bel-product-description
-      [subRefSelected]="subRefSelected"
-      [colors]="colors"
-      [allSubRef]="allSubRef"
-      [data]="selectedProduct"
-      (newRef)="getNewRefSelected($event)"
+      [isScrolledHalfway]="isScrolledHalfway"
+      [title]="selectedProduct.title"
     />
+    <div class="container">
+      <bel-product-carousel [images]="images" class="bel-product-carousel"/>
+      <bel-product-description
+        [subRefSelected]="subRefSelected"
+        [colors]="colors"
+        [allSubRef]="allSubRef"
+        [data]="selectedProduct"
+        (newRef)="getNewRefSelected($event)"
+      />
+    </div>
   `,
   imports: [
     ProductNavComponent,
@@ -44,7 +41,7 @@ export class ProductContainer {
   dataFromCollection!: any;
   colors: any[] = [];
   isScrolledHalfway: boolean = false;
-  allSubRef : InventoryItem [] = []
+  allSubRef: InventoryItem[] = [];
   selectedProduct: Product = {
     id: '',
     category: [''],
@@ -108,8 +105,8 @@ export class ProductContainer {
   };
 
   getNewRefSelected(newRef: InventoryItem) {
-    this.subRefSelected = newRef
-    this.images = newRef.images
+    this.subRefSelected = newRef;
+    this.images = newRef.images;
   }
 
   constructor(
@@ -126,15 +123,13 @@ export class ProductContainer {
   }
 
   async getSubRef() {
-    this.subRefSelected = this.selectedProduct.inventory[0]
+    this.subRefSelected = this.selectedProduct.inventory[0];
   }
-
-
 
   extractAllSubRef() {
     this.selectedProduct.inventory.forEach((subRef) => {
       if (this.allSubRef) {
-        this.allSubRef.push(subRef)
+        this.allSubRef.push(subRef);
       }
     });
     console.log(this.allSubRef);
@@ -146,9 +141,9 @@ export class ProductContainer {
     );
     this.getActiveData();
     this.assignImages();
-    this.getSubRef()
-    this.extractAllSubRef()
-    this.extractColors()
+    this.getSubRef();
+    this.extractAllSubRef();
+    this.extractColors();
     window.scroll(0, 0);
   }
 
@@ -185,22 +180,29 @@ export class ProductContainer {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
-    const documentHeight = document.documentElement.scrollHeight || document.body.scrollHeight || 0;
+    const scrollPosition =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+    const windowHeight =
+      window.innerHeight ||
+      document.documentElement.clientHeight ||
+      document.body.clientHeight ||
+      0;
+    const documentHeight =
+      document.documentElement.scrollHeight || document.body.scrollHeight || 0;
 
     if (scrollPosition > documentHeight / 1.3 - windowHeight) {
-      this.isScrolledHalfway = true
-
+      this.isScrolledHalfway = true;
     } else {
-      this.isScrolledHalfway = false
+      this.isScrolledHalfway = false;
     }
   }
 
   //Código para scroll down and up
 
-
-/*   lastScrollPosition = 0;
+  /*   lastScrollPosition = 0;
   isScrollingUp = true;
 
   @HostListener('window:scroll', [])

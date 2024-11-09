@@ -1,5 +1,18 @@
 <ng-container>
-  <figure>
-    <img *ngFor="let image of images" [src]="image.url" [alt]="image.alt " />
+  <!-- Contenedor para móviles -->
+  <figure class="mobile">
+    <img *ngFor="let image of images" [src]="image.url" [alt]="image.alt" />
   </figure>
 </ng-container>
+
+<div class="container">
+  <!-- Miniaturas para escritorio en la izquierda -->
+  <div class="thumbnails">
+    <img *ngFor="let image of images" [src]="image.url" [alt]="image.alt" class="thumbnail-img"/>
+  </div>
+
+  <!-- Imagen principal para escritorio -->
+  <figure class="desktop" (scroll)="onDesktopScroll($event)">
+    <img *ngFor="let image of images" [src]="image.url" [alt]="image.alt" />
+  </figure>
+</div>

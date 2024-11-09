@@ -2,11 +2,12 @@
 
 :host {
   position: relative;
+  width: 100%;
   main {
     display: flex;
     gap: 24px;
     flex-direction: column;
-    @extend .background;
+    /* @extend .background; */
     z-index: 1;padding: 24px;
     position: sticky;
     top: 0;

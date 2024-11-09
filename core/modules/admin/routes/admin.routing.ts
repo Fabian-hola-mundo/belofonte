@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/log/login/login/login.component';
 import { AdminLayoutComponent } from '../containers/layout.component';
-import { ProductsComponent } from '../components/products/products/products.component';
+
 import { OrdersComponent } from '../components/orders/orders.component';
+import { SeeProductComponent } from '../components/products/components/see-product/see-product.component';
+import { ProductsComponent } from '../components/products/components/products/products.component';
 
 export const adminRoutes: Routes = [
   {
@@ -13,6 +15,11 @@ export const adminRoutes: Routes = [
       {
         path: 'products',
         component: ProductsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'products:id',
+        component: SeeProductComponent,
         pathMatch: 'full',
       },
 /*       {
