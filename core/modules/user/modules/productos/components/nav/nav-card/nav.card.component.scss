@@ -1,34 +1,39 @@
-@import '../../../../../../../../src/styles.scss';
+@import "../../../../../../../../src/styles.scss";
 
 :host {
+  display: flex;
   width: 100%;
-  @extend %fullPadding;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 200ms;
-  border: 2px solid;
-  &:hover {
-    transform: scale(1.02);
-  }
-  & .card-container {
+  justify-content:space-between;
+  & .container {
     display: flex;
-    flex-direction: column;
-    @media (max-width:1007px) {
-      .title {
-        font-size: 20px;
-      }
-      & .button {
-        display: none;
-      }
-    }
-    & div {
-      width: 100%;
+    gap: 8px;
+    & .card-container {
       display: flex;
-      justify-content: flex-end;
+      padding: 8px 12px;
+      border-radius: 8px;
+      &:nth-child(1) {
+        background-color: var(--md-sys-color-primary);
+        & h4 {
+          color: var(--md-sys-color-on-primary);
+        }
+      }
+      &:nth-child(2) {
+        background-color: var(--md-sys-color-secondary);
+        & h4 {
+          color: var(--md-sys-color-on-primary);
+        }
+      }
+      &:nth-child(3) {
+        background-color: var(--md-sys-color-tertiary);
+        & h4 {
+          color: var(--md-sys-color-on-primary);
+        }
+      }
+      & .title {
+      }
     }
   }
-
-  .active {
-
+  & mat-icon {
+    color: var(--md-sys-color-on-surface);
   }
 }

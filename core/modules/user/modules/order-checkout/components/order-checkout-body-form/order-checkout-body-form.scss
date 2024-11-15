@@ -8,6 +8,7 @@
   }
   & section {
     & form {
+      padding-bottom: 72px;
       ::ng-deep {
         & mat-stepper {
           background: transparent;

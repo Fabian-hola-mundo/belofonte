@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { NavCardComponent } from './nav-card/nav.card.component';
 import { CommonModule } from '@angular/common';
 import { MatRippleModule } from '@angular/material/core';
@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './nav.component.html'
 })
 export class ProductsNavComponent{
-
+  @Input() isScrolledHalfway: boolean = false;
   public navCards = [
     {
       name: "Hombres",

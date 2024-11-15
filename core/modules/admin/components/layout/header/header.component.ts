@@ -23,7 +23,6 @@ import { simboloBelofonte } from '../../../../../constants/svg-logo';
       <button
         mat-icon-button
         color="warn"
-        aria-label="Example icon button with a home icon"
         (click)="changeSidebar()"
       >
         <mat-icon>menu</mat-icon>

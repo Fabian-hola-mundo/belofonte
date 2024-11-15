@@ -8,17 +8,32 @@
     width: 100%;
     @extend %fullPadding;
     display: flex;
+    flex-direction: column;
+    gap: 8px;
     max-width: $maxWidth;
-    max-height: 15dvh;
     & .navigation {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
+      gap: 16px;
       & .logo {
+        max-width: 50px;
+        width: 100%;
         cursor: pointer;
+        & svg {
+          width: 100%;
+        }
+      }
+      & .search {
+        width: 100%;
+        &__form-field {
+          width: 100%;
+        }
       }
       &--actions {
+        position: relative;
+
         & div {
           @extend .navigation;
           gap: 24px;
@@ -31,7 +46,12 @@
         }
       }
     }
+    & .filters{
+      display: flex;
+      width: 100%;
+      z-index: 100;
+      position: relative;
+      gap: 12px;
+      }
   }
 }
-
-

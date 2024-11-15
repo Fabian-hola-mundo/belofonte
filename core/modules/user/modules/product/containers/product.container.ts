@@ -15,6 +15,7 @@ import { url } from 'inspector';
   styleUrl: './product.container.scss',
   template: `
     <bel-product-nav
+      [ngClass]="{ 'nav--active' : isScrolledHalfway}"
       [isScrolledHalfway]="isScrolledHalfway"
       [title]="selectedProduct.title"
     />

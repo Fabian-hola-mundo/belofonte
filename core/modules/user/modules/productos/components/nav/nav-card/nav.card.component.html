@@ -1,8 +1,8 @@
-<div class="card-container">
-  <h3 class="title">{{ name }}</h3>
-  <div class="button">
-    <button mat-icon-button>
-      <mat-icon>arrow_forward</mat-icon>
-    </button>
-  </div>
+<div class="container">
+  <ng-container *ngFor="let navCard of navCards" routerLinkActive="active">
+    <div class="card-container">
+      <h4 class="title">{{ navCard.name }}</h4>
+    </div>
+  </ng-container>
 </div>
+<mat-icon>sort</mat-icon>

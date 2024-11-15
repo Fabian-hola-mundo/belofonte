@@ -6,4 +6,18 @@
   .mat-mdc-option-active .mdc-list-item__primary-text {
     @extend .primary-text;
   }
+  mat-form-field {
+
+
+    .mdc-text-field, .mdc-text-field--outlined {
+      color: red !important;
+      &--outlined {
+        color: red !important;
+
+      }
+    }
+  }
+  .mdc-text-field--focused {
+    color: red;
+  }
 }

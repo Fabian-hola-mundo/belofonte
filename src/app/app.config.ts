@@ -27,11 +27,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideFirebaseApp(() => {
       if (isPlatformBrowser(inject(PLATFORM_ID))) {
-        return initializeApp(environment.firebaseConfig);
+         return initializeApp(environment.firebaseConfig);
       }
-      return initializeServerApp(environment.firebaseConfig, {
-      });
-    }),
+      return initializeServerApp(environment.firebaseConfig, {});
+   }),
     provideAuth(() => getAuth()),
 
     provideFunctions(() => getFunctions()),

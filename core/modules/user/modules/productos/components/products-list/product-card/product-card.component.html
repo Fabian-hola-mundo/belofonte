@@ -5,14 +5,16 @@
            [src]="image.url"
            [alt]="image.alt"
            class="product--img"
+           loading="lazy"
            [class.active]="i === activeImageIndex">
-    </figure>
-  </ng-container>
-  <div class="miniature">
-    <figure class="miniature__figure">
+          </figure>
+        </ng-container>
+        <div class="miniature">
+          <figure class="miniature__figure" >
       <img *ngFor="let image of product?.inventory?.[0]?.images; let i = index"
            [src]="image.url"
            alt=""
+           loading="lazy"
            class="miniature__figure--image"
            [class.active]="i === activeImageIndex"
            (click)="selectImage(i)">
