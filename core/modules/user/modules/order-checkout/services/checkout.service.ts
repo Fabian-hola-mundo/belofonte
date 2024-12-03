@@ -49,31 +49,17 @@ export class CheckoutService {
   } */
 
 
-    async generateIntegrityHash(reference: string, amount: number, currency: string, expiration: string): Promise<string> {
-      const integrityKey = 'test_integrity_6PPJu8LcFTB7UgWkbb9CBd4U9WBaYNXG';
-      const dataToHash = `${reference}${amount}${currency}${expiration}${integrityKey}`;
-      console.log(dataToHash)
-      const encoder = new TextEncoder();
-      const data = encoder.encode(dataToHash);
+     async generateIntegrityHash(reference: string, amount: number, currency: string, expiration: string){
 
-      // Generar la clave HMAC a partir del secreto
-      const key = await crypto.subtle.importKey(
-        'raw',
-        encoder.encode(integrityKey),
-        { name: 'HMAC', hash: { name: 'SHA-256' } },
-        false,
-        ['sign']
-      );
+      const integrityKey = 'test_integrity_6PPJu8LcFTB7UgWkbb9CBd4U9WBaYNXG'
 
-      // Firmar los datos
-      const signature = await crypto.subtle.sign('HMAC', key, data);
+      const cadenaConcatenada  = `${reference}${amount}${currency}${expiration}`;
 
-      // Convertir el hash a una cadena hexadecimal
-      const hashArray = Array.from(new Uint8Array(signature));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      const encondedText = new TextEncoder().encode(cadenaConcatenada);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", encondedText);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join(""); // "37c8407747e595535433ef8f6a811d853cd943046624a0ec04662b17bbf33bf5"
 
-      return hashHex;
     }
-
 
 }

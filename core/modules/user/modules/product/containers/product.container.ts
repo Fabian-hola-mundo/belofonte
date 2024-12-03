@@ -15,7 +15,6 @@ import { url } from 'inspector';
   styleUrl: './product.container.scss',
   template: `
     <bel-product-nav
-      [ngClass]="{ 'nav--active' : isScrolledHalfway}"
       [isScrolledHalfway]="isScrolledHalfway"
       [title]="selectedProduct.title"
     />
@@ -71,6 +70,7 @@ export class ProductContainer {
           },
         ],
         color: {
+          id: '',
           name: '',
           hexa: '',
         },
@@ -99,6 +99,7 @@ export class ProductContainer {
       },
     ],
     color: {
+      id: '',
       name: '',
       hexa: '',
     },
@@ -173,10 +174,11 @@ export class ProductContainer {
   }
 
   extractColors() {
-    this.allSubRef.forEach((color) => {
-      this.colors.push(color.color);
-    });
-    console.log(this.colors);
+    this.colors = this.allSubRef.map((subRef) => subRef.color);
+    // Asegúrate de evitar duplicados si las referencias tienen colores repetidos
+    this.colors = Array.from(new Set(this.colors.map((c) => JSON.stringify(c)))).map((c) =>
+      JSON.parse(c)
+    );
   }
 
   @HostListener('window:scroll', ['$event'])

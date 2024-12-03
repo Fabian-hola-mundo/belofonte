@@ -1,5 +1,4 @@
 import { Component, HostListener} from '@angular/core';
-import { ProductsNavComponent } from '../../components/nav/nav.component';
 import { RouterModule } from '@angular/router';
 import { FiltersService } from '../../services/filters.service';
 
@@ -8,11 +7,9 @@ import { FiltersService } from '../../services/filters.service';
   standalone: true,
   styleUrl: './products.page.component.scss',
   imports: [
-    ProductsNavComponent,
     RouterModule
   ],
   template: `
-  <!-- <bel-product-nav [isScrolledHalfway]="isScrolledHalfway"></bel-product-nav> -->
   <router-outlet></router-outlet>
   `,
 })

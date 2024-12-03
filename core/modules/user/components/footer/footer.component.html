@@ -1,0 +1,58 @@
+<mat-divider>
+</mat-divider>
+<ng-container *ngIf="isLoading; else content">
+  <bel-footer-skeleton></bel-footer-skeleton>
+</ng-container>
+
+
+<ng-template #content>
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__section">
+        <h3>¿Necesitas ayuda?</h3>
+        <ul>
+          <li><strong>Llamar:</strong> 3053576487<br>Fuera de servicio<br>De lunes a viernes de 10:00 a 19:00.</li>
+          <li><strong>Enviar e-mail:</strong><br>Te responderemos lo antes posible.</li>
+        </ul>
+      </div>
+      <div class="footer__section">
+        <h3>Ayuda</h3>
+        <ul>
+          <li><a href="#">Comprar Online</a></li>
+          <li><a href="#">Pago</a></li>
+          <li><a href="#">Envío</a></li>
+          <li><a href="#">Devoluciones</a></li>
+          <li><a href="#">Ticket electrónico</a></li>
+          <li><a href="#">Dar de baja mi suscripción</a></li>
+        </ul>
+      </div>
+      <div class="footer__section">
+        <h3>Sobre Belofonte</h3>
+        <ul>
+          <li><a href="#">Nuestra historia</a></li>
+          <li><a href="#">Sostenibilidad</a></li>
+        </ul>
+      </div>
+      <div class="footer__section">
+        <h3>Te puede interesar</h3>
+        <ul>
+          <li><a href="#">Categorías</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__social">
+      <a href="#"><i class="icon-facebook"></i></a>
+      <a href="#"><i class="icon-instagram"></i></a>
+    </div>
+    <div class="footer__bottom">
+      <ul>
+        <li><a href="#">Términos y condiciones de compra</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">SiteMap</a></li>
+      </ul>
+      <p>La tienda online de Belofonte está gestionada por: BELFONTE </p>
+      <p>© {{data.year}} Belofonte</p>
+    </div>
+  </footer>
+
+</ng-template>

@@ -53,6 +53,8 @@ import {
 import { MatRippleModule } from '@angular/material/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CurrencyFormatterDirective } from '../../../directive/currency-formatter.directive';
+import { SubcategoriesInputComponent } from "./components/subcategory.input/subcategory.input.component";
 
 const MAT = [
   MatFormFieldModule,
@@ -77,8 +79,10 @@ const MAT = [
     FormsModule,
     FormsModule,
     ReactiveFormsModule,
+    CurrencyFormatterDirective,
     ...MAT,
-  ],
+    SubcategoriesInputComponent
+],
   templateUrl: './create.product.component.html',
   styleUrls: ['./create.product.component.scss'],
 })
@@ -149,8 +153,7 @@ export class CreateProductComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.colors =
-        await this.configurationColorService.getColorsFromCollection();
+      this.colors = await this.configurationColorService.getColorsFromCollection();
       this.sizes = await this.configurationSizeService.getSizeFromCollection();
       this.updateProductId();
 
@@ -184,13 +187,16 @@ export class CreateProductComponent implements OnInit {
 
   submitForm() {
     if (this.productForm.valid) {
-      this.onSubmit()
-      console.log('Es válido');
+      const formValue = { ...this.productForm.value };
+      formValue.price = formValue.price.replace(/\D/g, ''); // Limpiar formato para enviar solo números
+      this.productService.addProduct(formValue).then(() => {
+        console.log('Producto creado exitosamente');
+      });
     } else {
-      console.log('no es válido');
-
+      console.log('El formulario no es válido');
     }
   }
+
 
   async onSubmit(): Promise<DocumentReference<any, DocumentData> | undefined> {
     try {
@@ -219,25 +225,28 @@ export class CreateProductComponent implements OnInit {
         label: 'Título',
         placeholder: 'Guitarra Mela',
         formControlName: 'title',
+        type: 'text',
         required: true,
       },
       {
         input: 'input',
         label: 'Descripción',
-        placeholder: 'Guitarra Mela',
+        placeholder: 'Descripción del producto',
         formControlName: 'description',
+        type: 'text',
         required: true,
       },
       {
         input: 'input',
         label: 'Precio',
-        type: 'number',
-        placeholder: '25000',
+        placeholder: '30000',
         formControlName: 'price',
+        type: 'text', // Asegurarse de que sea "text"
         required: true,
       },
     ];
   }
+
 
 
 
@@ -286,23 +295,46 @@ export class CreateProductComponent implements OnInit {
       width: '600px',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.color = result;
-      this.openSnackBar(`El Color ${result.name} ha sido creado`, 'Cerrar');
+    dialogRef.afterClosed().subscribe((result: Color | undefined) => {
+      if (result) { // Solo actúa si hay un resultado (el color creado)
+        this.colors.push(result); // Añade el nuevo color a la lista
+        this.openSnackBar(`El Color ${result.name} ha sido creado`, 'Cerrar');
+      }
     });
   }
 
+  deleteColor(index: number, id: string): void {
+    this.configurationColorService
+      .deleteColor(id)
+      .then(() => {
+        this.colors.splice(index, 1); // Elimina el color del array local
+        this.openSnackBar('Color eliminado con éxito', 'Cerrar');
+      })
+      .catch((error) => {
+        console.error('Error eliminando el color:', error);
+        this.openSnackBar('Error eliminando el color', 'Cerrar');
+      });
+  }
+
+
   openCreateSizeDialog(): void {
     const dialogRef = this.dialog.open(CreateSizeComponent, {
-      data: this.color,
+      data: this.color, // Si no necesitas pasar datos, puedes dejarlo vacío
       width: '600px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.color = result;
-      this.openSnackBar(`El Tamaño ${result.name} ha sido creado`, 'Cerrar');
+      if (result) {
+        this.configurationSizeService.getSizeFromCollection().then((sizes) => {
+          this.sizes = sizes; // Actualiza la lista de tamaños con los datos más recientes
+          this.openSnackBar(`El Tamaño ${result.name} ha sido creado`, 'Cerrar');
+        }).catch((error) => {
+          console.error('Error al actualizar la lista de tamaños:', error);
+        });
+      }
     });
   }
+
 
   calculateTotalStock() {
     const inventory = this.productForm.get('inventory') as FormArray;
@@ -468,4 +500,6 @@ export class CreateProductComponent implements OnInit {
   deleteImage(inventoryItemIndex: number, imageIndex: number) {
     this.getImagesFormArray(inventoryItemIndex).removeAt(imageIndex);
   }
+
+
 }

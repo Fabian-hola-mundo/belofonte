@@ -16,7 +16,7 @@
   }
 }
 
-%regularPadding {
+%horizontalPadding {
   padding-left: $bigPadding !important;
   padding-right: $bigPadding !important;
   @media (max-width:1007px) {
@@ -32,11 +32,25 @@
   }
 }
 
-%verticalRegularPadding {
+%verticalhorizontalPadding {
   padding-top: $bigPadding !important;
   padding-bottom: $bigPadding !important;
   @media (max-width:1007px) {
     padding-top: $smallPadding !important;
     padding-bottom: $smallPadding !important;
+  }
+}
+
+%rigthPadding {
+  padding-right: $bigPadding !important;
+  @media (max-width:1007px) {
+    padding-right: $smallPadding !important;
+  }
+}
+
+%topPadding {
+  padding-top: $bigPadding !important;
+  @media (max-width:1007px) {
+    padding-top: $smallPadding !important;
   }
 }

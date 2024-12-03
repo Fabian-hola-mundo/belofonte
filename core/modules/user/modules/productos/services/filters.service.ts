@@ -17,4 +17,11 @@ export class FiltersService {
     this.inProductsSubject.next(value);
   }
 
+  private selectedCategorySource = new BehaviorSubject<string>('Todos');
+  selectedCategory$ = this.selectedCategorySource.asObservable();
+
+  selectCategory(category: string) {
+    this.selectedCategorySource.next(category);
+  }
+
 }

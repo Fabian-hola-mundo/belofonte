@@ -7,6 +7,7 @@ import { ProductsService } from '../../../../../../services/products.service';
 import { Product } from '../../../../../admin/interface/products';
 import { SelectedProductService } from '../../../../services/selected-product.service';
 import { SkeletonService } from '../../../../../../services/skeleton.service';
+import { FiltersService } from '../../services/filters.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { SkeletonService } from '../../../../../../services/skeleton.service';
 export class ProductsListComponent implements OnInit {
   isLoading =  true
   data: any;
+  filteredProducts: Product[] = [];
   products: Product[] = []
   groupedProducts: Product[][] = []
 
@@ -26,7 +28,8 @@ export class ProductsListComponent implements OnInit {
     private productService: ProductsService,
     private selectedProductService: SelectedProductService,
     private router: Router,
-    public skeletonService: SkeletonService
+    public skeletonService: SkeletonService,
+    private filterService: FiltersService
   ){
 
   }
@@ -39,19 +42,39 @@ export class ProductsListComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.products = await this.productService.getDataFromCollection('products')
-    this.groupedProducts = this.groupProducts(4)
-    this.skeletonService.getData().subscribe((response) => {
-      this.data = response;
-      this.isLoading = false; // Cambia isLoading a false cuando los datos están listos
+    this.products = await this.productService.getDataFromCollection('products');
+    this.filterService.selectedCategory$.subscribe((category) => {
+      if (category === 'Todos') {
+        // Si la categoría es "Todos", muestra todos los productos
+        this.filteredProducts = [...this.products];
+      } else {
+        // Filtra los productos por la categoría seleccionada
+        this.filteredProducts = this.products.filter((product) =>
+          product.category.includes(category)
+        );
+      }
+      this.groupedProducts = this.groupProducts(4);
+    });
+
+    this.isLoading = true;
+    this.skeletonService.getData().subscribe({
+      next: (response) => {
+        this.data = response;
+      },
+      error: (err) => {
+        console.error('Error al obtener datos del SkeletonService', err);
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
     });
   }
 
 
   private groupProducts(groupSize: number): Product[][] {
     const groupedProducts: Product[][] = [];
-    for (let i = 0; i < this.products.length; i += groupSize) {
-      groupedProducts.push(this.products.slice(i, i + groupSize));
+    for (let i = 0; i < this.filteredProducts.length; i += groupSize) {
+      groupedProducts.push(this.filteredProducts.slice(i, i + groupSize));
     }
     return groupedProducts;
   }

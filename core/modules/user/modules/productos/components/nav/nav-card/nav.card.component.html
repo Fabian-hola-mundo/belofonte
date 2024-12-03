@@ -1,8 +1,15 @@
-<div class="container">
-  <ng-container *ngFor="let navCard of navCards" routerLinkActive="active">
-    <div class="card-container">
-      <h4 class="title">{{ navCard.name }}</h4>
-    </div>
-  </ng-container>
-</div>
+<mat-chip-listbox
+  class="chips-container"
+  aria-label="Categorías"
+  selectionFollowsFocus
+>
+  <mat-chip-option
+    *ngFor="let navCard of navCards; let i = index"
+    [selected]="i === selectedIndex"
+    (click)="selectCategory(navCard.name, i)"
+    [ngClass]="'chip-' + i"
+  >
+    {{ navCard.name }}
+  </mat-chip-option>
+</mat-chip-listbox>
 <mat-icon>sort</mat-icon>

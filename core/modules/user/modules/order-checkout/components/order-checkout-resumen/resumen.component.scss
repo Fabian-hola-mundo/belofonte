@@ -9,7 +9,7 @@
   ::ng-deep {
     & mat-accordion {
       & .mat-expansion-panel-header {
-        @extend %regularPadding;
+        @extend %horizontalPadding;
       }
       & .mat-expansion-panel-body {
         overflow: auto;

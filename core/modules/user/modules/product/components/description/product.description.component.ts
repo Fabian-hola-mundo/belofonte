@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -60,6 +60,7 @@ export class ProductDescriptionComponent implements OnInit {
           },
         ],
         color: {
+          id: '',
           name: '',
           hexa: '',
         },
@@ -87,6 +88,7 @@ export class ProductDescriptionComponent implements OnInit {
       },
     ],
     color: {
+      id: '',
       name: '',
       hexa: '',
     },
@@ -100,6 +102,8 @@ export class ProductDescriptionComponent implements OnInit {
   fistSubref!: InventoryItem;
   selectedProduct = {};
   availableSizes: any[] = [];
+  selectedColor: any = this.colors[1]; // Color inicial seleccionado
+
 
   constructor(
     private cartService: CartService,
@@ -109,13 +113,22 @@ export class ProductDescriptionComponent implements OnInit {
 
   ngOnInit() {}
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['colors'] && changes['colors'].currentValue?.length > 0 && !this.selectedColor) {
+      // Inicializa el color seleccionado al primero si no está definido
+      this.selectedColor = changes['colors'].currentValue[0];
+    }
+  }
+
   changeProductRef(color: Color) {
+    this.selectedColor = color; // Actualiza el color seleccionado
     this.allSubRef.forEach((newSubRef) => {
       if (color.hexa === newSubRef.color?.hexa) {
         this.newRef.emit(newSubRef);
       }
     });
   }
+
 
   addToCart() {
     this.cartService.addToCart({

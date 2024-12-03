@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -35,11 +35,18 @@ const FORMS = [
 })
 export class CreateProductFirstStep implements OnInit {
   categories = CATEGORIES;
-  @Input() firstStep = {
-    
-  }
-
+  @Input() firstStep = {};
   firstData!: FormsDataModel[];
+  form: FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
+      price: ['', Validators.required],
+      category: ['', Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.createFirstStep();
@@ -57,18 +64,35 @@ export class CreateProductFirstStep implements OnInit {
       {
         input: 'input',
         label: 'Descripción',
-        placeholder: 'Guitarra Mela',
+        placeholder: 'Una breve descripción del producto',
         formControlName: 'description',
         required: true,
       },
       {
         input: 'input',
         label: 'Precio',
-        type: 'number',
-        placeholder: '25000',
+        type: 'text', // Cambiado a texto para manejar el formato
+        placeholder: '25.000',
         formControlName: 'price',
         required: true,
       },
     ];
+  }
+
+  formatPrice(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/\D/g, ''); // Remover caracteres no numéricos
+    if (value) {
+      value = new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 0,
+      })
+        .format(Number(value))
+        .replace('COP', '')
+        .trim(); // Formatear como moneda sin el símbolo
+    }
+    input.value = `$ ${value} COP`; // Agregar formato de precio
+    this.form.patchValue({ price: value.replace(/[^0-9]/g, '') }); // Guardar valor limpio en el formulario
   }
 }

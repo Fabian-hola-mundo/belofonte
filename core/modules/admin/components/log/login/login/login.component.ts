@@ -1,5 +1,11 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  Inject,
+  inject,
+  OnDestroy,
+  PLATFORM_ID,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,8 +18,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Auth, signInWithEmailAndPassword, User, user  } from '@angular/fire/auth';
+import {
+  Auth,
+  signInWithEmailAndPassword,
+  User,
+  user,
+} from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -31,47 +43,51 @@ import { Subscription } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   hide = true;
+  isLoading = false;
+  loginError: string | null = null;
   loginForm: FormGroup;
-  private auth: Auth = inject(Auth);
-  user$ = user(this.auth);
-  userSubscription?: Subscription;
-
+  private userSubscription?: Subscription;
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
     private fb: FormBuilder,
-    private router: Router
+    private auth: Auth,
+    private router: Router,
+    private authService: AuthService // Inyecta el servicio
   ) {
-    this.userSubscription = this.user$.subscribe((aUser: User | null) => {
-      //handle user state changes here. Note, that user will be null if there is no currently logged in user.
-   console.log(aUser);
-  })
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
-    if (isPlatformBrowser(this.platformId)) {
-      this.auth = inject(Auth);
-    } else {
-    }
   }
 
   async onLogin() {
-    if (this.auth && this.loginForm.valid) {
-      const { email, password } = this.loginForm.value; // Recoge los valores del formulario
+    if (this.loginForm.valid) {
+      this.isLoading = true;
+      this.loginError = null;
+      const { email, password } = this.loginForm.value;
+
       try {
         await signInWithEmailAndPassword(this.auth, email, password);
         console.log('Login exitoso');
-        this.router.navigate(['/admin/panel']); // Redirige al usuario después del inicio de sesión
-      } catch (error) {
-        console.error('Error en el inicio de sesión:', error);
+        this.router.navigate(['/admin/panel']); // Redirige al usuario al panel
+      } catch (error: any) {
+        this.handleLoginError(error);
+      } finally {
+        this.isLoading = false;
       }
-    } else if (!this.auth) {
-      console.log('Auth no disponible en el servidor');
     } else {
-      console.log('Formulario inválido');
+      this.loginError = 'Por favor, revisa los campos del formulario.';
     }
+  }
+
+  private handleLoginError(error: any) {
+    console.error('Error en el inicio de sesión:', error);
+    this.loginError = this.authService.getErrorMessage(error.code);
+  }
+
+  ngOnDestroy() {
+    this.userSubscription?.unsubscribe();
   }
 }

@@ -40,7 +40,7 @@ export class CreateColorComponent {
     private dialogRef: MatDialogRef<CreateColorComponent>,
     private configurationColorService: ConfigurationColorService,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: Color = { name: '', hexa: '' }
+    @Inject(MAT_DIALOG_DATA) public data: Color = { id: '', name: '', hexa: '' }
   ) {
     this.colorForm = this.formBuilder.group({
       name: new FormControl('', [Validators.required]),
@@ -48,15 +48,21 @@ export class CreateColorComponent {
     });
   }
 
+
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   async saveColor(): Promise<void> {
     if (this.colorForm.valid) {
-      await this.configurationColorService.addColor2(this.colorForm.value);
+      const newColor = this.colorForm.value; // Obtén el valor del formulario
+      await this.configurationColorService.addColor2(newColor);
       this.colorForm.reset();
-      this.dialogRef.close(this.colorForm.value);
+      this.dialogRef.close(newColor); // Devuelve el color al cerrar el diálogo
     }
   }
+
+
+
 }

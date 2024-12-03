@@ -14,6 +14,7 @@
 
 /* Otros estilos para el tema oscuro */
 [data-theme='dark'] {
+  --max-width: 1500px;
   --md-sys-color-primary: var(--md-sys-color-primary-dark);
   --md-sys-color-on-primary: var(--md-sys-color-on-primary-dark);
   --md-sys-color-primary-container: var(--md-sys-color-primary-container-dark);
@@ -69,6 +70,7 @@
 
 /* Otros estilos para el tema claro */
 [data-theme='light'] {
+  --max-width: 1500px;
   --md-sys-color-primary: var(--md-sys-color-primary-light);
   --md-sys-color-on-primary: var(--md-sys-color-on-primary-light);
   --md-sys-color-primary-container: var(--md-sys-color-primary-container-light);

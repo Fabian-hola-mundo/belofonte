@@ -2,7 +2,41 @@
   display: flex;
   top: 0;
   left: 0;
-  z-index: -1;
+  position: relative;
+
+  .dots-container {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      margin: 0 4px;
+      border-radius: 50%;
+      background-color: #ccc;
+      transition: background-color 0.3s;
+      cursor: pointer;
+
+      &.active {
+        background-color: black;
+      }
+    }
+  }
+
+  .mobile {
+    width: 100%;
+    .skeleton-card {
+      height: 100%;
+      width: 100%;
+      height: 82vh;
+      display: flex;
+    }
+  }
 
   .container {
     display: flex;
@@ -64,6 +98,10 @@
       height: 82vh;
       border: 1px solid var(--md-sys-color-outline-variant);
       box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+      & .skeleton-card {
+        width: 100%;
+        height: 100%;
+      }
       & img {
         width: 100%;
         height: auto;

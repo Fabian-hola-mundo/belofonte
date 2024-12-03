@@ -6,11 +6,13 @@ import { AdminLayoutComponent } from '../containers/layout.component';
 import { OrdersComponent } from '../components/orders/orders.component';
 import { SeeProductComponent } from '../components/products/components/see-product/see-product.component';
 import { ProductsComponent } from '../components/products/components/products/products.component';
+import { AuthGuard } from '../guard/auth.guard';
 
 export const adminRoutes: Routes = [
   {
     path: 'panel',
     component: AdminLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'products',

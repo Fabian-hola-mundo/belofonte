@@ -1,25 +1,47 @@
-<div class="product--data">
+<div class="product--data" (click)="openProduct(product)" matRipple>
   <ng-container>
     <figure class="figure" (scroll)="onScroll($event)">
-      <img *ngFor="let image of product?.inventory?.[0]?.images; let i = index"
-           [src]="image.url"
-           [alt]="image.alt"
-           class="product--img"
-           loading="lazy"
-           [class.active]="i === activeImageIndex">
-          </figure>
-        </ng-container>
-        <div class="miniature">
-          <figure class="miniature__figure" >
-      <img *ngFor="let image of product?.inventory?.[0]?.images; let i = index"
-           [src]="image.url"
-           alt=""
-           loading="lazy"
-           class="miniature__figure--image"
-           [class.active]="i === activeImageIndex"
-           (click)="selectImage(i)">
+      <img
+        *ngFor="let image of filteredImages; let i = index"
+        [src]="image.url"
+        [alt]="image.alt"
+        class="product--img"
+        loading="lazy"
+        [class.active]="i === activeImageIndex"
+      />
+    </figure>
+  </ng-container>
+  <div class="miniature">
+    <figure class="miniature__figure">
+      <img
+        *ngFor="let image of filteredImages; let i = index"
+        [src]="image.url"
+        alt=""
+        loading="lazy"
+        class="miniature__figure--image"
+        [class.active]="i === activeImageIndex"
+        (click)="selectImage(i)"
+      />
     </figure>
   </div>
 </div>
-<h4 class="title">{{ product?.title }}</h4>
-<h3 class="title">{{ product?.price | currency:'COP $ ' }}</h3>
+
+<div class="title-container" (click)="openProduct(product)">
+  <h4 class="title">{{ product.title }}</h4>
+  <h3 class="title">{{ product.price | currency : "COP $ " }}</h3>
+</div>
+
+<div class="shop-options__color-picker">
+  <p>Colores</p>
+  <div class="color-options">
+    <div
+      *ngFor="let inventory of product?.inventory"
+      class="color-circle"
+      [ngStyle]="{
+        'background-color': inventory.color?.hexa,
+        border: inventory.color === selectedColor ? '2px solid white' : 'none'
+      }"
+      (click)="changeProductColor(inventory.color)"
+    ></div>
+  </div>
+</div>

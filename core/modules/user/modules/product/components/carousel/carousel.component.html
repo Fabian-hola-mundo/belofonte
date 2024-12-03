@@ -1,18 +1,53 @@
 <ng-container>
+
+  <div class="dots-container">
+    <div
+      *ngFor="let image of images; let i = index"
+      [class.active]="i === currentIndex"
+      class="dot"
+      (click)="onDotClick(i)"
+    ></div>
+  </div>
+
   <!-- Contenedor para móviles -->
-  <figure class="mobile">
-    <img *ngFor="let image of images" [src]="image.url" [alt]="image.alt" />
+  <figure class="mobile" (scroll)="onMobileScroll($event)">
+    <div *ngIf="!isImageLoaded" class="skeleton-card skeleton-line"></div>
+    <img
+      [hidden]="!isImageLoaded"
+      (load)="onImageLoad()"
+      *ngFor="let image of images"
+      [src]="image.url"
+      [alt]="image.alt"
+    />
   </figure>
 </ng-container>
 
 <div class="container">
   <!-- Miniaturas para escritorio en la izquierda -->
   <div class="thumbnails">
-    <img *ngFor="let image of images" [src]="image.url" [alt]="image.alt" class="thumbnail-img"/>
+    <div *ngFor="let image of images">
+      <div *ngIf="!isImageLoaded" class="skeleton-card skeleton-line"></div>
+    </div>
+    <img
+      [hidden]="!isImageLoaded"
+      (load)="onImageLoad()"
+      *ngFor="let image of images"
+      [src]="image.url"
+      [alt]="image.alt"
+      class="thumbnail-img"
+    />
   </div>
 
   <!-- Imagen principal para escritorio -->
   <figure class="desktop" (scroll)="onDesktopScroll($event)">
-    <img *ngFor="let image of images" [src]="image.url" [alt]="image.alt" />
+    <div *ngIf="!isImageLoaded" class="skeleton-card skeleton-line"></div>
+    <img
+      [hidden]="!isImageLoaded"
+      *ngFor="let image of images"
+      [src]="image.url"
+      [alt]="image.alt"
+    />
   </figure>
 </div>
+
+

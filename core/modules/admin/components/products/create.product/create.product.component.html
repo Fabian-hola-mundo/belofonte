@@ -35,6 +35,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <!-- <bel-subcategories-input subcategoryCtrl="subcategory"></bel-subcategories-input> -->
     </mat-step>
 
     <!-- Paso 2: Características e Imágenes -->
@@ -135,6 +136,7 @@
                   ></div>
                   <h5>{{ color.name }}</h5>
                   <p>{{ color.hexa }}</p>
+                  <button mat-button color="warn" (click)="deleteColor(i, color.id)">Eliminar</button>
                 </div>
               </div>
 

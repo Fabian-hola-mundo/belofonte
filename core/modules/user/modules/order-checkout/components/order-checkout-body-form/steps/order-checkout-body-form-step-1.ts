@@ -37,7 +37,6 @@ import { documentTypes, documentTypesInterface } from '../../../constants/docume
       <mat-form-field appearance="outline">
         <mat-label>Correo electrónico</mat-label>
         <input
-          required
           formControlName="mailCtrl"
           matInput
           placeholder="tucorreo@gmail.com"
@@ -55,7 +54,6 @@ import { documentTypes, documentTypesInterface } from '../../../constants/docume
       <mat-form-field appearance="outline">
         <mat-label>Nombres completos</mat-label>
         <input
-          required
           formControlName="nameCtrl"
                   [matAutocomplete]="auto"
           autocomplete="name"
@@ -80,7 +78,6 @@ import { documentTypes, documentTypesInterface } from '../../../constants/docume
           formControlName="phoneCtrl"
           matInput
           type="tel"
-          required
           autocomplete="tel-national"
           placeholder="320 200 9000"
         />

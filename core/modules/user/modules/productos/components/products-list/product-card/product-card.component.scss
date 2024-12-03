@@ -1,4 +1,4 @@
-@import '../../../../../../../../src/styles.scss';
+@import "../../../../../../../../src/styles.scss";
 
 :host {
   display: flex;
@@ -8,7 +8,6 @@
   position: relative;
   gap: 8px;
   transition: all 200ms;
-
 
   & .product--data {
     flex-direction: column;
@@ -70,11 +69,40 @@
     }
   }
 
-  & .title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+  .shop-options__color-picker {
+    margin-top: 16px;
+
+    p {
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .color-options {
+      display: flex;
+      gap: 8px;
+    }
+
+    .color-circle {
+      $size: 25px;
+      width: $size;
+      height: $size;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  & .title-container {
+    & .title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   }
 }

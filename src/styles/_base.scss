@@ -1,7 +1,12 @@
+//animations
+
+@import "./animations/show.scss";
+
 //Components
 
 @import "./components/avatar";
 @import "./components/button";
+@import "./components/menu";
 @import "./components/tables";
 @import "./components/snackbar";
 @import "./components/button-icon";

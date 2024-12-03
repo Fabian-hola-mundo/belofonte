@@ -1,38 +1,11 @@
 <mat-stepper>
   <form [formGroup]="startForm">
 
-<!--     <mat-step [stepControl]="createProductForm">
-      <ng-template matStepLabel>Datos básicos</ng-template>
-      <bel-create-product-first-step> </bel-create-product-first-step>
-    </mat-step>
-    <mat-step>
-
-      <ng-template matStepLabel>Características e Imágenes</ng-template>
-      <bel-create-product-second-step> </bel-create-product-second-step>
-    </mat-step> -->
-
-<!--     <mat-step>
-      <ng-template matStepLabel>Inventario</ng-template>
-      <bel-create-product-third-step> </bel-create-product-third-step>
-    </mat-step> -->
-
     <mat-step>
 
 
       <ng-template matStepLabel>Control</ng-template>
-<!--       <div [formGroupName]="'control'">
-        <mat-form-field class="w-full" appearance="outline">
-          <mat-label>{{'stepFourthForm.label'}}</mat-label>
-          <input
-            class="w-full"
-            matInput
-            [placeholder]="'stepFourthForm.placeholder'"
-            [formControlName]="'ref'"
-          />
-        </mat-form-field>
-      </div>
-    <button mat-button matStepperPrevious color="primary">Atrás</button>
-    <button mat-raised-button (click)="onSubmit()">Crear</button> -->
+
 
       <bel-create-product-fourth-step
         [group]="'control'"

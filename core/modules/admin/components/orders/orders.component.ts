@@ -62,6 +62,7 @@ export class OrdersComponent {
           }
         ],
         color: {
+          id: '',
           name: '',
           hexa: ''
         },

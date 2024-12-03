@@ -25,17 +25,18 @@ export class ConfigurationSizeService {
   }
 
   // Obtener todos los colores personalizados
-  async getSizeFromCollection() {
-    let size: any[] = []; // Puedes ajustar el tipo de 'products' según los datos esperados
+  async getSizeFromCollection(): Promise<any[]> {
+    const sizes: any[] = [];
     try {
-      const querySnapshot = await getDocs(collection(this.firestore, this.db));
-      querySnapshot.forEach((doc: any) => {
-        size.push(doc.data()); // Agrega los datos del documento al array 'products'
+      const querySnapshot = await getDocs(this.productRef); // Usa la referencia correcta
+      querySnapshot.forEach((doc) => {
+        sizes.push({ id: doc.id, ...doc.data() }); // Incluye el ID del documento
       });
     } catch (error) {
-      console.error('Error al obtener datos:', error);
+      console.error('Error al obtener tamaños:', error);
     }
-    return size
+    return sizes;
   }
+
 
 }

@@ -1,57 +1,147 @@
-@import '../../../../../src/styles.scss';
+@import "../../../../../src/styles.scss";
 
 :host {
   display: flex;
   justify-content: center;
   width: 100%;
+  transition: all 400ms;
   nav {
     width: 100%;
-    @extend %fullPadding;
     display: flex;
     flex-direction: column;
-    gap: 8px;
     max-width: $maxWidth;
+    transition: all 400ms;
     & .navigation {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
       gap: 16px;
+      @extend %horizontalPadding;
+      @extend %topPadding;
+      overflow: hidden;
       & .logo {
-        max-width: 50px;
+        max-width: 70px;
+        min-width: 30px;
         width: 100%;
         cursor: pointer;
         & svg {
           width: 100%;
         }
       }
-      & .search {
+      & .search-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
-        &__form-field {
+        .input-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
           width: 100%;
+          transition: all 200ms;
+          padding: 12px 8px;
+          border: 1px solid transparent;
+          border-radius: 8px;
+          &:hover {
+            background-color: var(--md-sys-color-surface-variant);
+            border: 1px solid var(--md-sys-color-outline);
+          }
+          .custom-input {
+            width: 100%;
+            padding: 4px 4px 4px 20px;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            color: #333;
+            transition: background-color 0.3s ease, color 0.3s ease;
+
+            &:focus {
+              color: var(--md-sys-color-on-background);
+            }
+
+            &::placeholder {
+              color: #aaa;
+              font-size: 18px;
+              font-style: italic;
+              transition: color 0.3s ease;
+            }
+
+            &:focus::placeholder {
+              color: transparent; // Esconde el placeholder al enfocar
+            }
+          }
+
+          .icon {
+            position: absolute;
+            left: 10px;
+            font-size: 20px;
+            color: #aaa;
+          }
         }
       }
+
       &--actions {
         position: relative;
-
-        & div {
-          @extend .navigation;
-          gap: 24px;
-          & ul {
-            gap: 4px;
-            @extend .navigation;
-            & li {
-            }
+        gap: 24px;
+        & ul {
+          display: flex;
+          flex-wrap: nowrap;
+          align-items: center;
+          gap: 4px;
+          & .mat-menu {
           }
         }
       }
     }
-    & .filters{
-      display: flex;
-      width: 100%;
-      z-index: 100;
-      position: relative;
-      gap: 12px;
+  }
+  .product-nav--active {
+    @extend .surface;
+    position: fixed;
+    z-index: 100;
+    box-shadow: var(--md-shadow);
+    padding: 4px;
+    transition: all 200ms;
+    border-radius: 0 0 8px 8px;
+    & .navigation {
+      padding: 8px !important;
+      & .logo {
+        display: none;
       }
+      & .search-container {
+        & .input-wrapper {
+
+        }
+      }
+      &--actions {
+        & ul {
+          & .mat-menu {
+            display: none;
+          }
+        }
+      }
+    }
+    & .filters {
+      ::ng-deep {
+        & bel-nav-card {
+          & .chips-container {
+            padding: 8px !important;
+          }
+        }
+      }
+    }
+  }
+  nav.hide-nav {
+    transform: translateY(-100%);
+  }
+}
+::ng-deep {
+  & .mat-mdc-menu-content {
+    & bel-swich-theme {
+      padding: 12px;
+      width: 100%;
+      display: flex;
+    }
   }
 }

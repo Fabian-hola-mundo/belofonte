@@ -97,6 +97,7 @@ export class ProductsComponent {
           }
         ],
         color: {
+          id: '',
           name: '',
           hexa: ''
         },
