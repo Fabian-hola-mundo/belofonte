@@ -1,0 +1,96 @@
+@import "../../../../../../../src/styles.scss";
+
+:host {
+  section {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    @extend %fullPadding;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    & .title-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &__group {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        & div {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+    & mat-chip {
+      width: fit-content;
+      @extend .secondary;
+      ::ng-deep {
+        .mdc-evolution-chip__text-label {
+          @extend .on-primary-text;
+        }
+      }
+    }
+    & .inventory-container {
+      display: flex;
+      border-radius: 12px;
+      background-color: var(--md-sys-color-surface-variant);
+      padding: 24px;
+      border: 1px solid var(--md-sys-color-outline-variant);
+      gap: 24px;
+      &__item {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        gap: 24px;
+
+        & .image {
+          flex-direction: row;
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          & img {
+            max-width: 300px;
+            min-width: 200px;
+            width: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+          }
+        }
+        &--stock {
+          display: flex;
+          flex-direction: column;
+          & .container {
+            display: flex;
+            gap: 8px;
+            & div {
+              border: 1px solid var(--md-sys-color-outline);
+              padding: 12px;
+              border-radius: 8px;
+              display: flex;
+              gap: 4px;
+              align-items: center;
+              justify-content: center;
+            }
+          }
+        }
+        &--color {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          & div {
+            border-radius: 100%;
+            $size: 24px;
+            width: $size;
+            height: $size;
+            border: 1px solid var(--md-sys-color-outline-variant);
+          }
+        }
+      }
+      &:nth-child(odd) {
+        background-color: var(--md-sys-color-surface);
+      }
+    }
+  }
+}

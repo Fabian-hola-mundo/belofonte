@@ -4,7 +4,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { Product } from '../../interface/products';
-import { SeeProductComponent } from '../products/products/see-product/see-product.component';
+import { SeeProductComponent } from '../products/components/see-product/see-product.component';
 
 @Component({
   selector: 'app-orders',
@@ -62,6 +62,7 @@ export class OrdersComponent {
           }
         ],
         color: {
+          id: '',
           name: '',
           hexa: ''
         },

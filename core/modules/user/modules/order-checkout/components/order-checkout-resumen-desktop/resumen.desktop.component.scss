@@ -1,0 +1,16 @@
+@import "../../../../../../../src/styles.scss";
+
+:host {
+  width: 100%;
+  @extend %fullPadding;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  & bel-items-added {
+    border: 1px solid var(--md-sys-color-outline-variant);
+    width: 100%;
+    @extend .surface;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+}

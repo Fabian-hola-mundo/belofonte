@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule } from '@angular/router';
 import { ProductsService } from '../../../../../../services/products.service';
+import { FiltersService } from '../../../productos/services/filters.service';
 
 @Component({
   selector: 'bel-above-the-fold',
@@ -18,9 +19,10 @@ export class AboveTheFoldComponent {
 
 
   constructor(
-    productService: ProductsService
+    productService: ProductsService,
+    public _showFilters: FiltersService,
   ){
-
+    this._showFilters.setInProducts(false); // Establece el valor inicial
   }
 
   cardServices: CardServices[] = [

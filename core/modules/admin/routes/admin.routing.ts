@@ -2,24 +2,28 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/log/login/login/login.component';
 import { AdminLayoutComponent } from '../containers/layout.component';
-import { ProductsComponent } from '../components/products/products/products.component';
-import { OrdersComponent } from '../components/orders/orders.component';
+
+import { SeeProductComponent } from '../components/products/components/see-product/see-product.component';
+import { ProductsComponent } from '../components/products/components/products/products.component';
+import { AuthGuard } from '../guard/auth.guard';
 
 export const adminRoutes: Routes = [
   {
-    path: 'panel',
+    path: '',
     component: AdminLayoutComponent,
+    /* canActivate: [AuthGuard], */
     children: [
       {
         path: 'products',
         component: ProductsComponent,
         pathMatch: 'full',
       },
-/*       {
-        path: 'orders',
-        component: OrdersComponent,
+      {
+        path: 'products/:slug',
+        component: SeeProductComponent,
         pathMatch: 'full',
-      }, */
+      },
+
       { path: '', redirectTo: 'products', pathMatch: 'full' },
     ],
   },

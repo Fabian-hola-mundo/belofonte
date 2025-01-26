@@ -1,0 +1,92 @@
+@import '../../../../../../../src/styles.scss';
+
+:host {
+  width: 100%;
+  height: -webkit-fill-available;
+  overflow-y: auto;
+  & .mat-drawer-container {
+    & mat-sidenav-content {
+      height: 90dvh;
+      & main {
+        display: flex;
+        flex-direction: column;
+        @extend %fullPadding;
+        & section {
+          width: 100%;
+          max-width: none;
+          margin-top: 0;
+          display: flex;
+          justify-content: space-close;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 24px;
+          & table {
+            & ::ng-deep {
+              .mat-mdc-row .mat-mdc-cell {
+                border-bottom: 1px solid transparent;
+                border-top: 1px solid transparent;
+                cursor: pointer;
+              }
+              .mat-mdc-row:hover .mat-mdc-cell {
+                border-color: currentColor;
+              }
+            }
+            :nth-child(even) {
+              background-color: rgba(black, 0.02);
+            }
+            & tr {
+              border-radius: 4px !important;
+              cursor: pointer;
+              &:hover {
+                background-color: rgba(black, 0.04);
+              }
+            }
+          }
+        }
+      }
+    }
+    & mat-sidenav {
+      & .header {
+        padding: 8px 24px;
+        box-shadow: 0 7px 12px rgb(0 0 0 / 12%);
+        z-index: 11;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+      }
+      & bel-create-product {
+        display: flow-root;
+        height: 100%;
+        & ::ng-deep {
+          & mat-stepper {
+            padding-bottom: 48px !important;
+          }
+        }
+      }
+      & .footer {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        display: flex;
+        z-index: 11;
+        padding: 8px 24px;
+        justify-content: flex-end;
+      }
+
+    }
+    ::ng-deep {
+      & .side-create {
+        width: 100%;
+        max-width: 700px;
+      }
+    }
+  }
+
+  ::ng-deep {
+    .mat-column-select {
+      overflow: initial !important;
+    }
+  }
+}

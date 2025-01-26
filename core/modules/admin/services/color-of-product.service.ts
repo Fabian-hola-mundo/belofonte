@@ -10,6 +10,7 @@ import {
   deleteDoc,
   CollectionReference,
 } from '@angular/fire/firestore';
+import { Color } from '../interface/color';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +25,14 @@ export class ConfigurationColorService {
     return collection(this.firestore, 'configuration', 'color');
   }
 
-  addColor2(color: any){
-    return addDoc(this.productRef, color)
+  async addColor2(color: Color): Promise<void> {
+    const colorId = color.id || doc(this.productRef).id; // Usa el ID proporcionado o genera uno nuevo
+    const colorRef = doc(this.productRef, colorId);
+
+    await setDoc(colorRef, { ...color, id: colorId });
   }
+
+
 
   // Agregar un color personalizado
   async addColor(color: any): Promise<void> {
@@ -41,18 +47,19 @@ export class ConfigurationColorService {
   }
 
   // Obtener todos los colores personalizados
-  async getColorsFromCollection() {
-    let colors: any[] = []; // Puedes ajustar el tipo de 'products' según los datos esperados
+  async getColorsFromCollection(): Promise<Color[]> {
+    const colors: Color[] = [];
     try {
       const querySnapshot = await getDocs(collection(this.firestore, this.db));
-      querySnapshot.forEach((doc: any) => {
-        colors.push(doc.data()); // Agrega los datos del documento al array 'products'
+      querySnapshot.forEach((doc) => {
+        colors.push({ id: doc.id, ...doc.data() } as unknown as Color); // Incluye el id del documento
       });
     } catch (error) {
       console.error('Error al obtener datos:', error);
     }
-    return colors
+    return colors;
   }
+
 
   // Obtener un color específico por ID
   async getColorById(id: string): Promise<any> {
@@ -86,9 +93,12 @@ export class ConfigurationColorService {
     const colorDocRef = doc(this.firestore, 'configuration', 'color', id);
     try {
       await deleteDoc(colorDocRef);
+      console.log('Color eliminado:', id);
     } catch (error) {
-      console.error('Error deleting color:', error);
+      console.error('Error eliminando el color:', error);
       throw error;
     }
   }
+
+
 }

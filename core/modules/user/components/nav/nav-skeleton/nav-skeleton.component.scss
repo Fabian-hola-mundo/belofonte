@@ -1,0 +1,38 @@
+:host {
+  width: 100%;
+  max-width: var(--max-width);
+  .skeleton-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+
+    .skeleton-logo {
+      $size: 40px;
+      width: $size;
+      height: $size;
+    }
+
+    .skeleton-search {
+      flex: 1;
+      margin: 0 16px;
+      height: 32px;
+    }
+
+    .skeleton-actions {
+      display: flex;
+      gap: 16px;
+
+      .skeleton-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .skeleton-filters {
+    margin-top: 8px;
+    height: 48px;
+  }
+}

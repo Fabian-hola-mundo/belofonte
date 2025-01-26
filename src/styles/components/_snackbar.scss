@@ -1,0 +1,12 @@
+::ng-deep {
+  mat-snack-bar-container {
+    & .mdc-snackbar__surface {
+      background-color: var(--md-sys-color-surface) !important;
+      outline: 1px solid var(--md-sys-color-primary);
+      & .mat-mdc-snack-bar-label {
+        color: var(--md-sys-color-on-surface) !important;
+      }
+    }
+  }
+
+}

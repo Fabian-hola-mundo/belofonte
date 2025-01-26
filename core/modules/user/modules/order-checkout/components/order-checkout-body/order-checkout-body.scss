@@ -1,7 +1,12 @@
 :host {
-  height: 100%;
   display: flex;
-  overflow: hidden;
+  overflow: auto;
   width: 100%;
   padding-top: 48px + 24px;
+  padding-bottom: 72px;
+  max-width: var(--max-width);
+  justify-content: center;
+  & .deviceInactive {
+    display: none;
+  }
 }

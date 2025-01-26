@@ -13,19 +13,19 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="shop-options__color">
-      <mat-label>Color</mat-label>
-      <mat-select [value]="colors[0]">
-        <mat-option
+    <div class="shop-options__color-picker">
+      <p>Color</p>
+      <div class="color-options">
+        <div
           *ngFor="let option of colors"
-          [value]="option"
+          class="color-circle"
+          [ngStyle]="{ 'background-color': option.hexa, 'border': option === selectedColor ? '2px solid white' : 'none' }"
           (click)="changeProductRef(option)"
         >
-          <mat-icon [ngStyle]="{ color: option.hexa }">circle</mat-icon>
-          {{ option.name }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
+        </div>
+      </div>
+    </div>
+
     <!--     <pre style="background-color: white;">
       <code>{{colors | json}}</code>
     </pre> -->

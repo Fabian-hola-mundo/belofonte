@@ -1,0 +1,100 @@
+<mat-sidenav-container
+  class="example-container"
+  [hasBackdrop]="true"
+  class="surface-200"
+>
+  <mat-sidenav-content>
+    <section>
+      <div class="title-container">
+        <div class="title-container__group">
+          <button
+            mat-icon-button
+            [routerLink]="['/admin/products']"
+            routerLinkActive="router-link-active"
+          >
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <div>
+            <h3>{{ selectedProduct.title }}</h3>
+            <h4>{{ selectedProduct.price | currency : "COP $" }}</h4>
+          </div>
+        </div>
+        <button (click)="sidenav.open()" mat-raised-button>Editar</button>
+        <button mat-raised-button color="warn" (click)="deleteProduct()">Eliminar</button>
+      </div>
+
+      <p>{{ selectedProduct.description }}</p>
+      <mat-chip color="primary">{{ selectedProduct.category }}</mat-chip>
+      <div
+        class="inventory-container"
+        *ngFor="let inventory of selectedProduct.inventory"
+      >
+        <div class="inventory-container__item">
+          <h4>{{ inventory.subRef }}</h4>
+          <div class="inventory-container__item--stock">
+            <strong>Cantidad</strong>
+            <div class="container">
+              <div *ngFor="let stock of inventory.stock">
+                <p>{{ stock.size }}</p>
+                <p>{{ stock.quantity }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="inventory-container__item--color">
+            <div
+              [ngStyle]="{ 'background-color': inventory.color?.hexa }"
+            ></div>
+            <p>{{ inventory.color?.name }}</p>
+          </div>
+          <div class="image">
+            <img
+              *ngFor="let image of inventory.images"
+              [src]="image.url"
+              alt="image"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </mat-sidenav-content>
+
+  <mat-sidenav [mode]="'over'" class="side-create" position="end" #sidenav>
+    <div class="header">
+      <h3>Editar producto</h3>
+      <button (click)="sidenav.close()" mat-icon-button color="primary">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <bel-edit-product
+      [selectedProduct]="selectedProduct"
+      (stepperIndexChange)="onStepperIndexChange($event)"
+      #EditProductComponent
+    />
+    <div class="footer">
+      <button
+        mat-button
+        color="primary"
+        *ngIf="stepperIndex >= 1"
+        (click)="goBack(EditProductComponent)"
+      >
+        Atrás
+      </button>
+      <button
+        mat-button
+        color="primary"
+        *ngIf="stepperIndex <= 1"
+        (click)="goForward(EditProductComponent)"
+      >
+        Siguiente
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="stepperIndex === 2"
+        (click)="EditProductComponent.updateExistingProduct()"
+      >
+        Crear
+      </button>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>

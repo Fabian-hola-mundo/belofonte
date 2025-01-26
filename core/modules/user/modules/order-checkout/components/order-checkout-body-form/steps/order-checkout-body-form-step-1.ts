@@ -13,9 +13,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
+import { MatStepper } from '@angular/material/stepper';
 import { map, Observable, startWith } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { documentTypes, documentTypesInterface } from '../../../constants/documentTypes';
 @Component({
   selector: 'bel-order-checkout-body-form-step-1',
   standalone: true,
@@ -24,6 +25,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     ReactiveFormsModule,
     FormsModule,
     MatAutocompleteModule,
@@ -35,7 +37,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
       <mat-form-field appearance="outline">
         <mat-label>Correo electrónico</mat-label>
         <input
-          required
           formControlName="mailCtrl"
           matInput
           placeholder="tucorreo@gmail.com"
@@ -53,7 +54,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
       <mat-form-field appearance="outline">
         <mat-label>Nombres completos</mat-label>
         <input
-          required
           formControlName="nameCtrl"
                   [matAutocomplete]="auto"
           autocomplete="name"
@@ -78,7 +78,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
           formControlName="phoneCtrl"
           matInput
           type="tel"
-          required
           autocomplete="tel-national"
           placeholder="320 200 9000"
         />
@@ -89,6 +88,21 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         <mat-error *ngIf="formGroup.get('phoneCtrl')?.hasError('pattern')">
           El teléfono solo puede contener números
         </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de Documento</mat-label>
+        <mat-select
+        formControlName="legalIdTypeCtrl"
+        placeholder="Cédula de ciudadanía"
+        >
+        <mat-option
+        *ngFor="let document of documentTypes"
+            [value]="document.value"
+            >
+            {{ document.viewValue }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -131,6 +145,7 @@ export class OrderCheckoutBodyFormStep1Component {
   @Input() stepper!: MatStepper
   options: string[] = ['Juan Pérez', 'María García', 'Carlos López', 'Ana Martínez'];
   filteredOptions!: Observable<string[]>;
+  documentTypes: documentTypesInterface[] = documentTypes
 
   ngOnInit() {
     // Configurar el autocompletado del campo de nombres

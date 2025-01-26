@@ -3,10 +3,11 @@
 :host {
   width: 100%;
   @extend %fullPadding;
+  max-width: $maxWidth;
   display: flex;
   position: absolute;
   top: 0;
-  left: 0;
+  left: auto;
   z-index: 1;
   & .product-nav {
     display: flex;

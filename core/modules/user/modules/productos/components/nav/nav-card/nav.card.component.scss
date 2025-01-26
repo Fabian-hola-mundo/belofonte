@@ -1,34 +1,84 @@
-@import '../../../../../../../../src/styles.scss';
+@import "../../../../../../../../src/styles.scss";
 
 :host {
+  display: flex;
   width: 100%;
-  @extend %fullPadding;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 200ms;
-  border: 2px solid;
-  &:hover {
-    transform: scale(1.02);
-  }
-  & .card-container {
+  justify-content: space-between;
+  align-items: center;
+  @extend %rigthPadding;
+  gap: 12px;
+  .chips-container {
+    @extend %fullPadding;
     display: flex;
-    flex-direction: column;
-    @media (max-width:1007px) {
-      .title {
-        font-size: 20px;
-      }
-      & .button {
-        display: none;
+    gap: 8px;
+    overflow-y: auto;
+    border-radius: 8px;
+
+    /* Esconde los scrollbars de manera más consistente */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none; /* Firefox */
+
+    ::ng-deep {
+      .mdc-evolution-chip-set__chips {
+        flex-wrap: nowrap;
       }
     }
-    & div {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
+
+    mat-chip-option {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &:hover {
+        background-color: var(--md-sys-color-surface-variant);
+      }
+
+      &.chip-0 {
+        background-color: var(--md-sys-color-surface-variant);
+        ::ng-deep {
+          * span {
+            color: var(--md-sys-color-on-surface-variant);
+          }
+        }
+      }
+      &.chip-1 {
+        background-color: var(--md-sys-color-primary);
+        ::ng-deep {
+          * span {
+            color: var(--md-sys-color-on-primary);
+          }
+        }
+      }
+      &.chip-2 {
+        background-color: var(--md-sys-color-secondary);
+        ::ng-deep {
+          * span {
+            color: var(--md-sys-color-on-secondary);
+          }
+        }
+      }
+      &.chip-3 {
+        background-color: var(--md-sys-color-tertiary);
+        ::ng-deep {
+          * span {
+            color: var(--md-sys-color-on-tertiary);
+          }
+        }
+      }
+
+    }
+    &.mat-mdc-chip-selected {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--md-sys-color-primary);
     }
   }
 
-  .active {
-
+  mat-icon {
+    color: var(--md-sys-color-on-surface);
   }
 }

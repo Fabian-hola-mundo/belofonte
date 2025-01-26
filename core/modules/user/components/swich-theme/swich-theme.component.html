@@ -1,0 +1,13 @@
+<!-- switch-theme.component.html -->
+<input
+  type="checkbox"
+  id="theme-toggle"
+  (change)="toggleTheme()"
+  style="display: none;"
+/>
+<label for="theme-toggle" class="theme-toggle-label">
+  <div class="icon-container">
+    <mat-icon class="icon sun-icon">dark_mode</mat-icon>
+    <mat-icon class="icon moon-icon">light_mode</mat-icon>
+  </div>
+</label>

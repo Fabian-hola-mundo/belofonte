@@ -8,24 +8,35 @@
     flex-wrap: wrap;
     display: flex;
     gap: 12px;
+    min-height: 100dvh;
     & .group {
       display: flex;
       flex-direction: column;
       flex-grow: 1;
       flex-basis: 230px;
       gap: 12px;
+      & .product {
+        @extend %showAppear;
+      }
     }
-    & .group:nth-child(odd) {
-      & .product:nth-child(even) {
-        & bel-product-card {
-          height: 400px;
+
+  }
+}
+::ng-deep {
+  & .group:nth-child(odd) {
+    & .product:nth-child(even) {
+      & .product__card, .skeleton-card {
+        height: 500px;
+        & .product--data {
         }
       }
     }
-    & .group:nth-child(even) {
-      & .product:nth-child(odd) {
-        & bel-product-card {
-          height: 400px;
+  }
+  & .group:nth-child(even) {
+    & .product:nth-child(odd) {
+      & .product__card, .skeleton-card {
+        height: 500px;
+        & .product--data {
         }
       }
     }

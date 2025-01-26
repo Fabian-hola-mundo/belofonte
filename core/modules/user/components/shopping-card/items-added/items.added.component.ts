@@ -15,7 +15,16 @@ import { CartItem, CartService } from '../../../services/cart.service';
     </div>
   `,
   styles: `
-
+  :host {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    & bel-shopping-item {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
   `,
   imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, ShoppingItemComponent],
 })
@@ -31,7 +40,5 @@ export class ItemsAddedComponent {
       this.cartItems = items;
     });
   }
-
-
 
 }

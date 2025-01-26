@@ -2,11 +2,12 @@
 
 :host {
   position: relative;
+  width: 100%;
   main {
     display: flex;
     gap: 24px;
     flex-direction: column;
-    @extend .background;
+    /* @extend .background; */
     z-index: 1;padding: 24px;
     position: sticky;
     top: 0;
@@ -27,10 +28,31 @@
       flex-wrap: wrap;
       gap: 12px;
       flex-direction: row;
-      &__color {
-        flex-grow: 1;
-        flex-basis: 130px;
+      .shop-options__color-picker {
+        p {
+          margin-bottom: 8px;
+          font-weight: bold;
+          color: #fff;
+        }
+
+        .color-options {
+          display: flex;
+          gap: 12px;
+        }
+
+        .color-circle {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: transform 0.2s ease-in-out;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
       }
+
       &__size {
         flex-grow: 2;
       }

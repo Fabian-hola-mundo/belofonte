@@ -1,0 +1,19 @@
+@import '../../../../../../../src/styles.scss';
+:host{
+  width: 100%;
+  display: flex;
+  @extend %fullPadding;
+  justify-content: flex-end;
+  & .actions {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 4px;
+    & button {
+      width: 100%;
+    }
+  }
+  @media (width <= 1008px) {
+    display: none;
+  }
+}

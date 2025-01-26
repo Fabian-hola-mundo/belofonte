@@ -40,7 +40,7 @@ export class CreateSizeComponent {
     private dialogRef: MatDialogRef<CreateSizeComponent>,
     private configurationSizeService: ConfigurationSizeService,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: Color = { name: '', hexa: '' }
+    @Inject(MAT_DIALOG_DATA) public data: Color = { id: '', name: '', hexa: '' }
   ) {
     this.sizeForm = this.formBuilder.group({
       name: new FormControl('', [Validators.required]),
