@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   ViewChild,
@@ -50,6 +51,7 @@ import {
 import { MatRippleModule } from '@angular/material/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Product } from '../../../interface/products';
 
 const MAT = [
   MatFormFieldModule,
@@ -67,19 +69,19 @@ const MAT = [
 ];
 
 @Component({
-  selector: 'bel-create-product',
+  selector: ' bel-edit-product',
   standalone: true,
   imports: [
     CommonModule,
     FormsModule,
     FormsModule,
     ReactiveFormsModule,
-    ...MAT
-],
-  templateUrl: './create.product.component.html',
-  styleUrls: ['./create.product.component.scss'],
+    ...MAT,
+  ],
+  templateUrl: './edit.product.component.html',
+  styleUrl: './edit.product.component.scss',
 })
-export class CreateProductComponent implements OnInit {
+export class EditProductComponent {
   colors!: Color[];
   color!: Color;
   selectedColors: { [inventoryIndex: number]: string } = {}; // Objeto para almacenar colores seleccionados por índice
@@ -90,6 +92,20 @@ export class CreateProductComponent implements OnInit {
   @Output() formSubmit = new EventEmitter<FormGroup>(); // form data
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('fileInput') fileInput!: ElementRef;
+
+  private _selectedProduct!: Product;
+  @Input()
+  set selectedProduct(value: Product) {
+    if (value) {
+      this._selectedProduct = value;
+      // Cuando tengamos el form inicializado, procedemos a rellenarlo
+      this.patchFormWithSelectedProduct(value);
+    }
+  }
+
+  get selectedProduct(): Product {
+    return this._selectedProduct;
+  }
 
   productForm!: any;
   categories = CATEGORIES;
@@ -111,7 +127,7 @@ export class CreateProductComponent implements OnInit {
     private side: MatSidenav,
     private configurationSizeService: ConfigurationSizeService,
     private formBuilder: FormBuilder,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     this.productForm = this.formBuilder.group({
       id: [''],
@@ -146,7 +162,8 @@ export class CreateProductComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      this.colors = await this.configurationColorService.getColorsFromCollection();
+      this.colors =
+        await this.configurationColorService.getColorsFromCollection();
       this.sizes = await this.configurationSizeService.getSizeFromCollection();
       this.updateProductId();
 
@@ -164,6 +181,86 @@ export class CreateProductComponent implements OnInit {
       .replace(/[^\w-]+/g, '');
   }
 
+  patchFormWithSelectedProduct(product: Product): void {
+    if (!this.productForm) return;
+
+    // Reinicia el formulario para evitar datos "viejos"
+    this.productForm.reset();
+
+    // Limpia el FormArray de 'inventory'
+    const inventoryFormArray = this.productForm.get('inventory') as FormArray;
+    inventoryFormArray.clear();
+
+    // Parchea los valores simples de nivel superior
+    this.productForm.patchValue({
+      id: product.id,
+      category: product.category ?? [''],
+      subcategory: product.subcategory ?? [''],
+      slug: product.slug,
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      characteristics: {
+        height: product.characteristics.height,
+        broad: product.characteristics.broad ?? '',
+        weight: product.characteristics.weight,
+      },
+      control: {
+        ref: product.control.ref,
+        totalStock: product.control.totalStock,
+      },
+    });
+
+    // Parchear INVENTORY
+    // Verifica que tengas un array válido en product.inventory
+    if (product.inventory && product.inventory.length > 0) {
+      product.inventory.forEach((inv) => {
+        // 1) Crear un FormGroup usando tu método createInventoryItem()
+        const inventoryGroup = this.createInventoryItem();
+
+        // 2) Asignar los valores del inventory actual
+        // subRef
+        inventoryGroup.patchValue({
+          subRef: inv.subRef,
+          color: inv.color, // <-- color: { name, hexa }
+        });
+
+        // STOCK: limpiamos el formArray stock y creamos uno por cada item
+        const stockFormArray = inventoryGroup.get('stock') as FormArray;
+        stockFormArray.clear();
+        if (inv.stock && inv.stock.length > 0) {
+          inv.stock.forEach((stockItemData) => {
+            const stockItem = this.createStockItem();
+            stockItem.patchValue({
+              size: stockItemData.size,
+              quantity: stockItemData.quantity,
+            });
+            stockFormArray.push(stockItem);
+          });
+        }
+
+        // IMAGES: limpiamos el formArray images y creamos uno por cada item
+        const imagesFormArray = inventoryGroup.get('images') as FormArray;
+        imagesFormArray.clear();
+        if (inv.images && inv.images.length > 0) {
+          inv.images.forEach((img) => {
+            const imageItem = this.createImageItem();
+            imageItem.patchValue({
+              url: img.url,
+              alt: img.alt,
+              // progress lo dejas en 0 (o lo que necesites)
+            });
+            imagesFormArray.push(imageItem);
+          });
+        }
+
+        // 3) Finalmente, se agrega este group al FormArray principal
+        inventoryFormArray.push(inventoryGroup);
+      });
+    }
+  }
+
+
   // Control de botones inicio
 
   nextStep() {
@@ -172,7 +269,8 @@ export class CreateProductComponent implements OnInit {
   }
 
   previousStep() {
-    if (this.stepper.selectedIndex > 0) { // Only allow going back if not on the first step
+    if (this.stepper.selectedIndex > 0) {
+      // Only allow going back if not on the first step
       this.stepperIndexChange.emit(this.stepper.selectedIndex - 1);
       this.stepper.previous();
     }
@@ -189,6 +287,25 @@ export class CreateProductComponent implements OnInit {
       console.log('El formulario no es válido');
     }
   }
+
+  updateExistingProduct() {
+    if (this.productForm.valid) {
+      // Aquí docId debe ser la cadena real de Firestore
+      const docId = this.productForm.value.id;
+      console.log('DocID:', docId); // Corrobora en consola que sea algo como "0eOSqvvfx0Bgvl3bUQUG"
+
+      const changes: Partial<Product> = this.productForm.value;
+
+      // Método "updateProduct" de tu servicio (ej. usando updateDoc)
+      this.productService.updateProduct(docId, changes)
+        .then(() => {
+          console.log('Producto actualizado parcialmente');
+          this.openSnackBar('Producto actualizado', 'Cerrar');
+        })
+        .catch((err) => console.error('Error al actualizar:', err));
+    }
+  }
+
 
 
   async onSubmit(): Promise<DocumentReference<any, DocumentData> | undefined> {
@@ -240,9 +357,6 @@ export class CreateProductComponent implements OnInit {
     ];
   }
 
-
-
-
   createSecondStep() {
     this.secondData = [
       {
@@ -289,7 +403,8 @@ export class CreateProductComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: Color | undefined) => {
-      if (result) { // Solo actúa si hay un resultado (el color creado)
+      if (result) {
+        // Solo actúa si hay un resultado (el color creado)
         this.colors.push(result); // Añade el nuevo color a la lista
         this.openSnackBar(`El Color ${result.name} ha sido creado`, 'Cerrar');
       }
@@ -309,7 +424,6 @@ export class CreateProductComponent implements OnInit {
       });
   }
 
-
   openCreateSizeDialog(): void {
     const dialogRef = this.dialog.open(CreateSizeComponent, {
       data: this.color, // Si no necesitas pasar datos, puedes dejarlo vacío
@@ -318,16 +432,21 @@ export class CreateProductComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.configurationSizeService.getSizeFromCollection().then((sizes) => {
-          this.sizes = sizes; // Actualiza la lista de tamaños con los datos más recientes
-          this.openSnackBar(`El Tamaño ${result.name} ha sido creado`, 'Cerrar');
-        }).catch((error) => {
-          console.error('Error al actualizar la lista de tamaños:', error);
-        });
+        this.configurationSizeService
+          .getSizeFromCollection()
+          .then((sizes) => {
+            this.sizes = sizes; // Actualiza la lista de tamaños con los datos más recientes
+            this.openSnackBar(
+              `El Tamaño ${result.name} ha sido creado`,
+              'Cerrar'
+            );
+          })
+          .catch((error) => {
+            console.error('Error al actualizar la lista de tamaños:', error);
+          });
       }
     });
   }
-
 
   calculateTotalStock() {
     const inventory = this.productForm.get('inventory') as FormArray;
@@ -345,7 +464,6 @@ export class CreateProductComponent implements OnInit {
       );
       const length = products.length;
       this.lengthOfAllProducts = length;
-      this.productForm.get('id').setValue(length, { emitEvent: false });
     } catch (error) {
       console.error('Error al obtener productos:', error);
     }
@@ -474,6 +592,4 @@ export class CreateProductComponent implements OnInit {
   deleteImage(inventoryItemIndex: number, imageIndex: number) {
     this.getImagesFormArray(inventoryItemIndex).removeAt(imageIndex);
   }
-
-
 }

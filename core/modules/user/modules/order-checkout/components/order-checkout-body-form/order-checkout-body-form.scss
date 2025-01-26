@@ -3,10 +3,11 @@
 :host {
   padding: 0;
   width: 100%;
-  .pac-container {
-    background-color: red;
-  }
+  position: relative;
   & section {
+    position: absolute;
+    top: 0;
+    width: 100%;
     & form {
       padding-bottom: 72px;
       ::ng-deep {
@@ -19,6 +20,9 @@
             }
           }
         }
+      }
+      @media (width >= 1008px) {
+        padding-bottom: 0;
       }
     }
   }

@@ -20,6 +20,7 @@ import { SeeProductComponent } from '../see-product/see-product.component';
 import { Product } from '../../../../interface/products';
 import { SidebarService } from '../../../../services/sidebar.service';
 import { CreateProductComponent } from '../../create.product/create.product.component';
+import { Router, RouterModule } from '@angular/router';
 
 const MAT = [
   MatRadioModule,
@@ -49,11 +50,11 @@ const CRUD = [
     FormsModule,
     MatTableModule,
     MatRippleModule,
-    SeeProductComponent,
+    RouterModule,
     CreateProductComponent,
     ...MAT,
     ...CRUD
-  ],
+],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
   host: {'ngSkipHydration': 'true'}
@@ -121,8 +122,8 @@ export class ProductsComponent {
   }
 
   setProductOnRow(row: Product) {
-    this.selectedProduct = row;
-    this.selectedProductSide = true;
+    console.log('Navigating to: ', ['admin/products', row.slug]);
+    this.router.navigate(['admin/products', row.slug]);
   }
 
   // Control de botones para creación de form inicio
@@ -148,6 +149,7 @@ export class ProductsComponent {
   // Cierre control de botones para creación de form inicio
 
   constructor(
+    private router: Router,
     private productsService: ProductsService,
     private sidebarService: SidebarService
   ) {}

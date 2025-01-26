@@ -22,9 +22,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { OrderCheckoutBodyFormStep1Component } from './steps/order-checkout-body-form-step-1';
 import { OrderCheckoutBodyFormStep2Component } from './steps/order-checkout-body-form-step-2';
-import { OrderCheckoutBodyFormStep3WompiComponent } from './steps/order-checkout-body-form-step-3-wompi';
+import { OrderCheckoutBodyFormStepResume } from './steps/order-checkout-body-form-step-3-wompi';
 import { CartService } from '../../../../services/cart.service';
 import { CheckoutService } from '../../services/checkout.service';
+import { OrderCheckoutActionsComponent } from '../order-checkout-actions/order-checkout-actions.component';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
   selector: 'bel-order-checkout-body-form',
@@ -41,9 +43,8 @@ import { CheckoutService } from '../../services/checkout.service';
     MatStepperModule,
     OrderCheckoutBodyFormStep1Component,
     OrderCheckoutBodyFormStep2Component,
-    OrderCheckoutBodyFormStep3WompiComponent,
-    /*     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireFunctionsModule, */
+    OrderCheckoutBodyFormStepResume,
+    OrderCheckoutActionsComponent,
   ],
   templateUrl: './order-checkout-body-form.html',
   styleUrl: './order-checkout-body-form.scss',
@@ -55,113 +56,91 @@ export class OrderCheckoutBodyFormComponent {
   @ViewChild('wompiForm') wompiForm!: ElementRef<HTMLFormElement>;
   isEditable = true;
   integrity = '';
-  private  integrityFinal! : string
-
+  isMobile = true;
 
   private renderer = inject(Renderer2);
   test = '';
   constructor(
-    private formBuilder: FormBuilder,
     private cartService: CartService,
-    private checkoutService: CheckoutService /* private fns: AngularFireFunctions */
-  ) {
-    /* this.loadIntegrity() */
+    private breakpointObserver: BreakpointObserver,
+    private checkoutService: CheckoutService
+  ) {}
+
+  async generateIntegrityHash(
+    reference: string,
+    amount: number,
+    currency: string,
+    expiration: string
+  ): Promise<string> {
+    const integrityKey = 'test_integrity_6PPJu8LcFTB7UgWkbb9CBd4U9WBaYNXG';
+
+    try {
+      // Concatenar los datos en el orden esperado
+      const concatenatedString = `${reference}${amount}${currency}${expiration}${integrityKey}`;
+      console.log('Cadena concatenada para el hash:', concatenatedString);
+
+      // Codificar la cadena
+      const encodedText = new TextEncoder().encode(concatenatedString);
+
+      // Generar el hash
+      const hashBuffer = await crypto.subtle.digest('SHA-256', encodedText);
+
+      // Convertir el hash a formato hexadecimal
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray
+        .map((b) => b.toString(16).padStart(2, '0'))
+        .join('');
+      console.log('Hash generado:', hashHex);
+
+      return hashHex; // Retornar el hash como string
+    } catch (error) {
+      console.error('Error generando el hash de integridad:', error);
+      throw error; // Asegurar que errores no queden sin manejar
+    }
   }
 
-  /*   async ngOnInit() {
-    // Generar referencia única y actualizar el campo en el formulario de checkout
-    const uniqueReference = this.cartService.generateUniqueReference();
-    this.shoppingCart.patchValue({
-      uniqueReference
-    });
-
-    // Suscribirse a los cambios en mailCtrl y recalcular el hash de integridad
-    this.firstFormGroup.get('mailCtrl')?.valueChanges.subscribe(async (email) => {
-      if (email && this.firstFormGroup.get('mailCtrl')?.valid) { // Verifica que el correo sea válido
-        const integrityHash = await this.checkoutService.generateIntegrityHash(email, uniqueReference);
-        this.integrity = integrityHash;
-        this.shoppingCart.patchValue({
-          integrity: integrityHash,
-          uniqueReference: uniqueReference
-        });
-        console.log('Hash de integridad generado:', integrityHash);
-        console.log('referencia única:', uniqueReference);
-      }
-    });
-  } */
-
-    async generateIntegrityHash(
-      reference: string,
-      amount: number,
-      currency: string,
-      expiration: string
-    ): Promise<string> {
-      const integrityKey = 'test_integrity_6PPJu8LcFTB7UgWkbb9CBd4U9WBaYNXG';
-
-      try {
-        // Concatenar los datos en el orden esperado
-        const concatenatedString = `${reference}${amount}${currency}${expiration}${integrityKey}`;
-        console.log('Cadena concatenada para el hash:', concatenatedString);
-
-        // Codificar la cadena
-        const encodedText = new TextEncoder().encode(concatenatedString);
-
-        // Generar el hash
-        const hashBuffer = await crypto.subtle.digest('SHA-256', encodedText);
-
-        // Convertir el hash a formato hexadecimal
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-        console.log('Hash generado:', hashHex);
-
-        return hashHex; // Retornar el hash como string
-      } catch (error) {
-        console.error('Error generando el hash de integridad:', error);
-        throw error; // Asegurar que errores no queden sin manejar
-      }
-    }
-
   async ngOnInit() {
+    // En lugar de la referencia estática, obtenemos la que se guarda en localStorage
     // Valores estáticos de prueba
-    const staticReference = 'sk8-438k4-xmxm392-sn3m';
-    const staticAmountInCents = 155000; // Ejemplo: 1184.00 COP
     const staticCurrency = 'COP';
-    const staticExpirationTime = new Date(
-      Date.now() + 15 * 60 * 1000
-    ).toISOString(); // Expira en 15 minutos
+    const { reference, expiration } = this.checkoutService.getReferenceData();
+    const dynamicTotalPrice = this.cartService.getTotalPrice() * 100;
+    const expirationTimeISO = expiration.toISOString();
     const staticEmail = 'customer@example.com';
     const publicKey = 'pub_test_d5HTl4x5n04GURQiukcHmIW2QLouM3wg';
 
+
     // Actualizar el formulario `shoppingCart` con los datos estáticos
 
-
     const integrityHash = await this.generateIntegrityHash(
-      staticReference,
-      staticAmountInCents,
+      reference,
+      dynamicTotalPrice,
       staticCurrency,
-      staticExpirationTime
+      expirationTimeISO
     );
 
     this.shoppingCart.patchValue({
-      uniqueReference: staticReference,
-      totalPrice: staticAmountInCents,
+      uniqueReference: reference,
+      totalPrice: dynamicTotalPrice,
       currency: staticCurrency,
-      expiration: staticExpirationTime,
+      expiration: expirationTimeISO,
       publicKey: publicKey,
       integrity: integrityHash,
     });
 
-    console.log('Datos de prueba enviados (sin variaciones):');
-    console.log({
-      reference: staticReference,
-      amount_in_cents: staticAmountInCents,
-      currency: staticCurrency,
-      expiration_time: staticExpirationTime,
-      customer_email: staticEmail,
-      integrity_hash: this.integrityFinal,
-    });
+    this.breakpointObserver
+      .observe(['(max-width: 1007px)'])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          this.isMobile = true;
+          console.log('ismobile');
+        } else {
+          this.isMobile = false;
+          console.log('isDesktop');
+          // Lógica para pantallas mayores a 1007px
+        }
+      });
   }
-
 
   nextStep() {
     this.stepper.next();
@@ -177,28 +156,20 @@ export class OrderCheckoutBodyFormComponent {
     }
   }
 
-  /*  async loadIntegrity() {
-    const integrity = await this.fns.httpsCallable('getIntegrityKey')({}).toPromise();
-    this.shoppingCart.patchValue({ integrity: integrity.integrity });
-    this.test = integrity
-    console.log(this.test);
-
-  } */
-
-  secondFormGroup = this._formBuilder.group({
-    address: ['', []],
-    aditiionalAddress: ['', []],
-    departamento: ['', []],
-    municipio: [{ value: '', disabled: true }, []], // Municipio está deshabilitado inicialmente
-    postalCode: ['', []], // Nuevo campo para código postal
+  firstFormGroup = this._formBuilder.group({
+    mailCtrl: ['', [Validators.required, Validators.email]],
+    nameCtrl: ['', [Validators.required]],
+    phoneCtrl: ['', [Validators.required]], // solo números
+    legalIdTypeCtrl: ['', [Validators.required]],
+    idCtrl: ['', []],
   });
 
-  firstFormGroup = this._formBuilder.group({
-    mailCtrl: ['', []],
-    nameCtrl: ['', []],
-    phoneCtrl: ['', []], // solo números
-    legalIdTypeCtrl: ['', []],
-    idCtrl: ['', []],
+  secondFormGroup = this._formBuilder.group({
+    address: ['', [Validators.required]],
+    aditiionalAddress: ['', []],
+    departamento: ['', [Validators.required]],
+    municipio: [{ value: '', disabled: true }, [Validators.required]], // Municipio está deshabilitado inicialmente
+    postalCode: ['', []], // Nuevo campo para código postal
   });
 
   shoppingCart = this._formBuilder.group({
@@ -207,10 +178,7 @@ export class OrderCheckoutBodyFormComponent {
     currency: ['', []],
     expiration: [''],
     integrity: [''],
-    publicKey: [
-      '',
-      [],
-    ],
+    publicKey: ['', []],
   });
 
   formCheckout = this._formBuilder.group({
@@ -248,7 +216,6 @@ export class OrderCheckoutBodyFormComponent {
         this.shoppingCart.get('expiration')?.value ?? ''
       );
 
-
       this.addHiddenInput(
         form,
         'signature:integrity',
@@ -261,13 +228,7 @@ export class OrderCheckoutBodyFormComponent {
         this.shoppingCart.get('publicKey')?.value ?? ''
       );
 
-
-       // Añade datos opcionales
-/*       this.addHiddenInput(
-        form,
-        'redirect-url',
-        'https://mi-sitio.com/resultado'
-      );
+      // Añade datos opcionales
       this.addHiddenInput(
         form,
         'customer-data:email',
@@ -314,7 +275,7 @@ export class OrderCheckoutBodyFormComponent {
         form,
         'shipping-address:phone-number',
         this.firstFormGroup.get('phoneCtrl')?.value ?? ''
-      ); */
+      );
 
       // Envía el formulario
 
@@ -324,9 +285,9 @@ export class OrderCheckoutBodyFormComponent {
         amountInCents: this.shoppingCart.get('totalPrice')?.value?.toString(),
         reference: this.shoppingCart.get('uniqueReference')?.value,
         signature: this.shoppingCart.get('integrity')?.value,
-        expirationTime: this.shoppingCart.get('expiration')?.value
+        expirationTime: this.shoppingCart.get('expiration')?.value,
 
-  /*       customerEmail: this.firstFormGroup.get('mailCtrl')?.value,
+        customerEmail: this.firstFormGroup.get('mailCtrl')?.value,
         customerFullName: this.firstFormGroup.get('nameCtrl')?.value,
         customerPhoneNumber: this.firstFormGroup.get('phoneCtrl')?.value,
         customerLegalId: this.firstFormGroup.get('idCtrl')?.value,
@@ -334,7 +295,7 @@ export class OrderCheckoutBodyFormComponent {
         addressLine1: this.secondFormGroup.get('address')?.value,
         city: this.secondFormGroup.get('municipio')?.value,
         region: this.secondFormGroup.get('departamento')?.value,
-        country: 'CO', */
+        country: 'CO',
       });
 
       form.submit();

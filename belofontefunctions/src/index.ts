@@ -10,24 +10,41 @@
 import * as functions from 'firebase-functions';
 import * as crypto from 'crypto';
 
-exports.generateSignature = functions.https.onCall((data, context) => {
-  const integrity = functions.config().wompi.integrity; // Obtén la clave
-  console.log('Integrity key:', integrity); // Muestra la clave de integridad en la consola
+// Función HTTP para generar el hash de integridad
+export const generateIntegrityHash = functions.https.onRequest((req, res) => {
+  // Habilitar CORS si es necesario
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
 
-  const { reference, amount_in_cents, currency, expiration_time } = data;
+  // Manejo de las solicitudes preflight
+  if (req.method === "OPTIONS") {
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    res.status(204).send("");
+    return;
+  }
 
-  // Crea la cadena de firma
-  const signatureString = `${reference}${amount_in_cents}${currency}${expiration_time}${integrity}`;
-  const hash = crypto.createHash('sha256').update(signatureString).digest('hex');
-  console.log(integrity)
+  try {
+    const { reference, amount, currency, expiration } = req.body;
 
-  return { signature: hash };
+    // Asegúrate de validar los datos recibidos
+    if (!reference || !amount || !currency || !expiration) {
+      res.status(400).json({ error: "Faltan parámetros necesarios." });
+      return;
+    }
 
-});
+    // Tu clave de integridad (nunca debe exponerse en el cliente)
+    const integrityKey = "test_integrity_6PPJu8LcFTB7UgWkbb9CBd4U9WBaYNXG";
 
-exports.getIntegrityKey = functions.https.onCall((data, context) => {
-  const integrity = functions.config().wompi.integrity;
-  return { integrity };
+    // Generar el hash concatenando los valores en el orden correcto
+    const dataToHash = `${reference}${amount}${currency}${expiration}${integrityKey}`;
+    const hash = crypto.createHmac("sha256", integrityKey).update(dataToHash).digest("hex");
+
+    // Devolver el hash generado
+    res.status(200).json({ integrityHash: hash });
+  } catch (error) {
+    console.error("Error generando el hash:", error);
+    res.status(500).json({ error: "Error interno del servidor." });
+  }
 });
 
 // Start writing functions

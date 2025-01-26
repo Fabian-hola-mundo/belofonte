@@ -25,12 +25,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoute),
     /* provideClientHydration(), */
     provideAnimationsAsync(),
-    provideFirebaseApp(() => {
-      if (isPlatformBrowser(inject(PLATFORM_ID))) {
-         return initializeApp(environment.firebaseConfig);
-      }
-      return initializeServerApp(environment.firebaseConfig, {});
-   }),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+
     provideAuth(() => getAuth()),
 
     provideFunctions(() => getFunctions()),

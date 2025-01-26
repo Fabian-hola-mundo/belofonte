@@ -1,26 +1,42 @@
 <section>
-  <form #wompiForm [formGroup]="formCheckout" action="https://checkout.wompi.co/p/" method="GET"   target="_blank">
-    <mat-stepper linear #stepper>
-      <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+  <form
+    #wompiForm
+    [formGroup]="formCheckout"
+    action="https://checkout.wompi.co/p/"
+    method="GET"
+    target="_blank"
+  >
+    <mat-stepper linear #stepper >
+      <mat-step class="data" [stepControl]="firstFormGroup" [editable]="isEditable">
         <form [formGroup]="firstFormGroup">
           <ng-template matStepLabel>Datos personales</ng-template>
-          <bel-order-checkout-body-form-step-1 [stepper]="this.stepper" [formGroup]="firstFormGroup" />
+          <bel-order-checkout-body-form-step-1
+            [stepper]="this.stepper"
+            [formGroup]="firstFormGroup"
+          />
         </form>
       </mat-step>
-      <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+      <mat-step class="direction" [stepControl]="secondFormGroup" [editable]="isEditable">
         <form [formGroup]="secondFormGroup">
           <ng-template matStepLabel>Dirección</ng-template>
-          <bel-order-checkout-body-form-step-2 [formGroup]="secondFormGroup"/>
+          <bel-order-checkout-body-form-step-2 [formGroup]="secondFormGroup" />
         </form>
       </mat-step>
-      <mat-step>
+      <mat-step class="resume" *ngIf="isMobile">
         <ng-template matStepLabel>Resumen</ng-template>
         <p>Resumen de tu pedido</p>
         <div>
-          <bel-order-checkout-body-form-step-3-wompi/>
+          <bel-order-checkout-body-form-step-resume />
         </div>
       </mat-step>
     </mat-stepper>
-
   </form>
+
+  <bel-order-checkout-actions
+  (backClicked)="prevStep()"
+  (forwardClicked)="nextStep()"
+  (payClicked)="submitToWompi(wompiForm)"
+  [orderCheckoutBodyForm]="stepper.selectedIndex"
+  ></bel-order-checkout-actions>
+
 </section>

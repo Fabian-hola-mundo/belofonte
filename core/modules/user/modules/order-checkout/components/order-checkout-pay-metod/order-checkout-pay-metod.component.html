@@ -1,0 +1,21 @@
+<section class="pay-metod">
+  <h3>Método de envío</h3>
+
+  <div class="pay-metod__options">
+    <div
+      class="pay-metod__options--template"
+      *ngFor="let option of deliveryOptions"
+      [ngClass]="{'active': option.class === 'active', 'disable': option.class === 'disable'}"
+      matRipple
+      (click)="onOptionClick(option)">
+      <div class="main">
+        <h4>{{ option.type }}</h4>
+        <p>{{ option.description }}</p>
+      </div>
+      <div class="price">
+        <p class="price__regular" [ngClass]="{'free-shipping': freeShipping}">{{ option.regularPrice }}</p>
+        <h5 class="price__promo" *ngIf="freeShipping">Envío Gratis</h5>
+      </div>
+    </div>
+  </div>
+</section>

@@ -4,6 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { OrderCheckoutBodyFormComponent } from '../order-checkout-body-form/order-checkout-body-form';
 import { EventEmitter } from 'stream';
+import { MatStepper } from '@angular/material/stepper';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { ResumenDesktopComponent } from '../order-checkout-resumen-desktop/resumen.desktop.component';
 
 @Component({
   selector: 'bel-order-checkout-body',
@@ -13,12 +16,39 @@ import { EventEmitter } from 'stream';
     MatButtonModule,
     MatExpansionModule,
     OrderCheckoutBodyFormComponent,
+    ResumenDesktopComponent
   ],
-  template: ` <bel-order-checkout-body-form /> `,
+  template: `
+  <bel-order-checkout-body-form />
+  <bel-resumen-desktop [ngClass]="{ 'deviceInactive': isMobile }"/>
+
+  `,
   styleUrl: './order-checkout-body.scss',
 })
 export class OrderCheckoutBodyComponent {
+  isMobile = true;
   readonly panelOpenState = signal(false);
+  @ViewChild('stepper', { static: false }) stepper?: MatStepper;
   @ViewChild(OrderCheckoutBodyFormComponent)
   orderCheckoutBodyForm!: OrderCheckoutBodyFormComponent;
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+  ){
+
+  }
+
+  ngOnInit() {
+    this.breakpointObserver
+      .observe(['(max-width: 1007px)'])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          this.isMobile = true;
+          console.log('ismobile');
+        } else {
+          this.isMobile = false;
+          console.log('isDesktop');
+          // Lógica para pantallas mayores a 1007px
+        }
+      });
+  }
 }

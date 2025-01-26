@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 declare const google: any; // Asegúrate de que el objeto `google` esté accesible globalmente
 
 @Component({
-  selector: 'bel-order-checkout-body-form-step-3-wompi',
+  selector: 'bel-order-checkout-body-form-step-resume',
   standalone: true,
   imports: [
     CommonModule,
@@ -40,4 +40,4 @@ declare const google: any; // Asegúrate de que el objeto `google` esté accesib
     `,
   ],
 })
-export class OrderCheckoutBodyFormStep3WompiComponent {}
+export class OrderCheckoutBodyFormStepResume {}

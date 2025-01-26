@@ -1,0 +1,70 @@
+@import "../../../../../../../src/styles.scss";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  .pay-metod {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    &__options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      &--template {
+        border: 1px solid var(--md-sys-color-outline-variant);
+        @extend %fullPadding;
+        display: flex;
+        gap: 12px;
+        flex-wrap: nowrap;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 200ms;
+        & .main {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        & .price {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: space-between;
+          & p {
+            width: fit-content;
+            white-space: nowrap;
+          }
+          &__regular {
+
+          }
+          &__promo {
+            color: var(--md-success-color-primary);
+            text-align: right;
+            white-space: nowrap;
+          }
+          & .free-shipping {
+            text-decoration: line-through;
+            text-decoration-color: var(--md-sys-color-on-error);
+            text-decoration-thickness: 2px;
+          }
+        }
+        &:hover {
+          background-color: var(--md-sys-color-surface-variant);
+          transform: translateY(-2px);
+          box-shadow: var(--md-shadow);
+        }
+      }
+      & .active {
+        border: 2px solid var(--md-success-color-primary);
+      }
+      & .disable {
+        opacity: 0.3;
+        &:hover {
+          background-color: transparent;
+
+        }
+      }
+    }
+  }
+}

@@ -44,27 +44,6 @@
   </mat-sidenav-content>
 
   <mat-sidenav
-    #seeProduct
-    [opened]="selectedProductSide"
-    (closed)="clearSides()"
-    [mode]="mode.value!"
-    position="start"
-    *ngIf="!createdProductSide"
-  >
-    <div class="close">
-      <h3>Ver producto</h3>
-      <button
-        (click)="selectedProductSide = false"
-        mat-icon-button
-        color="primary"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-    <app-see-product [product]="selectedProduct"></app-see-product>
-  </mat-sidenav>
-
-  <mat-sidenav
     *ngIf="!selectedProductSide"
     [opened]="createdProductSide"
     (closed)="clearSides()"

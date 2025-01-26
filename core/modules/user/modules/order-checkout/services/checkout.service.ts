@@ -1,65 +1,59 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CartService } from '../../../services/cart.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CheckoutService {
-  private publicKey = 'pub_test_d5HTl4x5n04GURQiukcHmIW2QLouM3wg';
-  private scriptLoaded = false;
-  private validForm = false
+  private readonly LOCAL_STORAGE_REF_KEY = 'checkoutReference';
+  private readonly LOCAL_STORAGE_EXP_KEY = 'checkoutReferenceExpiration';
+  private readonly REFERENCE_LIFETIME_MS = 15 * 60 * 1000; // 15 min
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
-  setValidToTrue() {
-    this.validForm = true;
-  }
-
-  initiatePayment(customer: any, reference: string) {
-    const expirationTime = new Date(Date.now() + 15 * 60 * 1000).toISOString(); // Expira en 15 minutos
-    const payload = {
-      amount_in_cents: this.cartService.getTotalPrice() * 100,
-      currency: 'COP',
-      customer_email: customer,
-      expiration_time: expirationTime,
-      reference: reference,
-    };
-    return payload;
-  }
-
-  staticPayload = {
-    amount_in_cents: 11840,
-    currency: 'COP',
-    customer_email: 'customer@example.com',
-    expiration_time: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-    reference: 'mock_order_12345',
-  };
-
-
- /*  makeSignature() {
-    const integrity = 'test_integrity_6PPJu8LcFTB7UgWkbb9CBd4U9WBaYNXG';
-    const payload = this.initiatePayment();
-    const signature =
-      payload.reference +
-      payload.amount_in_cents +
-      payload.currency +
-      payload.expiration_time +
-      integrity;
-    return signature;
-  } */
-
-
-     async generateIntegrityHash(reference: string, amount: number, currency: string, expiration: string){
-
-      const integrityKey = 'test_integrity_6PPJu8LcFTB7UgWkbb9CBd4U9WBaYNXG'
-
-      const cadenaConcatenada  = `${reference}${amount}${currency}${expiration}`;
-
-      const encondedText = new TextEncoder().encode(cadenaConcatenada);
-      const hashBuffer = await crypto.subtle.digest("SHA-256", encondedText);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map((b) => b.toString(16).padStart(2, "0")).join(""); // "37c8407747e595535433ef8f6a811d853cd943046624a0ec04662b17bbf33bf5"
-
+  /**
+   * Obtiene (o genera) la referencia y su expiración, manteniéndola en localStorage.
+   * Retorna un objeto con { reference, expiration: Date }.
+   */
+  getReferenceData(): { reference: string; expiration: Date } {
+    if (!isPlatformBrowser(this.platformId)) {
+      // En SSR no existe localStorage, retornamos algo por defecto o manejas otro flujo
+      return {
+        reference: 'SSR_REFERENCE',
+        expiration: new Date(Date.now() + this.REFERENCE_LIFETIME_MS),
+      };
     }
 
+    const now = Date.now();
+    let storedRef = localStorage.getItem(this.LOCAL_STORAGE_REF_KEY);
+    let storedExp = localStorage.getItem(this.LOCAL_STORAGE_EXP_KEY);
+
+    if (storedRef && storedExp) {
+      const expirationTime = parseInt(storedExp, 10);
+      // Si no ha expirado, reutiliza lo guardado
+      if (expirationTime > now) {
+        return {
+          reference: storedRef,
+          expiration: new Date(expirationTime),
+        };
+      }
+    }
+
+    // Si no existe o expiró, se genera todo de nuevo
+    const newRef = `SK8-${uuidv4()}`;
+    const newExpMs = now + this.REFERENCE_LIFETIME_MS;
+
+    localStorage.setItem(this.LOCAL_STORAGE_REF_KEY, newRef);
+    localStorage.setItem(this.LOCAL_STORAGE_EXP_KEY, newExpMs.toString());
+
+    return {
+      reference: newRef,
+      expiration: new Date(newExpMs),
+    };
+  }
 }

@@ -26,11 +26,18 @@
     &__module {
       display: flex;
       gap: 16px;
-      & img {
-        aspect-ratio: 9 / 13;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 8px;
+      & figure {
+        & .skeleton-card {
+          aspect-ratio: 9 / 13;
+          height: 200px;
+          border-radius: 8px;
+        }
+        & img {
+          aspect-ratio: 9 / 13;
+          height: 200px;
+          object-fit: cover;
+          border-radius: 8px;
+        }
       }
       & .info {
         display: flex;
