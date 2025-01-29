@@ -1,14 +1,8 @@
 {
   "projects": {
-    "default": "belofonte-sw"
+    "default": "belofonte-sw",
+    "belofonte": "belofonte-sw",
+        "manualidades": "chanel-manualidades-3f653"
   },
-  "targets": {
-    "belofonte-sw": {
-      "hosting": {
-        "belofonte": [
-          "belofonte-sw"
-        ]
-      }
-    }
-  }
+  "etags": {}
 }

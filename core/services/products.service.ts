@@ -3,17 +3,14 @@ import {
   Firestore,
   collection,
   addDoc,
-  collectionData,
   getDocs,
   doc,
   getDoc,
   query,
   where,
   setDoc,
-  updateDoc,
   deleteDoc,
 } from '@angular/fire/firestore';
-import { Product } from '../modules/admin/interface/products';
 
 @Injectable({
   providedIn: 'root',
