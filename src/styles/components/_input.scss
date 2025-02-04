@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 mat-form-field {
   width: 100%;
   & mat-icon, span {
@@ -7,3 +8,9 @@ mat-form-field {
     padding-right: 8px;
   }
 }
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+@include mat.form-field-overrides((
+  filled-caret-color: orange,
+  filled-focus-active-indicator-color: red,
+));

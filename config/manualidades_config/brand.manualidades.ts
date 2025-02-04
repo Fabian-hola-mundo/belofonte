@@ -1,4 +1,8 @@
-const logo = `   <svg
+import { IBrandConfig } from '../default_config/brand.config';
+
+export const BRAND_CONFIG: IBrandConfig = {
+  name: 'manualidades',
+  logoPath: `   <svg
       width="74"
       height="62"
       viewBox="0 0 74 62"
@@ -24,4 +28,6 @@ const logo = `   <svg
           <rect width="74" height="62" fill="white" />
         </clipPath>
       </defs>
-    </svg>`
+    </svg>`,
+  // ...
+};
