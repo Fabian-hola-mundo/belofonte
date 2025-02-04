@@ -1,0 +1,13 @@
+{
+  "basics": {
+    "name": "Belofonte",
+    "description": "A simple and clean theme for Hugo",
+    "author": "Hugo Authors",
+    "license": "MIT",
+    "version": "1.0.0"
+  },
+  "graphics": {
+    "favicon": "src/favicon.ico",
+    "logo": "belofonte_config/assets/logo.ts"
+  }
+}

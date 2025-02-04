@@ -9,17 +9,11 @@
       "firebase-debug.*.log",
       "*.local"
     ],
-    "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run build"
-    ]
+    "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run build"]
   },
-  "hosting":     {
+  "hosting": {
     "public": "./dist/belofonte/browser",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "frameworksBackend": {
       "region": "us-central1"
     },
