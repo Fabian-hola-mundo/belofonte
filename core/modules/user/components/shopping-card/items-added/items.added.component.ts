@@ -4,7 +4,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { ShoppingItemComponent } from "../shopping-item/shopping-item.component";
 import { CommonModule } from '@angular/common';
-import { CartItem, CartService } from '../../../services/cart.service';
+import { CartService } from '../../../services/cart.service';
+import { CartItem } from '../../../modules/order-checkout/interfaces/cart-item.interface';
 
 @Component({
   selector: 'bel-items-added',

@@ -1,4 +1,4 @@
-import { ApplicationConfig, inject, PLATFORM_ID } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, inject, PLATFORM_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { appRoute } from './app.routes';
@@ -19,19 +19,18 @@ import {
   initializeServerApp,
 } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { HttpClientModule } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoute),
-    /* provideClientHydration(), */
+    provideClientHydration(),
+    importProvidersFrom(HttpClientModule),
     provideAnimationsAsync(),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-
     provideAuth(() => getAuth()),
-
     provideFunctions(() => getFunctions()),
     provideAnalytics(() => getAnalytics()),
-    ScreenTrackingService,
     provideFirestore(() => getFirestore()),
   ],
 };

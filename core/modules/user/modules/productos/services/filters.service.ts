@@ -13,7 +13,6 @@ export class FiltersService {
 
   // Método para actualizar el valor de inProducts
   setInProducts(value: boolean): void {
-    console.log("Setting inProducts to", value); // Log para verificar
     this.inProductsSubject.next(value);
   }
 

@@ -1,0 +1,17 @@
+::ng-deep {
+  .mat-drawer.mat-drawer-side {
+    width: 250px !important;
+   }
+
+   .mat-drawer-content {
+     margin-left: 255px !important;
+     & .mat-drawer-content {
+       margin-left: 0 !important;
+     }
+   }
+   @media (width < 1007px) {
+    .mat-drawer-content {
+      margin-left: 0 !important;
+    }
+   }
+}

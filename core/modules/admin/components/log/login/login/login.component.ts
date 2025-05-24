@@ -70,7 +70,6 @@ export class LoginComponent implements OnDestroy {
 
       try {
         await signInWithEmailAndPassword(this.auth, email, password);
-        console.log('Login exitoso');
         this.router.navigate(['/admin/panel']); // Redirige al usuario al panel
       } catch (error: any) {
         this.handleLoginError(error);

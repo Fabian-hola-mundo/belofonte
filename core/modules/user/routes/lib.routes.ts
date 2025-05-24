@@ -5,6 +5,7 @@ import LandingPageComponent from '../modules/home/containers';
 import { ProductContainer } from '../modules/product/containers/product.container';
 import { OrderCheckoutContainer } from '../modules/order-checkout/containers/order.checkout.container';
 import { OrderCheckoutResultContainer } from '../modules/order-checkout/containers/order.checkout.result.container';
+import { PaymentResultComponent } from '../modules/order-checkout/components/payment-result/payment-result.component';
 
 export const layutRoutes: Route[] = [
   {
@@ -23,6 +24,14 @@ export const layutRoutes: Route[] = [
             (m) => m.ProductsListRoutingModule
           ),
         pathMatch: 'full',
+      },
+      {
+        path: 'payment-result',
+        component: PaymentResultComponent,
+      },
+      {
+        path: 'payment-result/:id',
+        component: PaymentResultComponent,
       },
       { path: '', redirectTo: '', pathMatch: 'full' },
 

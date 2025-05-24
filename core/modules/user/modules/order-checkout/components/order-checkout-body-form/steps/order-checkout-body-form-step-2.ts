@@ -184,10 +184,6 @@ export class OrderCheckoutBodyFormStep2Component implements AfterViewInit {
             this.formGroup.get('municipio')?.enable();
             this.formGroup.get('postalCode')?.setValue(postalCode);
 
-            console.log('Dirección completa:', place.formatted_address);
-            console.log('Departamento:', departamento);
-            console.log('Municipio:', municipio);
-            console.log('Código Postal:', postalCode);
           }
         });
       } else {

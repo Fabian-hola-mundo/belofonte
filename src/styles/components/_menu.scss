@@ -6,3 +6,41 @@
     }
   }
 }
+
+@include mat.menu-overrides((
+  // Define la forma del contenedor (por ejemplo, border-radius)
+  container-shape: 8px,
+  // Espaciados de los dividers (arriba y abajo)
+  divider-bottom-spacing: 8px,
+  divider-top-spacing: 8px,
+  // Espaciado entre items
+  item-spacing: 4px,
+  // Tamaño del icono del item
+  item-icon-size: 24px,
+  // Espaciados laterales para items sin o con icono
+  item-leading-spacing: 16px,
+  item-trailing-spacing: 16px,
+  item-with-icon-leading-spacing: 12px,
+  item-with-icon-trailing-spacing: 12px,
+  // Sombra de elevación del contenedor
+  container-elevation-shadow: 0px 4px 6px var(--md-sys-color-shadow),
+
+  // Colores para el texto del label e iconos
+  item-label-text-color: var(--md-sys-color-on-surface),
+  item-icon-color: var(--md-sys-color-on-surface-variant),
+
+  // Colores para los estados hover y focus
+  item-hover-state-layer-color: var(--md-sys-color-on-surface),
+  item-focus-state-layer-color: var(--md-sys-color-on-surface),
+
+  // Colores del contenedor y de los dividers
+  container-color: var(--md-sys-color-surface-container),
+  divider-color: var(--md-sys-color-surface-variant),
+
+  // Tipografía para el texto del label
+  item-label-text-font: var(--md-sys-label-large-font),
+  item-label-text-size: var(--md-sys-label-large-size),
+  item-label-text-tracking: var(--md-sys-label-large-tracking),
+  item-label-text-line-height: var(--md-sys-label-large-line-height),
+  item-label-text-weight: 400
+));

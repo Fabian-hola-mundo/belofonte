@@ -1,0 +1,10 @@
+<h2>Resultado de tu pago</h2>
+<div *ngIf="transactionData">
+  <p>Estado: {{ transactionData.status }}</p>
+  <p>Referencia: {{ transactionData.reference }}</p>
+  <p>Monto: {{ transactionData.amount_in_cents / 100 | currency:'COP':'symbol' }}</p>
+  <!-- lo que desees mostrar -->
+</div>
+<div *ngIf="errorMessage">
+  <p>Error: {{ errorMessage }}</p>
+</div>

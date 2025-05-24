@@ -8,4 +8,4 @@ export interface CartItem {
   size?: string;
   color?: string;
   slug: string;
-}
+} 

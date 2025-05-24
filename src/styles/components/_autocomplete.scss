@@ -1,0 +1,5 @@
+@include mat.autocomplete-overrides((
+  container-shape: 8px, // Define el border-radius del panel
+  container-elevation-shadow: var(--md-shadow), // Sombra de elevación
+  background-color: var(--md-sys-color-surface) // Color de fondo del panel
+));

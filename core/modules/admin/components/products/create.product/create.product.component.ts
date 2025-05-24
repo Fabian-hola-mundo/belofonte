@@ -183,10 +183,8 @@ export class CreateProductComponent implements OnInit {
       const formValue = { ...this.productForm.value };
       formValue.price = formValue.price.replace(/\D/g, ''); // Limpiar formato para enviar solo números
       this.productService.addProduct(formValue).then(() => {
-        console.log('Producto creado exitosamente');
       });
     } else {
-      console.log('El formulario no es válido');
     }
   }
 
@@ -200,7 +198,6 @@ export class CreateProductComponent implements OnInit {
       this.openSnackBar(`El producto ha sido creado`, 'Cerrar');
       this.side.close();
       this.productForm.reset(); // Reinicia el formulario
-      console.log('woks' + this.productForm.value);
 
       return response as DocumentReference<any, DocumentData>;
     } catch (error) {

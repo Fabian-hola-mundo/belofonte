@@ -1,5 +1,8 @@
 .mat-expansion-panel {
   @extend .surface-container-low;
+  * {
+    color: var(--md-sys-color-on-surface) !important;
+  }
   & .mat-expansion-panel-header {
     & .mat-content {
       & .mat-expansion-panel-header-title {

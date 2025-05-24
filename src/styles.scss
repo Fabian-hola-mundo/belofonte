@@ -1,4 +1,4 @@
-
+@use '@angular/material' as mat;
 @import "./styles/base";
 @import "./styles/tokens/tokens";
 @import "./styles/tokens/colors.module";
@@ -6,9 +6,11 @@
 
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
+
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
 
 %success-palete-ligth {
   --md-success-color-primary: rgb(76 102 43);

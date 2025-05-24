@@ -36,7 +36,6 @@ export class ProductsListComponent implements OnInit {
 
   openProduct(product: Product){
     this.selectedProductService.setSelectedProduct(product)
-    console.log(product.slug);
     this.router.navigate(['/producto', product.slug])
 
   }

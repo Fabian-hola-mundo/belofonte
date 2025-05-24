@@ -20,6 +20,22 @@ export class CheckoutService {
    * Obtiene (o genera) la referencia y su expiración, manteniéndola en localStorage.
    * Retorna un objeto con { reference, expiration: Date }.
    */
+  // checkout.service.ts
+  resetReferenceData(): { reference: string; expiration: Date } {
+    const now = Date.now();
+    const newRef = `SK8-${uuidv4()}`;
+    const newExpMs = now + this.REFERENCE_LIFETIME_MS;
+
+    // Guardarlo en LocalStorage:
+    localStorage.setItem(this.LOCAL_STORAGE_REF_KEY, newRef);
+    localStorage.setItem(this.LOCAL_STORAGE_EXP_KEY, newExpMs.toString());
+
+    return {
+      reference: newRef,
+      expiration: new Date(newExpMs),
+    };
+  }
+
   getReferenceData(): { reference: string; expiration: Date } {
     if (!isPlatformBrowser(this.platformId)) {
       // En SSR no existe localStorage, retornamos algo por defecto o manejas otro flujo

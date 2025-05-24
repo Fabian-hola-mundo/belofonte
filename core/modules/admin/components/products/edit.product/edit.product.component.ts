@@ -281,10 +281,8 @@ export class EditProductComponent {
       const formValue = { ...this.productForm.value };
       formValue.price = formValue.price.replace(/\D/g, ''); // Limpiar formato para enviar solo números
       this.productService.addProduct(formValue).then(() => {
-        console.log('Producto creado exitosamente');
       });
     } else {
-      console.log('El formulario no es válido');
     }
   }
 
@@ -292,14 +290,12 @@ export class EditProductComponent {
     if (this.productForm.valid) {
       // Aquí docId debe ser la cadena real de Firestore
       const docId = this.productForm.value.id;
-      console.log('DocID:', docId); // Corrobora en consola que sea algo como "0eOSqvvfx0Bgvl3bUQUG"
 
       const changes: Partial<Product> = this.productForm.value;
 
       // Método "updateProduct" de tu servicio (ej. usando updateDoc)
       this.productService.updateProduct(docId, changes)
         .then(() => {
-          console.log('Producto actualizado parcialmente');
           this.openSnackBar('Producto actualizado', 'Cerrar');
         })
         .catch((err) => console.error('Error al actualizar:', err));
@@ -317,7 +313,6 @@ export class EditProductComponent {
       this.openSnackBar(`El producto ha sido creado`, 'Cerrar');
       this.side.close();
       this.productForm.reset(); // Reinicia el formulario
-      console.log('woks' + this.productForm.value);
 
       return response as DocumentReference<any, DocumentData>;
     } catch (error) {

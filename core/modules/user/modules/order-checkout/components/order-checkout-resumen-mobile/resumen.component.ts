@@ -36,19 +36,16 @@ export class ResumenComponent {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['orderCheckoutBodyForm'] && this.orderCheckoutBodyForm) {
-      console.log('orderCheckoutBodyForm actualizado:', this.orderCheckoutBodyForm);
     }
   }
 
   ngAfterViewInit() {
     if (this.orderCheckoutBodyForm) {
-      console.log('orderCheckoutBodyForm inicializado:', this.orderCheckoutBodyForm);
     }
   }
 
   onPayClick() {
     this.payClicked.emit(); // Emitimos el evento para indicar que el botón fue presionado
-    console.log('Resumen Emit');
 
   }
 

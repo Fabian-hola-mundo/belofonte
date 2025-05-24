@@ -81,7 +81,6 @@ export class SeeProductComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.activeRoute.paramMap.subscribe((params) => {
       this.slug = params.get('slug');
-      console.log(this.slug);
       this.loadData();
     });
   }
@@ -124,7 +123,6 @@ export class SeeProductComponent implements OnInit {
     this.dataFromCollection = await this.productService.getDataFromCollection(
       'products'
     );
-    console.log('Data from collection:', this.dataFromCollection); // Verifica los datos
     this.getActiveData();
   }
 
@@ -135,7 +133,6 @@ export class SeeProductComponent implements OnInit {
       );
       if (foundProduct) {
         this.selectedProduct = foundProduct;
-        console.log(this.selectedProduct);
       } else {
       }
     }

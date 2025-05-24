@@ -6,6 +6,7 @@ import { AdminLayoutComponent } from '../containers/layout.component';
 import { SeeProductComponent } from '../components/products/components/see-product/see-product.component';
 import { ProductsComponent } from '../components/products/components/products/products.component';
 import { AuthGuard } from '../guard/auth.guard';
+import { OrdersComponent } from '../components/orders/components/orders.component';
 
 export const adminRoutes: Routes = [
   {
@@ -16,6 +17,11 @@ export const adminRoutes: Routes = [
       {
         path: 'products',
         component: ProductsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'pedidos',
+        component: OrdersComponent,
         pathMatch: 'full',
       },
       {

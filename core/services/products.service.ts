@@ -66,7 +66,6 @@ export class ProductsService {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc: any) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, ' => ', doc.data());
     });
   }
 

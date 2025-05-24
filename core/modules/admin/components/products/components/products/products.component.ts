@@ -122,7 +122,6 @@ export class ProductsComponent {
   }
 
   setProductOnRow(row: Product) {
-    console.log('Navigating to: ', ['admin/products', row.slug]);
     this.router.navigate(['admin/products', row.slug]);
   }
 
