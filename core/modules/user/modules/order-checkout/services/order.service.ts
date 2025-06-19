@@ -149,4 +149,23 @@ export class OrderService {
       });
     }
   }
+
+  // Obtener todas las órdenes
+  async getAllOrders(): Promise<Order[]> {
+    try {
+      const ordersQuery = query(
+        collection(this.firestore, this.ordersCollection),
+        orderBy('createdAt', 'desc')
+      );
+
+      const querySnapshot = await getDocs(ordersQuery);
+      return querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as Order));
+    } catch (error) {
+      console.error('Error al obtener las órdenes:', error);
+      throw error;
+    }
+  }
 } 

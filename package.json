@@ -4,6 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:emulators": "firebase emulators:start --only auth,firestore",
+    "dev": "concurrently \"npm run start:emulators\" \"ng serve\"",
     "build": "ng build",
     "build:ssr": "ng build && ng run belofonte:server",
     "serve:ssr": "node dist/belofonte/server/main.js",

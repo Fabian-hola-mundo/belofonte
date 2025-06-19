@@ -4,11 +4,25 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CheckoutService } from '../../services/checkout.service';
 import { OrderService } from '../../services/order.service';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'bel-payment-result',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterModule],
+  imports: [
+    CommonModule,
+    HttpClientModule,
+    RouterModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: './payment-result.component.html',
   styleUrl: './payment-result.component.scss'
 })
@@ -17,6 +31,7 @@ export class PaymentResultComponent implements OnInit {
   transactionData: any;
   errorMessage: string = '';
   orderId: string | null = null;
+  searchId: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -36,10 +51,57 @@ export class PaymentResultComponent implements OnInit {
 
       if (this.transactionId) {
         await this.getTransactionDetails(this.transactionId);
-      } else {
-        this.errorMessage = 'No se recibió un ID de transacción en la URL.';
       }
     });
+  }
+
+  async searchTransaction() {
+    if (this.searchId) {
+      await this.getTransactionDetails(this.searchId);
+    }
+  }
+
+  getStatusIcon(): string {
+    if (!this.transactionData) return 'help_outline';
+    switch (this.transactionData.status) {
+      case 'APPROVED': return 'check_circle';
+      case 'REJECTED': return 'error';
+      case 'ERROR': return 'error';
+      default: return 'help_outline';
+    }
+  }
+
+  getStatusText(): string {
+    switch (this.transactionData.status) {
+      case 'APPROVED':
+        return '¡Pago Aprobado!';
+      case 'PENDING':
+        return 'Pago Pendiente';
+      case 'REJECTED':
+        return 'Pago Rechazado';
+      default:
+        return 'Estado Desconocido';
+    }
+  }
+
+  getStatusTitle(): string {
+    if (!this.transactionData) return '';
+    switch (this.transactionData.status) {
+      case 'APPROVED': return '¡Pago aprobado!';
+      case 'REJECTED': return 'Pago declinado';
+      case 'ERROR': return 'Error';
+      default: return 'Estado desconocido';
+    }
+  }
+
+  getStatusColorClass(): string {
+    if (!this.transactionData) return '';
+    switch (this.transactionData.status) {
+      case 'APPROVED': return 'payment-result__status--approved';
+      case 'REJECTED': return 'payment-result__status--rejected';
+      case 'ERROR': return 'payment-result__status--error';
+      default: return '';
+    }
   }
 
   async getTransactionDetails(id: string) {
@@ -52,7 +114,26 @@ export class PaymentResultComponent implements OnInit {
         .get(`https://sandbox.wompi.co/v1/transactions/${id}`, { headers })
         .toPromise();
 
-      this.transactionData = (response as any).data;
+      const data = (response as any).data;
+      // Completo la información del pagador y dirección de entrega
+      this.transactionData = {
+        ...data,
+        payer: {
+          email: data.customer_email,
+          name: data.customer_data?.full_name,
+          phone: data.customer_data?.phone_number,
+          document: data.customer_data?.legal_id
+        },
+        shipping: {
+          address: data.shipping_address?.address_line_1,
+          city: data.shipping_address?.city,
+          region: data.shipping_address?.region,
+          country: data.shipping_address?.country,
+          phone: data.shipping_address?.phone_number
+        }
+      };
+      console.log(this.transactionData);
+      this.errorMessage = '';
 
       if (this.transactionData.status === 'APPROVED') {
         if (this.orderId) {
@@ -86,6 +167,7 @@ export class PaymentResultComponent implements OnInit {
     } catch (error) {
       console.error('Error consultando transacción:', error);
       this.errorMessage = 'Error consultando transacción';
+      this.transactionData = null;
     }
   }
 

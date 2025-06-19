@@ -1,0 +1,8 @@
+{
+  "/__/auth/**": {
+    "target": "https://belofonte-sw.firebaseapp.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+} 

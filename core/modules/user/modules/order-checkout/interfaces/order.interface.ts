@@ -34,6 +34,11 @@ export interface PaymentData {
   updatedAt: Date;
 }
 
+export interface StatusHistoryItem {
+  status: 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+  date: Date;
+}
+
 export interface Order {
   id?: string;
   customerData: CustomerData;
@@ -45,4 +50,5 @@ export interface Order {
   status: 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
   createdAt: Date;
   updatedAt: Date;
+  statusHistory?: StatusHistoryItem[];
 } 

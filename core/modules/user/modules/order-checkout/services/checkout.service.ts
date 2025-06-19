@@ -1,6 +1,5 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { CartService } from '../../../services/cart.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
@@ -12,7 +11,6 @@ export class CheckoutService {
   private readonly REFERENCE_LIFETIME_MS = 15 * 60 * 1000; // 15 min
 
   constructor(
-    private cartService: CartService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
