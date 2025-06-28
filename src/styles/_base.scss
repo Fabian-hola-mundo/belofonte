@@ -8,11 +8,13 @@
 @import "./components/button";
 @import "./components/menu";
 @import "./components/tables";
+@import "./components/autocomplete";
 @import "./components/snackbar";
 @import "./components/button-icon";
 @import "./components/accordion";
 @import "./components/scroll";
 @import "./components/skeleton";
+@import "./components/drawer";
 @import "./components/dialog";
 @import "./components/input";
 @import "./components/select";
@@ -64,19 +66,4 @@ html {
 
 .mat-mdc-dialog-content {
   max-height: 99vh !important;
-}
-
-.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
-  caret-color: auto !important;
-}
-
-.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__leading,
-.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__notch,
-.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-notched-outline__trailing {
-  border-color: white !important;
-}
-
-.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label,
-.mdc-text-field--outlined:not(.mdc-text-field--disabled).mdc-text-field--focused .mdc-floating-label--float-above {
-  color: white !important;
 }

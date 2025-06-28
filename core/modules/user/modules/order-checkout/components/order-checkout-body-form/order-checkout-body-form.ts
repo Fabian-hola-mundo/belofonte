@@ -27,6 +27,8 @@ import { CartService } from '../../../../services/cart.service';
 import { CheckoutService } from '../../services/checkout.service';
 import { OrderCheckoutActionsComponent } from '../order-checkout-actions/order-checkout-actions.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { OrderService } from '../../services/order.service';
+import { PaymentData } from '../../interfaces/order.interface';
 
 @Component({
   selector: 'bel-order-checkout-body-form',
@@ -63,7 +65,8 @@ export class OrderCheckoutBodyFormComponent {
   constructor(
     private cartService: CartService,
     private breakpointObserver: BreakpointObserver,
-    private checkoutService: CheckoutService
+    private checkoutService: CheckoutService,
+    private orderService: OrderService
   ) {}
 
   async generateIntegrityHash(
@@ -77,7 +80,6 @@ export class OrderCheckoutBodyFormComponent {
     try {
       // Concatenar los datos en el orden esperado
       const concatenatedString = `${reference}${amount}${currency}${expiration}${integrityKey}`;
-      console.log('Cadena concatenada para el hash:', concatenatedString);
 
       // Codificar la cadena
       const encodedText = new TextEncoder().encode(concatenatedString);
@@ -90,7 +92,6 @@ export class OrderCheckoutBodyFormComponent {
       const hashHex = hashArray
         .map((b) => b.toString(16).padStart(2, '0'))
         .join('');
-      console.log('Hash generado:', hashHex);
 
       return hashHex; // Retornar el hash como string
     } catch (error) {
@@ -104,11 +105,11 @@ export class OrderCheckoutBodyFormComponent {
     // Valores estáticos de prueba
     const staticCurrency = 'COP';
     const { reference, expiration } = this.checkoutService.getReferenceData();
+
     const dynamicTotalPrice = this.cartService.getTotalPrice() * 100;
     const expirationTimeISO = expiration.toISOString();
     const staticEmail = 'customer@example.com';
     const publicKey = 'pub_test_d5HTl4x5n04GURQiukcHmIW2QLouM3wg';
-
 
     // Actualizar el formulario `shoppingCart` con los datos estáticos
 
@@ -133,10 +134,8 @@ export class OrderCheckoutBodyFormComponent {
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
           this.isMobile = true;
-          console.log('ismobile');
         } else {
           this.isMobile = false;
-          console.log('isDesktop');
           // Lógica para pantallas mayores a 1007px
         }
       });
@@ -152,7 +151,6 @@ export class OrderCheckoutBodyFormComponent {
   goToPay() {
     if (this.formCheckout.valid) {
     } else {
-      console.log('form invalid');
     }
   }
 
@@ -187,127 +185,84 @@ export class OrderCheckoutBodyFormComponent {
     shoppingCart: this.shoppingCart,
   });
 
-  submitToWompi(form: HTMLFormElement) {
+  async submitToWompi(form: HTMLFormElement) {
     if (this.formCheckout.valid) {
-      // Limpia cualquier campo previo
-      while (form.firstChild) {
-        form.removeChild(form.firstChild);
+      try {
+        // Crear el pedido en Firestore antes de enviar a Wompi
+        const customerData = {
+          email: this.firstFormGroup.get('mailCtrl')?.value || '',
+          fullName: this.firstFormGroup.get('nameCtrl')?.value || '',
+          phoneNumber: this.firstFormGroup.get('phoneCtrl')?.value || '',
+          legalId: this.firstFormGroup.get('idCtrl')?.value || '',
+          legalIdType: this.firstFormGroup.get('legalIdTypeCtrl')?.value || ''
+        };
+
+        const shippingAddress = {
+          addressLine1: this.secondFormGroup.get('address')?.value || '',
+          city: this.secondFormGroup.get('municipio')?.value || '',
+          region: this.secondFormGroup.get('departamento')?.value || '',
+          country: 'CO',
+          postalCode: this.secondFormGroup.get('postalCode')?.value || '',
+          additionalInfo: this.secondFormGroup.get('aditiionalAddress')?.value || ''
+        };
+
+        const paymentData: PaymentData = {
+          reference: this.shoppingCart.get('uniqueReference')?.value || '',
+          amount: this.shoppingCart.get('totalPrice')?.value || 0,
+          currency: this.shoppingCart.get('currency')?.value || '',
+          status: 'PENDING',
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+
+        // Crear el pedido en Firestore
+        const orderId = await this.orderService.createOrder(
+          customerData,
+          shippingAddress,
+          paymentData
+        );
+
+        // Limpia cualquier campo previo
+        while (form.firstChild) {
+          form.removeChild(form.firstChild);
+        }
+
+        // Añade los campos requeridos
+        this.addHiddenInput(form, 'reference', this.shoppingCart.get('uniqueReference')?.value ?? '');
+        this.addHiddenInput(form, 'redirect-url', `${window.location.origin}/payment-result/${orderId}`);
+        this.addHiddenInput(form, 'amount-in-cents', this.shoppingCart.get('totalPrice')?.value?.toString() ?? '');
+        this.addHiddenInput(form, 'currency', this.shoppingCart.get('currency')?.value ?? '');
+        this.addHiddenInput(form, 'expiration-time', this.shoppingCart.get('expiration')?.value ?? '');
+        this.addHiddenInput(form, 'signature:integrity', this.shoppingCart.get('integrity')?.value ?? '');
+        this.addHiddenInput(form, 'public-key', this.shoppingCart.get('publicKey')?.value ?? '');
+
+        // Añade datos opcionales
+        this.addHiddenInput(form, 'customer-data:email', this.firstFormGroup.get('mailCtrl')?.value ?? '');
+        this.addHiddenInput(form, 'customer-data:full-name', this.firstFormGroup.get('nameCtrl')?.value ?? '');
+        this.addHiddenInput(form, 'customer-data:phone-number', this.firstFormGroup.get('phoneCtrl')?.value ?? '');
+        this.addHiddenInput(form, 'customer-data:legal-id', this.firstFormGroup.get('idCtrl')?.value ?? '');
+        this.addHiddenInput(form, 'customer-data:legal-id-type', this.firstFormGroup.get('legalIdTypeCtrl')?.value ?? '');
+
+        this.addHiddenInput(form, 'shipping-address:address-line-1', this.secondFormGroup.get('address')?.value ?? '');
+        this.addHiddenInput(form, 'shipping-address:city', this.secondFormGroup.get('municipio')?.value ?? '');
+        this.addHiddenInput(form, 'shipping-address:region', this.secondFormGroup.get('departamento')?.value ?? '');
+        this.addHiddenInput(form, 'shipping-address:country', 'CO');
+        this.addHiddenInput(form, 'shipping-address:phone-number', this.firstFormGroup.get('phoneCtrl')?.value ?? '');
+
+        // Guardar el ID del pedido en localStorage para usarlo en la página de resultado
+        localStorage.setItem('currentOrderId', orderId);
+
+        form.submit();
+      } catch (error) {
+        console.error('Error al crear el pedido:', error);
+        // Aquí podrías mostrar un mensaje de error al usuario
       }
-
-      // Añade los campos requeridos
-      this.addHiddenInput(
-        form,
-        'reference',
-        this.shoppingCart.get('uniqueReference')?.value ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'amount-in-cents',
-        this.shoppingCart.get('totalPrice')?.value?.toString() ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'currency',
-        this.shoppingCart.get('currency')?.value ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'expiration-time',
-        this.shoppingCart.get('expiration')?.value ?? ''
-      );
-
-      this.addHiddenInput(
-        form,
-        'signature:integrity',
-        this.shoppingCart.get('integrity')?.value ?? ''
-      );
-
-      this.addHiddenInput(
-        form,
-        'public-key',
-        this.shoppingCart.get('publicKey')?.value ?? ''
-      );
-
-      // Añade datos opcionales
-      this.addHiddenInput(
-        form,
-        'customer-data:email',
-        this.firstFormGroup.get('mailCtrl')?.value ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'customer-data:full-name',
-        this.firstFormGroup.get('nameCtrl')?.value ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'customer-data:phone-number',
-        this.firstFormGroup.get('phoneCtrl')?.value ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'customer-data:legal-id',
-        this.firstFormGroup.get('idCtrl')?.value ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'customer-data:legal-id-type',
-        this.firstFormGroup.get('legalIdTypeCtrl')?.value ?? ''
-      );
-
-      this.addHiddenInput(
-        form,
-        'shipping-address:address-line-1',
-        this.secondFormGroup.get('address')?.value ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'shipping-address:city',
-        this.secondFormGroup.get('municipio')?.value ?? ''
-      );
-      this.addHiddenInput(
-        form,
-        'shipping-address:region',
-        this.secondFormGroup.get('departamento')?.value ?? ''
-      );
-      this.addHiddenInput(form, 'shipping-address:country', 'CO');
-      this.addHiddenInput(
-        form,
-        'shipping-address:phone-number',
-        this.firstFormGroup.get('phoneCtrl')?.value ?? ''
-      );
-
-      // Envía el formulario
-
-      console.log({
-        publicKey: this.shoppingCart.get('publicKey')?.value,
-        currency: this.shoppingCart.get('currency')?.value,
-        amountInCents: this.shoppingCart.get('totalPrice')?.value?.toString(),
-        reference: this.shoppingCart.get('uniqueReference')?.value,
-        signature: this.shoppingCart.get('integrity')?.value,
-        expirationTime: this.shoppingCart.get('expiration')?.value,
-
-        customerEmail: this.firstFormGroup.get('mailCtrl')?.value,
-        customerFullName: this.firstFormGroup.get('nameCtrl')?.value,
-        customerPhoneNumber: this.firstFormGroup.get('phoneCtrl')?.value,
-        customerLegalId: this.firstFormGroup.get('idCtrl')?.value,
-        customerLegalIdType: this.firstFormGroup.get('legalIdTypeCtrl')?.value,
-        addressLine1: this.secondFormGroup.get('address')?.value,
-        city: this.secondFormGroup.get('municipio')?.value,
-        region: this.secondFormGroup.get('departamento')?.value,
-        country: 'CO',
-      });
-
-      form.submit();
     } else {
-      console.log('Formulario no válido');
-      console.log('Errores en el formulario:', this.formCheckout.errors); // Muestra errores a nivel del formulario principal
-
       // Recorre los formularios hijos y muestra sus errores
       Object.keys(this.formCheckout.controls).forEach((key) => {
         const control = this.formCheckout.get(key);
         if (control && control.invalid) {
-          console.log(`Errores en ${key}:`, control.errors);
+          // Manejar errores de validación
         }
       });
     }

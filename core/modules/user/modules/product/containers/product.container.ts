@@ -134,7 +134,6 @@ export class ProductContainer {
         this.allSubRef.push(subRef);
       }
     });
-    console.log(this.allSubRef);
   }
 
   async loadData(): Promise<void> {

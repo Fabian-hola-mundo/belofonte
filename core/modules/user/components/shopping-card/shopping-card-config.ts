@@ -40,7 +40,6 @@ export class DialogService {
       const dialogRef = this.dialog.open(ShoppingCardComponent, dialogConfig);
 
       dialogRef.afterClosed().subscribe(result => {
-        console.log(`Dialog result: ${result}`);
       });
 
       dialogRef.addPanelClass('classDialog')

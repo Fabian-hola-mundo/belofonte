@@ -93,7 +93,6 @@ export class ConfigurationColorService {
     const colorDocRef = doc(this.firestore, 'configuration', 'color', id);
     try {
       await deleteDoc(colorDocRef);
-      console.log('Color eliminado:', id);
     } catch (error) {
       console.error('Error eliminando el color:', error);
       throw error;

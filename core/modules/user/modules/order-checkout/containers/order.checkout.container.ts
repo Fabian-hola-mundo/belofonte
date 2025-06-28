@@ -64,10 +64,8 @@ export class OrderCheckoutContainer {
       .subscribe((state: BreakpointState) => {
         if (state.matches) {
           this.isMobile = true;
-          console.log('ismobile');
         } else {
           this.isMobile = false;
-          console.log('isDesktop');
           // Lógica para pantallas mayores a 1007px
         }
       });

@@ -1,5 +1,57 @@
-::ng-deep {
-  .mat-mdc-select-panel {
-    background-color: var(--md-sys-color-surface) !important;
-  }
-}
+@include mat.list-overrides((
+  // Indicador activo (p.ej., para marcar el item activo)
+  active-indicator-color: var(--md-sys-color-color-secondary-container),
+  active-indicator-shape: 50%, // Forma circular, por ejemplo
+
+  // Espaciados para iconos de la izquierda
+  list-item-leading-icon-start-space: 8px,
+  list-item-leading-icon-end-space: 8px,
+
+  // Configuración del contenedor del item
+  list-item-container-shape: 4px, // Border-radius del item
+  list-item-container-color: var(--md-sys-color-color-surface-container),
+  list-item-selected-container-color: var(--md-sys-color-color-primary-container),
+
+  // Configuración para avatars en items (si hay)
+  list-item-leading-avatar-shape: 50%, // Avatar circular
+  list-item-leading-avatar-color: var(--md-sys-color-color-primary-container),
+
+  // Tamaños para iconos y avatars
+  list-item-leading-icon-size: 24px,
+  list-item-leading-avatar-size: 40px,
+  list-item-trailing-icon-size: 24px,
+
+  // Estado disabled
+  list-item-disabled-state-layer-color: var(--md-sys-color-color-on-surface),
+  list-item-disabled-state-layer-opacity: 0.12,
+  list-item-disabled-label-text-color: var(--md-sys-color-color-on-surface),
+  list-item-disabled-leading-icon-color: var(--md-sys-color-color-on-surface),
+  list-item-disabled-trailing-icon-color: var(--md-sys-color-color-on-surface),
+
+  // Estilos para el texto del item
+  list-item-label-text-color: var(--md-sys-color-color-on-surface),
+  list-item-label-text-font: var(--md-sys-color-color-body-large-font),
+  list-item-label-text-size: var(--md-sys-color-color-body-large-size),
+  list-item-label-text-tracking: var(--md-sys-color-color-body-large-tracking),
+  list-item-label-text-weight: var(--md-sys-color-color-body-large-weight),
+
+  // Estilos para el supporting text (subtítulo o descripción)
+  list-item-supporting-text-color: var(--md-sys-color-color-on-surface-variant),
+  list-item-supporting-text-font: var(--md-sys-color-color-body-medium-font),
+  list-item-supporting-text-size: var(--md-sys-color-color-body-medium-size),
+  list-item-supporting-text-tracking: var(--md-sys-color-color-body-medium-tracking),
+  list-item-supporting-text-weight: var(--md-sys-color-color-body-medium-weight),
+
+  // Estilos para el trailing supporting text (texto al final)
+  list-item-trailing-supporting-text-font: var(--md-sys-color-color-label-small-font),
+  list-item-trailing-supporting-text-line-height: var(--md-sys-color-color-label-small-line-height),
+  list-item-trailing-supporting-text-size: var(--md-sys-color-color-label-small-size),
+  list-item-trailing-supporting-text-tracking: var(--md-sys-color-color-label-small-tracking),
+  list-item-trailing-supporting-text-weight: var(--md-sys-color-color-label-small-weight),
+
+  // Alturas según la cantidad de líneas
+  list-item-one-line-container-height: 56px,
+  list-item-two-line-container-height: 72px,
+  list-item-three-line-container-height: 88px
+));
+

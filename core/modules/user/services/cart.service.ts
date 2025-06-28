@@ -1,17 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
-
-export interface CartItem {
-  uniqueId?: string;
-  productId: string;
-  name: string;
-  price: number;
-  size: string;
-  slug?: string;
-  images?: string;
-  color: string;
-  quantity: number;
-}
+import { CheckoutService } from '../modules/order-checkout/services/checkout.service';
+import { CartItem } from '../modules/order-checkout/interfaces/cart-item.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -27,13 +17,15 @@ export class CartService {
     map((items) => items.reduce((total, item) => total + item.quantity, 0))
   );
 
-  constructor() {
+  constructor(
+    private checkoutService: CheckoutService
+  ) {
     this.loadCartFromLocalStorage();
     this.updateFreeShippingStatus();
   }
 
   addToCart(item: CartItem) {
-    const uniqueId = `${item.productId}-${item.size}-${item.color}`; // Crear un identificador único
+    const uniqueId = `${item.id}-${item.size}-${item.color}`; // Crear un identificador único
     const existingItem = this.cartItemsSubject.value.find(
       (i) => i.uniqueId === uniqueId
     );
@@ -49,6 +41,7 @@ export class CartService {
     }
     this.saveCartToLocalStorage();
     this.updateFreeShippingStatus();
+    this.checkoutService.resetReferenceData();
   }
 
   private saveCartToLocalStorage() {
@@ -75,9 +68,9 @@ export class CartService {
     }
   }
   // Función para ver los detalles de un ítem en el carrito
-  viewItem(productId: string): CartItem | undefined {
+  viewItem(uniqueId: string): CartItem | undefined {
     const cartItems = this.cartItemsSubject.value;
-    return cartItems.find((item) => item.productId === productId);
+    return cartItems.find((item) => item.uniqueId === uniqueId);
   }
 
   // Función para eliminar un ítem del carrito
@@ -94,13 +87,15 @@ export class CartService {
       this.updateFreeShippingStatus();
     }
 
+    this.checkoutService.resetReferenceData();
+
     return itemToDelete; // Devuelve el ítem eliminado para poder restaurarlo
   }
 
   clearCart() {
     this.cartItemsSubject.next([]);
     localStorage.removeItem(this.cartKey);
-    this.updateFreeShippingStatus(); 
+    this.updateFreeShippingStatus();
   }
 
   getTotalPrice(): number {
@@ -121,5 +116,9 @@ export class CartService {
       (total, item) => total + item.quantity,
       0
     );
+  }
+
+  getItems(): CartItem[] {
+    return this.cartItemsSubject.value;
   }
 }

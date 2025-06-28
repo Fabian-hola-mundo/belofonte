@@ -1,23 +1,18 @@
+@include mat.select-overrides((
+  container-elevation-shadow: var(--md-shadow), // Sombra del contenedor
+  panel-background-color: var(--md-sys-color-surface-container),          // Fondo del panel desplegable
+  enabled-trigger-text-color: var(--md-sys-color-on-surface),              // Color del texto cuando el select está habilitado
+  placeholder-text-color: var(--md-sys-color-on-surface-variant),            // Color del placeholder
+  disabled-trigger-text-color: var(--md-sys-color-on-surface),             // Color del texto cuando está deshabilitado
+  enabled-arrow-color: var(--md-sys-color-on-surface-variant),               // Color de la flecha cuando el select está habilitado
+  disabled-arrow-color: var(--md-sys-color-on-surface),                      // Color de la flecha en estado disabled
+  focused-arrow-color: var(--md-sys-color-primary),                          // Color de la flecha cuando está enfocado
+  invalid-arrow-color: var(--md-sys-color-error),                            // Color de la flecha cuando el estado es inválido
+
+));
+
 ::ng-deep {
-  .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
-    @extend .primary-text;
-  }
-
-  .mat-mdc-option-active .mdc-list-item__primary-text {
-    @extend .primary-text;
-  }
-  mat-form-field {
-
-
-    .mdc-text-field, .mdc-text-field--outlined {
-      color: red !important;
-      &--outlined {
-        color: red !important;
-
-      }
-    }
-  }
-  .mdc-text-field--focused {
-    color: red;
+  .mat-mdc-option {
+    color: var(--md-sys-color-on-surface) !important;
   }
 }

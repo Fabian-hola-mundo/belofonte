@@ -1,4 +1,4 @@
-import { ApplicationConfig, inject, PLATFORM_ID } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, inject, PLATFORM_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { appRoute } from './app.routes';
@@ -9,7 +9,7 @@ import {
   provideAnalytics,
   ScreenTrackingService,
 } from '@angular/fire/analytics';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getFirestore, provideFirestore, connectFirestoreEmulator } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { firebaseConfig } from '../../core/constants/firebase.config';
 import { isPlatformBrowser } from '@angular/common';
@@ -18,20 +18,31 @@ import {
   initializeApp,
   initializeServerApp,
 } from '@angular/fire/app';
-import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
+import { HttpClientModule } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoute),
-    /* provideClientHydration(), */
+    provideClientHydration(),
+    importProvidersFrom(HttpClientModule),
     provideAnimationsAsync(),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-
-    provideAuth(() => getAuth()),
-
+    provideAuth(() => {
+      const auth = getAuth();
+      if (environment.useEmulators && isPlatformBrowser(inject(PLATFORM_ID))) {
+        connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+      }
+      return auth;
+    }),
     provideFunctions(() => getFunctions()),
     provideAnalytics(() => getAnalytics()),
-    ScreenTrackingService,
-    provideFirestore(() => getFirestore()),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+      if (environment.useEmulators && isPlatformBrowser(inject(PLATFORM_ID))) {
+        connectFirestoreEmulator(firestore, 'localhost', 8080);
+      }
+      return firestore;
+    }),
   ],
 };

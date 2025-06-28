@@ -19,6 +19,11 @@
           "builder": "@angular-devkit/build-angular:application",
           "defaultConfiguration": "development",
           "options": {
+            "allowedCommonJsDependencies": [
+              "undici",
+              "@grpc/grpc-js",
+              "@grpc/proto-loader"
+            ],
             "outputPath": "dist/belofonte",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -83,6 +88,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.js"
+          },
           "configurations": {
             "production": {
               "buildTarget": "belofonte:build:production"

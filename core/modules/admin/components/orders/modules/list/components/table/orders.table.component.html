@@ -1,0 +1,83 @@
+<div class="orders-table">
+  <h1>Listado de Órdenes</h1>
+  
+  <table mat-table [dataSource]="orders" class="mat-elevation-z2">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let order">{{order?.id || 'N/A'}}</td>
+    </ng-container>
+
+    <!-- Customer Name Column -->
+    <ng-container matColumnDef="customerName">
+      <th mat-header-cell *matHeaderCellDef>Cliente</th>
+      <td mat-cell *matCellDef="let order">{{order?.customerData?.fullName || 'N/A'}}</td>
+    </ng-container>
+
+    <!-- Total Amount Column -->
+    <ng-container matColumnDef="totalAmount">
+      <th mat-header-cell *matHeaderCellDef>Total</th>
+      <td mat-cell *matCellDef="let order">
+        <ng-container *ngIf="order?.totalAmount !== undefined && order?.totalAmount !== null">
+          {{order.totalAmount | currency:'COP':'symbol':'1.0-0'}}
+        </ng-container>
+        <ng-container *ngIf="order?.totalAmount === undefined || order?.totalAmount === null">
+          N/A
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <!-- Status Column -->
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let order">
+        <ng-container *ngIf="order?.status">
+          <mat-chip [color]="getStatusColor(order.status)" selected>
+            {{order.status}}
+          </mat-chip>
+        </ng-container>
+        <ng-container *ngIf="!order?.status">
+          <span>N/A</span>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <!-- Created At Column -->
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef>Creada</th>
+      <td mat-cell *matCellDef="let order">
+        <ng-container *ngIf="order?.createdAt">
+          {{order.createdAt | date:'short'}}
+        </ng-container>
+        <ng-container *ngIf="!order?.createdAt">
+          <span>N/A</span>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let order">
+        <ng-container *ngIf="order?.id">
+          <button mat-icon-button color="primary" 
+                  [matTooltip]="'Ver detalles'"
+                  (click)="viewOrderDetails(order.id)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" [matTooltip]="'Editar estado'">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <!-- Loading State -->
+  <div *ngIf="!orders || orders.length === 0" class="orders-table__empty-state">
+    <p>No hay órdenes disponibles</p>
+  </div>
+</div>

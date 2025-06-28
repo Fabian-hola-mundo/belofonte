@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  useEmulators: false,
   firebaseConfig: {
     apiKey: 'AIzaSyA4NYAZtWhsBYPDtFLr9mlwVdXe315qmgM',
     authDomain: 'chanel-manualidades-3f653.firebaseapp.com',

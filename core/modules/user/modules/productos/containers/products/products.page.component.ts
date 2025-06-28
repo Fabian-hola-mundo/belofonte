@@ -23,7 +23,6 @@ export class ProductsPageComponent{
   }
   ngOnInit(): void {
       this._showFilters.inProducts$.subscribe((value) => {
-    console.log("inProducts in NavComponent:", value);
     this.showFilters = value;
   });
   }

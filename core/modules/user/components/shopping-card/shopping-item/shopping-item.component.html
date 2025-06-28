@@ -2,7 +2,7 @@
   <div class="shop-item-container__module">
     <figure>
       <div *ngIf="!isImageLoaded" class="skeleton-card skeleton-line"></div>
-      <img [src]="item.images" (load)="onImageLoad()" alt="" />
+      <img [src]="item.image" (load)="onImageLoad()" alt="" />
     </figure>
     <div class="info">
       <div class="info__details">

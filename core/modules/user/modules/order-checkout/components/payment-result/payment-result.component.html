@@ -1,0 +1,95 @@
+<div class="payment-result">
+  <div class="payment-result__header">
+    <div class="payment-result__status" [ngClass]="getStatusColorClass()">
+      <mat-icon class="payment-result__icon">{{ getStatusIcon() }}</mat-icon>
+      <h2 class="payment-result__title">{{ getStatusTitle() }}</h2>
+    </div>
+  </div>
+
+
+  <div class="payment-result__section">
+    <h3 class="payment-result__section-title">Detalle de la transacción</h3>
+    <div class="payment-result__detail-list">
+      <div class="payment-result__detail-item">
+        <span>Transacción N°:</span>
+        <span>{{ transactionData?.id }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Fecha:</span>
+        <span>{{ transactionData?.created_at | date:'medium' }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Pago a través de:</span>
+        <span>{{ transactionData?.payment_method_type }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span *ngIf="transactionData?.status === 'APPROVED'">Valor pagado:</span>
+        <span *ngIf="transactionData?.status !== 'APPROVED'">Intento de pago:</span>
+        <span>{{ transactionData?.amount_in_cents / 100 | currency:'COP':'symbol' }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Referencia:</span>
+        <span>{{ transactionData?.reference }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="payment-result__section">
+    <h3 class="payment-result__section-title">Información del pagador</h3>
+    <div class="payment-result__detail-list">
+      <div class="payment-result__detail-item">
+        <span>Email:</span>
+        <span>{{ transactionData?.payer?.email }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Nombres:</span>
+        <span>{{ transactionData?.payer?.name }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Número Telefónico:</span>
+        <span>{{ transactionData?.payer?.phone }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Documento de identidad:</span>
+        <span>{{ transactionData?.payer?.document }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="payment-result__section" *ngIf="transactionData?.shipping?.address">
+    <h3 class="payment-result__section-title">Dirección de entrega</h3>
+    <div class="payment-result__detail-list">
+      <div class="payment-result__detail-item">
+        <span>Dirección:</span>
+        <span>{{ transactionData?.shipping?.address }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Ciudad:</span>
+        <span>{{ transactionData?.shipping?.city }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Región:</span>
+        <span>{{ transactionData?.shipping?.region }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>País:</span>
+        <span>{{ transactionData?.shipping?.country }}</span>
+      </div>
+      <div class="payment-result__detail-item">
+        <span>Teléfono:</span>
+        <span>{{ transactionData?.shipping?.phone }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="payment-result__actions">
+    <button mat-stroked-button color="primary">
+      <mat-icon>arrow_back</mat-icon>
+      Seguir comprando
+    </button>
+    <button mat-raised-button color="primary">
+      <mat-icon>download</mat-icon>
+      DESCARGAR
+    </button>
+  </div>
+</div>

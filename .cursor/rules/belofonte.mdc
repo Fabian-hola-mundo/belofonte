@@ -1,0 +1,158 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+{
+  "rules": [
+    {
+      "tag": "arquitectura-modular",
+      "description": "Este es un proyecto Angular 19 con arquitectura modular dividida en core/ y src/. Core contiene la lógica de negocio con módulos admin y user. Usar siempre componentes standalone.",
+      "patterns": [
+        "core/modules/admin/**: Panel administrativo con autenticación Firebase",
+        "core/modules/user/**: Tienda online para clientes",
+        "core/services/**: Servicios compartidos entre módulos",
+        "core/constants/**: Constantes del proyecto (Firebase, SVG, categorías)"
+      ]
+    },
+    {
+      "tag": "multi-marca",
+      "description": "Sistema multi-marca con 3 configuraciones: default, belofonte, manualidades. Cada marca tiene su propio Firebase project y environment.",
+      "patterns": [
+        "config/*_config/**: Configuraciones específicas por marca",
+        "src/environments/**: Environments diferenciados por marca",
+        "angular.json fileReplacements**: Intercambio automático de archivos"
+      ]
+    },
+    {
+      "tag": "componentes-standalone",
+      "description": "SIEMPRE usar componentes standalone de Angular 19. Nunca crear NgModules. Importar directamente las dependencias en cada componente.",
+      "examples": [
+        "@Component({ selector: 'app-example', standalone: true, imports: [...] })"
+      ]
+    },
+    {
+      "tag": "sistema-diseno",
+      "description": "Usar metodología BEM para CSS, Material Design 3 como base, y sistema de tokens CSS. Siempre usar :host para encapsular estilos del componente.",
+      "patterns": [
+        "Clases CSS: .block__element--modifier",
+        "Variables: var(--md-sys-color-primary)",
+        "Placeholders SCSS: %horizontalPadding, %basicFlex, %module",
+        "Imports obligatorios: @import './styles/placeholder' para padding y max-width"
+      ]
+    },
+    {
+      "tag": "interfaces-tipadas",
+      "description": "El proyecto usa interfaces TypeScript estrictas para Product, Order, CartItem, etc. Siempre mantener tipado fuerte.",
+      "interfaces": {
+        "Product": "id, category[], slug, title, description, price, characteristics, inventory[], control",
+        "Order": "customerData, shippingAddress, items[], paymentData, totalAmount, status",
+        "CartItem": "uniqueId, id, name, quantity, price, image, size, color, slug",
+        "InventoryItem": "subRef, stock[], images[], color, count"
+      }
+    },
+    {
+      "tag": "servicios-reactivos",
+      "description": "Usar BehaviorSubject para estado compartido, Observable patterns con RxJS, y servicios singleton inyectados en root.",
+      "patterns": [
+        "CartService: manejo del carrito con localStorage",
+        "ThemeService: control de tema claro/oscuro",
+        "ProductsService: CRUD con Firestore",
+        "FiltersService: estado de filtros con BehaviorSubject"
+      ]
+    },
+    {
+      "tag": "firebase-integration",
+      "description": "Integración completa con Firebase: Firestore para datos, Auth para admin, Hosting para deployment, Emulators para desarrollo.",
+      "patterns": [
+        "collection(firestore, 'collection-name')",
+        "doc(firestore, 'collection', 'docId')",
+        "signInWithEmailAndPassword(auth, email, password)",
+        "useEmulators: true/false según environment"
+      ]
+    },
+    {
+      "tag": "e-commerce-logic",
+      "description": "Lógica específica de e-commerce: carrito con persistencia, checkout con referencias únicas, envío gratuito >$200,000, inventario por color/talla.",
+      "patterns": [
+        "uniqueId = `${item.id}-${item.size}-${item.color}`",
+        "FREE_SHIPPING_THRESHOLD = 200000",
+        "CheckoutService: referencias con expiración 15min",
+        "OrderService: estados PENDING/PROCESSING/SHIPPED/DELIVERED"
+      ]
+    },
+    {
+      "tag": "responsive-design",
+      "description": "Breakpoint principal en 1007px. Usar BreakpointObserver para lógica responsive y placeholders SCSS para padding responsivo.",
+      "patterns": [
+        "@media (max-width: 1007px)",
+        "BreakpointObserver.observe(['(max-width: 1007px)'])",
+        "%horizontalPadding para padding responsivo automático"
+      ]
+    },
+    {
+      "tag": "navegacion-inteligente",
+      "description": "NavComponent con scroll inteligente, búsqueda animada, badge de carrito en tiempo real, y skeleton loading.",
+      "features": [
+        "isScrolledHalfway: control de navegación en scroll",
+        "animatedPlaceholder: placeholders dinámicos en búsqueda",
+        "cartItems$: observable del carrito",
+        "isLoading: skeleton states"
+      ]
+    },
+    {
+      "tag": "admin-crud",
+      "description": "Panel admin con AuthGuard, CRUD completo de productos/órdenes, formularios multi-step con stepper, y sidebar responsivo.",
+      "patterns": [
+        "AuthGuard: protección con Firebase Auth",
+        "MatStepper para formularios complejos",
+        "MatDrawer para sidebar responsivo",
+        "ProductsService.getDataFromCollection('products')"
+      ]
+    },
+    {
+      "tag": "convenciones-archivos",
+      "description": "Cada componente tiene archivos separados: .ts, .html, .scss. Usar index.ts para exports, rutas modulares por feature.",
+      "structure": [
+        "component.name.component.ts",
+        "component.name.component.html", 
+        "component.name.component.scss",
+        "routes/ para rutas modulares",
+        "services/ para lógica de negocio",
+        "interfaces/ para tipos"
+      ]
+    },
+    {
+      "tag": "ssr-hydration",
+      "description": "Proyecto con SSR habilitado. Usar isPlatformBrowser para código que solo funciona en browser. Configurado con Express server.",
+      "patterns": [
+        "isPlatformBrowser(this.platformId)",
+        "typeof window !== 'undefined'",
+        "localStorage solo en browser",
+        "bootstrapApplication para SSR"
+      ]
+    }
+  ],
+  "technologies": [
+    "Angular 19",
+    "Firebase (Firestore, Auth, Hosting, Functions)",
+    "Angular Material",
+    "SCSS con BEM",
+    "TypeScript",
+    "RxJS",
+    "Angular Universal (SSR)",
+    "Express.js",
+    "Google Maps API",
+    "Wompi Payment Gateway"
+  ],
+  "preferences": {
+    "language": "Spanish",
+    "componentStyle": "Standalone components only",
+    "cssMethodology": "BEM",
+    "stateManagement": "Services with BehaviorSubject",
+    "typeSystem": "Strict TypeScript with interfaces",
+    "responsive": "Mobile-first with 1007px breakpoint"
+  }
+
+
+}

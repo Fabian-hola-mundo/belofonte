@@ -1,9 +1,41 @@
-mat-form-field {
-  width: 100%;
-  & mat-icon, span {
-    color: var(--md-sys-color-primary);
-  }
-  span {
-    padding-right: 8px;
-  }
-}
+
+@include mat.form-field-overrides((
+  // Outline dimensions y colores
+  outlined-outline-width: 1px,
+  outlined-focus-outline-width: 2px, // Más grosor al tener focus
+  outlined-outline-color: var(--md-sys-color-outline-variant),
+  outlined-focus-outline-color: var(--md-sys-color-primary),
+  outlined-hover-outline-color: var(--md-sys-color-outline),
+  outlined-disabled-outline-color: var(--md-sys-color-surface-container-low),
+  outlined-error-outline-color: var(--md-sys-color-error),
+  outlined-error-focus-outline-color: var(--md-sys-color-error),
+  outlined-error-hover-outline-color: var(--md-sys-color-error),
+
+  // Label: colores en distintos estados
+  outlined-label-text-color: var(--md-sys-color-on-surface),
+  outlined-hover-label-text-color: var(--md-sys-color-on-surface-variant),
+  outlined-focus-label-text-color: var(--md-sys-color-primary),
+  outlined-disabled-label-text-color: var(--md-sys-color-surface-container-low),
+  outlined-error-label-text-color: var(--md-sys-color-error),
+  outlined-error-focus-label-text-color: var(--md-sys-color-error),
+  outlined-error-hover-label-text-color: var(--md-sys-color-error),
+
+  // Input text y placeholder
+  outlined-input-text-color: var(--md-sys-color-on-surface),
+  outlined-disabled-input-text-color: var(--md-sys-color-on-surface-variant),
+  outlined-input-text-placeholder-color: var(--md-sys-color-outline),
+
+  // Caret (cursor)
+  outlined-caret-color: var(--md-sys-color-primary),
+  outlined-error-caret-color: var(--md-sys-color-error),
+
+  // Redondeado: establece la forma del contenedor (outline)
+  outlined-container-shape: 8px,
+
+  // Tipografía del label (opcional, para tener full control)
+  outlined-label-text-font: 'Roboto, sans-serif',
+  outlined-label-text-size: 16px,
+  outlined-label-text-tracking: 0.5px,
+  outlined-label-text-weight: 400,
+  outlined-label-text-populated-size: 12px
+));

@@ -132,9 +132,9 @@ export class ProductDescriptionComponent implements OnInit {
 
   addToCart() {
     this.cartService.addToCart({
-      productId: this.data.id,
+      id: this.data.id,
       name: this.data.title,
-      images: this.subRefSelected.images?.[0].url,
+      image: this.subRefSelected.images?.[0].url,
       slug: this.data.slug,
       uniqueId:
         `${this.data.id}-${this.subRefSelected.stock?.[0]?.size}-${this.subRefSelected.color?.hexa}` ||

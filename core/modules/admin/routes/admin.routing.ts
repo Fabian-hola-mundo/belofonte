@@ -6,16 +6,28 @@ import { AdminLayoutComponent } from '../containers/layout.component';
 import { SeeProductComponent } from '../components/products/components/see-product/see-product.component';
 import { ProductsComponent } from '../components/products/components/products/products.component';
 import { AuthGuard } from '../guard/auth.guard';
+import { OrderListContainerComponent } from '../components/orders/modules/list/container/order.list.container';
+import { OrdersDetailContainer } from '../components/orders/modules/detail/orders.detail.container';
 
 export const adminRoutes: Routes = [
   {
     path: '',
     component: AdminLayoutComponent,
-    /* canActivate: [AuthGuard], */
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'products',
         component: ProductsComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'pedidos',
+        component: OrderListContainerComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'pedidos/:id',
+        component: OrdersDetailContainer,
         pathMatch: 'full',
       },
       {
