@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/log/login/login/login.component';
 import { AdminLayoutComponent } from '../containers/layout.component';
+import { DashboardComponent } from '../components/dashboard/dashboard.component';
 
 import { SeeProductComponent } from '../components/products/components/see-product/see-product.component';
 import { ProductsComponent } from '../components/products/components/products/products.component';
@@ -15,6 +16,16 @@ export const adminRoutes: Routes = [
     component: AdminLayoutComponent,
   /*   canActivate: [AuthGuard], */
     children: [
+      {
+        path: '',
+        component: DashboardComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        pathMatch: 'full',
+      },
       {
         path: 'products',
         component: ProductsComponent,
@@ -35,8 +46,6 @@ export const adminRoutes: Routes = [
         component: SeeProductComponent,
         pathMatch: 'full',
       },
-
-      { path: '', redirectTo: 'products', pathMatch: 'full' },
     ],
   },
   {

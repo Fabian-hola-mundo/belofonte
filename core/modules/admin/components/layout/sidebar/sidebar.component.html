@@ -1,6 +1,41 @@
-<nav class="surface">
-  <ul>
-    <li routerLink="products" routerLinkActive="onActive" matRipple>PRODUCTOS</li>
-    <li routerLink="/admin/pedidos" routerLinkActive="onActive"  matRipple>PEDIDOS</li>
-  </ul>
+<nav class="sidebar">
+  <!-- Header del sidebar con logo -->
+  <div class="sidebar__header">
+    <div class="sidebar__logo" [innerHTML]="simboloBelofonte"></div>
+    <h2 class="sidebar__title">Panel Admin</h2>
+  </div>
+
+  <!-- Navegación principal -->
+  <div class="sidebar__nav">
+    <ul class="sidebar__menu">
+      <li 
+        *ngFor="let item of menuItems" 
+        class="sidebar__menu-item"
+        [class.sidebar__menu-item--active]="isRouteActive(item.route)"
+      >
+        <a 
+          [routerLink]="item.route"
+          class="sidebar__menu-link"
+          matRipple
+          (click)="onMenuItemClick()"
+        >
+          <mat-icon class="sidebar__menu-icon">{{ item.icon }}</mat-icon>
+          <span class="sidebar__menu-text">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Footer del sidebar -->
+  <div class="sidebar__footer">
+    <div class="sidebar__user-info">
+      <div class="sidebar__avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="sidebar__user-details">
+        <span class="sidebar__user-name">Administrador</span>
+        <span class="sidebar__user-role">Admin</span>
+      </div>
+    </div>
+  </div>
 </nav>

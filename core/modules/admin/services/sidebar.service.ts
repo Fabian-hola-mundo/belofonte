@@ -1,32 +1,47 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SidebarService {
-
-  private sidebar = {
-    sidebar1: false,
-    sidebar2: false,
-    sidebar3: false,
-    sidebar4: false,
-  }
+  private showSidebarSubject = new BehaviorSubject<boolean>(true);
+  public showSidebar$: Observable<boolean> = this.showSidebarSubject.asObservable();
 
   constructor() { }
 
-  clearSides(){
-    this.sidebar.sidebar1 = false
-    this.sidebar.sidebar2 = false
-    this.sidebar.sidebar3 = false
-    this.sidebar.sidebar4 = false
+  /**
+   * Establece el estado del sidebar
+   */
+  setSidebar(show: boolean): void {
+    this.showSidebarSubject.next(show);
   }
 
-  getSides(){
-    return this.sidebar
+  /**
+   * Alterna el estado del sidebar
+   */
+  toggleSidebar(): void {
+    this.showSidebarSubject.next(!this.showSidebarSubject.value);
   }
 
-/*   setProductOnRow(row: Product) {
-    this.selectedProduct = row
-    this.selectedProductSide = true
-  } */
+  /**
+   * Obtiene el estado actual del sidebar
+   */
+  getSidebarState(): boolean {
+    return this.showSidebarSubject.value;
+  }
+
+  /**
+   * Cierra el sidebar
+   */
+  closeSidebar(): void {
+    this.setSidebar(false);
+  }
+
+  /**
+   * Abre el sidebar
+   */
+  openSidebar(): void {
+    this.setSidebar(true);
+  }
 }

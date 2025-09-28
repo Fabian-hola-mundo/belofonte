@@ -1,25 +1,121 @@
+@forward '../../../../src/styles.scss';
+
 :host {
+  display: block;
+  height: 100vh;
+  width: 100%;
+}
+
+.layout-container {
+  height: 100%;
+  width: 100%;
+  background-color: var(--md-sys-color-background);
+}
+
+.layout-sidenav {
+  background-color: var(--md-sys-color-surface);
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  width: 280px;
+  
+  @media (max-width: 1007px) {
+    width: 90vw;
+    max-width: 320px;
+  }
+
+  // Ocultar scrollbar del drawer
+  ::ng-deep {
+    .mat-drawer-inner-container {
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+  }
+}
+
+.layout-content {
   display: flex;
   flex-direction: column;
-  height: 100dvh;
-  overflow: hidden;
-  main {
-    width: 100%;
-    height: 90dvh;
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
-    & mat-drawer-container {
-      width: 100%;
-      box-sizing: content-box;
-      & mat-drawer {
-        ::ng-deep {
-          ::-webkit-scrollbar {
-            display: none !important;
-          }
-        }
-      }
+  height: 100%;
+  background-color: var(--md-sys-color-background);
+}
+
+.layout-main {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  background-color: var(--md-sys-color-background);
+  
+  &--with-header {
+    // Cuando hay header, ajustar el padding superior
+    padding-top: 0;
+  }
+
+  // Scrollbar personalizado para el contenido principal
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--md-sys-color-surface-variant);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline-variant);
+    border-radius: 4px;
+    
+    &:hover {
+      background: var(--md-sys-color-outline);
     }
+  }
+}
+
+// Animaciones y transiciones
+.layout-container {
+  ::ng-deep {
+    .mat-drawer {
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    
+    .mat-drawer-content {
+      transition: margin 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+  }
+}
+
+// Estados responsive adicionales
+@media (max-width: 768px) {
+  .layout-sidenav {
+    width: 85vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-sidenav {
+    width: 100vw;
+  }
+}
+
+// Mejoras de accesibilidad
+@media (prefers-reduced-motion: reduce) {
+  .layout-container ::ng-deep {
+    .mat-drawer,
+    .mat-drawer-content {
+      transition: none;
+    }
+  }
+}
+
+// Tema oscuro (si se implementa)
+@media (prefers-color-scheme: dark) {
+  .layout-container {
+    background-color: var(--md-sys-color-surface-dim);
+  }
+  
+  .layout-main {
+    background-color: var(--md-sys-color-surface-dim);
   }
 }
 

@@ -1,0 +1,70 @@
+<div class="dashboard">
+  <div class="dashboard__header">
+    <h1 class="dashboard__title">Panel de Administración</h1>
+    <p class="dashboard__subtitle">Bienvenido al sistema de gestión de Belofonte</p>
+  </div>
+
+  <div class="dashboard__content">
+    <div class="dashboard__grid">
+      <mat-card 
+        *ngFor="let card of dashboardCards" 
+        class="dashboard__card"
+        [class]="'dashboard__card--' + card.color"
+        [routerLink]="card.route"
+      >
+        <mat-card-header class="dashboard__card-header">
+          <div class="dashboard__card-icon">
+            <mat-icon>{{ card.icon }}</mat-icon>
+          </div>
+          <mat-card-title class="dashboard__card-title">{{ card.title }}</mat-card-title>
+          <mat-card-subtitle class="dashboard__card-subtitle">{{ card.subtitle }}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-actions class="dashboard__card-actions">
+          <button mat-button color="primary">
+            Ver más
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Sección de estadísticas rápidas -->
+    <div class="dashboard__stats">
+      <h2 class="dashboard__stats-title">Resumen Rápido</h2>
+      <div class="dashboard__stats-grid">
+        <div class="dashboard__stat-item">
+          <mat-icon class="dashboard__stat-icon">inventory_2</mat-icon>
+          <div class="dashboard__stat-content">
+            <span class="dashboard__stat-number">150</span>
+            <span class="dashboard__stat-label">Productos</span>
+          </div>
+        </div>
+        
+        <div class="dashboard__stat-item">
+          <mat-icon class="dashboard__stat-icon">shopping_cart</mat-icon>
+          <div class="dashboard__stat-content">
+            <span class="dashboard__stat-number">25</span>
+            <span class="dashboard__stat-label">Pedidos Pendientes</span>
+          </div>
+        </div>
+        
+        <div class="dashboard__stat-item">
+          <mat-icon class="dashboard__stat-icon">people</mat-icon>
+          <div class="dashboard__stat-content">
+            <span class="dashboard__stat-number">320</span>
+            <span class="dashboard__stat-label">Clientes</span>
+          </div>
+        </div>
+        
+        <div class="dashboard__stat-item">
+          <mat-icon class="dashboard__stat-icon">trending_up</mat-icon>
+          <div class="dashboard__stat-content">
+            <span class="dashboard__stat-number">$2.5M</span>
+            <span class="dashboard__stat-label">Ventas del Mes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

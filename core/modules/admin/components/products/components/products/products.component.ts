@@ -114,7 +114,6 @@ export class ProductsComponent {
   selectedProductSide: boolean = false;
   createdProductSide: boolean = false;
   dataLoaded = false;
-  clearSidebar = this.sidebarService.clearSides();
 
   clearSides() {
     this.selectedProductSide = false;

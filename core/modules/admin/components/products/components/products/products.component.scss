@@ -4,22 +4,34 @@
   width: 100%;
   height: -webkit-fill-available;
   overflow-y: auto;
+  & .surface {
+    & .header {
+    }
+  }
   & .mat-drawer-container {
     & mat-sidenav-content {
-      height: 90dvh;
       & main {
         display: flex;
+        padding: 0;
         flex-direction: column;
-        @extend %fullPadding;
+        ::ng-deep { 
+
+          & .table {
+            background-color: red;
+          }
+        }
         & section {
           width: 100%;
           max-width: none;
           margin-top: 0;
           display: flex;
-          justify-content: space-close;
+          justify-content: space-between;
+          @extend %fullPadding;
+          
           flex-wrap: wrap;
           align-items: center;
           gap: 24px;
+ 
           & table {
             & ::ng-deep {
               .mat-mdc-row .mat-mdc-cell {
@@ -42,6 +54,15 @@
               }
             }
           }
+
+        }
+        & .header {
+          @extend %fullPadding;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 24px;
+          padding: 0 24px !important;
         }
       }
     }

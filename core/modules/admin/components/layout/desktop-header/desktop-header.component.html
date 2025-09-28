@@ -1,0 +1,66 @@
+<header class="desktop-header">
+  <div class="desktop-header__left">
+    <!-- Botón para toggle sidebar en móvil -->
+    <button 
+      mat-icon-button 
+      class="desktop-header__menu-btn"
+      (click)="onToggleSidebar()"
+      aria-label="Toggle sidebar"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <!-- Logo solo visible en móvil cuando sidebar está cerrado -->
+    <div class="desktop-header__logo" [innerHTML]="simboloBelofonte"></div>
+  </div>
+
+  <div class="desktop-header__center">
+    <h1 class="desktop-header__title">Panel de Administración</h1>
+  </div>
+
+  <div class="desktop-header__right">
+    <!-- Botón de notificaciones -->
+    <button 
+      mat-icon-button 
+      class="desktop-header__notification-btn"
+      [matBadge]="notificationCount"
+      matBadgeColor="warn"
+      matBadgeSize="small"
+      [matBadgeHidden]="notificationCount === 0"
+      (click)="onOpenNotifications()"
+      aria-label="Notificaciones"
+    >
+      <mat-icon>notifications</mat-icon>
+    </button>
+
+    <!-- Menú de usuario -->
+    <button 
+      mat-icon-button 
+      class="desktop-header__user-btn"
+      [matMenuTriggerFor]="userMenu"
+      aria-label="Menú de usuario"
+    >
+      <mat-icon>account_circle</mat-icon>
+    </button>
+
+    <!-- Menú desplegable del usuario -->
+    <mat-menu #userMenu="matMenu" xPosition="before">
+      <button mat-menu-item (click)="onGoToProfile()">
+        <mat-icon>person</mat-icon>
+        <span>Mi Perfil</span>
+      </button>
+      
+      <button mat-menu-item (click)="onGoToSettings()">
+        <mat-icon>settings</mat-icon>
+        <span>Configuración</span>
+      </button>
+      
+      <mat-divider></mat-divider>
+      
+      <button mat-menu-item (click)="onSignOut()">
+        <mat-icon>logout</mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </mat-menu>
+  </div>
+</header>
