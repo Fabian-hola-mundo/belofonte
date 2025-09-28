@@ -16,6 +16,10 @@ export class AuthService {
         return 'La contraseña es incorrecta.';
       case 'auth/too-many-requests':
         return 'Demasiados intentos fallidos. Intenta más tarde.';
+      case 'auth/requests-from-referer-http://localhost:4200-are-blocked':
+        return 'Error de configuración: Los emuladores de Firebase no están corriendo. Ejecuta "firebase emulators:start" primero.';
+      case 'auth/network-request-failed':
+        return 'Error de red. Verifica tu conexión a internet o que los emuladores estén corriendo.';
       default:
         return 'Hubo un problema al iniciar sesión. Intenta de nuevo.';
     }

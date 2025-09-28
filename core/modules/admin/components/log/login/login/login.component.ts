@@ -83,7 +83,15 @@ export class LoginComponent implements OnDestroy {
 
   private handleLoginError(error: any) {
     console.error('Error en el inicio de sesión:', error);
-    this.loginError = this.authService.getErrorMessage(error.code);
+    console.error('Código de error:', error.code);
+    console.error('Mensaje de error:', error.message);
+    
+    // Verificar si es un problema de emulador
+    if (error.message?.includes('localhost:4200-are-blocked')) {
+      this.loginError = 'Los emuladores de Firebase no están corriendo. Ejecuta "firebase emulators:start" en la terminal.';
+    } else {
+      this.loginError = this.authService.getErrorMessage(error.code);
+    }
   }
 
   ngOnDestroy() {
