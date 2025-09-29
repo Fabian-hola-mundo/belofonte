@@ -1,32 +1,32 @@
 //animations
 
-@import "./animations/show.scss";
+@use "./animations/show.scss";
 
 //Components
 
-/* @import "./components/avatar";
-@import "./components/button";
-@import "./components/menu";
-@import "./components/tables";
-@import "./components/autocomplete";
-@import "./components/snackbar";
-@import "./components/button-icon";
-@import "./components/accordion";
-@import "./components/scroll";
-@import "./components/skeleton";
-@import "./components/drawer";
-@import "./components/dialog";
-@import "./components/input";
-@import "./components/select";
-@import "./components/select-list";
-@import "./components/sidenav";
-@import "./components/overlay-backdrop";
+/* @use "./components/avatar";
+@use "./components/button";
+@use "./components/menu";
+@use "./components/tables";
+@use "./components/autocomplete";
+@use "./components/snackbar";
+@use "./components/button-icon";
+@use "./components/accordion";
+@use "./components/scroll";
+@use "./components/skeleton";
+@use "./components/drawer";
+@use "./components/dialog";
+@use "./components/input";
+@use "./components/select";
+@use "./components/select-list";
+@use "./components/sidenav";
+@use "./components/overlay-backdrop";
  */
 //Maqeuta
 
-@import "./variables";
-@import "./mixin";
-@import "./placeholder";
+@use "./variables" as *;
+@use "./mixin" as *;
+@use "./placeholder" as *;
 
 html {
   main {

@@ -1,4 +1,5 @@
-@import "../../../../../src/styles.scss";
+@use "../../../../../src/styles/variables" as *;
+@use "../../../../../src/styles/placeholder" as *;
 
 :host {
   display: flex;
@@ -97,7 +98,7 @@
     }
   }
   .product-nav--active {
-    @extend .surface;
+    @extend .surface !optional;
     position: fixed;
     z-index: 100;
     box-shadow: var(--md-shadow);

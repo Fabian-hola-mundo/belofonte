@@ -1,0 +1,25 @@
+ngx-editor-menu {
+  * svg {
+    fill: var(--md-sys-color-on-surface);
+  }
+
+  ngx-dropdown {
+    color: var(--md-sys-color-on-surface);
+  }
+  
+}
+
+.NgxEditor__Content {
+  padding: 0 !important;
+  margin: 0 !important;
+
+  ul {
+    & li {
+      list-style-type: disc;
+      list-style-position: inside;
+      & p {
+        display: inline;
+      }
+    }
+  }
+}

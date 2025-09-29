@@ -1,0 +1,163 @@
+@use '@angular/material' as mat;
+
+:host {
+  // Configuración global del slide toggle usando variables del tema
+  @include mat.slide-toggle-overrides((
+    // Estados seleccionados (toggle activado)
+    selected-handle-color: var(--md-sys-color-primary),
+    selected-track-color: var(--md-sys-color-primary-container),
+    selected-icon-color: var(--md-sys-color-on-primary),
+    
+    // Estados no seleccionados (toggle desactivado)
+    unselected-handle-color: var(--md-sys-color-outline),
+    unselected-track-color: var(--md-sys-color-surface-variant),
+    unselected-icon-color: var(--md-sys-color-on-surface-variant),
+    
+    // Estados hover seleccionado
+    selected-hover-handle-color: var(--md-sys-color-primary),
+    selected-hover-track-color: var(--md-sys-color-primary-container),
+    
+    // Estados hover no seleccionado
+    unselected-hover-handle-color: var(--md-sys-color-on-surface-variant),
+    unselected-hover-track-color: var(--md-sys-color-surface-container-highest),
+    
+    // Estados focus seleccionado
+    selected-focus-handle-color: var(--md-sys-color-primary),
+    selected-focus-track-color: var(--md-sys-color-primary-container),
+    selected-focus-state-layer-color: var(--md-sys-color-primary),
+    selected-focus-state-layer-opacity: 0.08,
+    
+    // Estados focus no seleccionado
+    unselected-focus-handle-color: var(--md-sys-color-on-surface-variant),
+    unselected-focus-track-color: var(--md-sys-color-surface-variant),
+    unselected-focus-state-layer-color: var(--md-sys-color-on-surface),
+    unselected-focus-state-layer-opacity: 0.08,
+    
+    // Estados pressed (presionado)
+    selected-pressed-handle-color: var(--md-sys-color-primary),
+    selected-pressed-track-color: var(--md-sys-color-primary-container),
+    selected-pressed-state-layer-color: var(--md-sys-color-primary),
+    selected-pressed-state-layer-opacity: 0.12,
+    
+    unselected-pressed-handle-color: var(--md-sys-color-on-surface-variant),
+    unselected-pressed-track-color: var(--md-sys-color-surface-variant),
+    unselected-pressed-state-layer-color: var(--md-sys-color-on-surface),
+    unselected-pressed-state-layer-opacity: 0.12,
+    
+    // Estados deshabilitados
+    disabled-selected-handle-color: var(--md-sys-color-on-surface),
+    disabled-selected-track-color: var(--md-sys-color-on-surface),
+    disabled-unselected-handle-color: var(--md-sys-color-on-surface),
+    disabled-unselected-track-color: var(--md-sys-color-surface-variant),
+    
+    // Colores del texto de la etiqueta
+    label-text-color: var(--md-sys-color-on-surface),
+    
+    // Tamaños y formas
+    track-height: 32px,
+    track-width: 52px,
+    track-shape: 16px,
+    handle-shape: 50%,
+    selected-handle-size: 24px,
+    unselected-handle-size: 16px,
+    state-layer-size: 40px,
+  ));
+}
+
+// Estilos específicos para el contenedor del slide toggle
+.mat-mdc-slide-toggle {
+  .mdc-switch {
+    // Espaciado personalizado
+    margin-right: 8px;
+    
+    // Mejores transiciones
+    .mdc-switch__track {
+      transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                  border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .mdc-switch__handle {
+      transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                  background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+  
+  // Estilos para el texto de la etiqueta
+  .mdc-form-field {
+    > label {
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-body-large-font-family-name);
+      font-size: var(--md-sys-typescale-body-large-font-size);
+      font-weight: var(--md-sys-typescale-body-large-font-weight);
+      line-height: var(--md-sys-typescale-body-large-line-height);
+      letter-spacing: var(--md-sys-typescale-body-large-tracking);
+      
+      // Mejora la accesibilidad del texto
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+}
+
+// Modificaciones específicas para el contexto del formulario
+.form__body {
+  .mat-mdc-slide-toggle {
+    // Alineación mejorada en el formulario
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    
+    // Mejor espaciado con otros elementos del formulario
+    margin: 8px 0;
+    
+    // Efecto hover mejorado
+    &:hover {
+      .mdc-form-field > label {
+        color: var(--md-sys-color-primary);
+      }
+    }
+    
+    // Estados de focus mejorados para accesibilidad
+    &:focus-within {
+      .mdc-form-field > label {
+        color: var(--md-sys-color-primary);
+      }
+    }
+  }
+}
+
+// Estados de validación para formularios reactivos
+.mat-mdc-slide-toggle {
+  // Toggle válido
+  &.ng-valid.ng-touched {
+    .mdc-form-field > label {
+      color: var(--md-success-color-primary);
+    }
+  }
+  
+  // Toggle con error
+  &.ng-invalid.ng-touched {
+    .mdc-form-field > label {
+      color: var(--md-sys-color-error);
+    }
+    
+    .mdc-switch .mdc-switch__track {
+      border-color: var(--md-sys-color-error);
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .mat-mdc-slide-toggle {
+    .mdc-form-field > label {
+      font-size: 14px;
+    }
+    
+    .mdc-switch {
+      // Tamaño ligeramente más pequeño en móviles
+      transform: scale(0.9);
+      transform-origin: left center;
+    }
+  }
+}

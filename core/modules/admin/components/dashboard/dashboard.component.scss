@@ -1,4 +1,4 @@
-@forward '../../../../../../src/styles.scss';
+@use '../../../../../../src/styles/variables' as *;
 
 :host {
   display: block;

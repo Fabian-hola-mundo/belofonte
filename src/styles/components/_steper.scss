@@ -1,0 +1,43 @@
+
+@use '@angular/material' as mat;
+
+:root {
+  @include mat.stepper-overrides((
+    // Ícono en el header: usamos la superficie para que resalte según el tema.
+    header-icon-foreground-color: var(--md-sys-color-surface),
+    // Fondo del ícono cuando el paso está seleccionado: usamos el color primary.
+    header-selected-state-icon-background-color: var(--md-sys-color-primary),
+    // Ícono en el header cuando está seleccionado: se muestra el color on-primary.
+    header-selected-state-icon-foreground-color: var(--md-sys-color-on-primary),
+    // Ícono en modo edición: fondo y color idénticos a la selección.
+    header-edit-state-icon-background-color: var(--md-sys-color-primary),
+    header-edit-state-icon-foreground-color: var(--md-sys-color-on-primary),
+    // Color de fondo del contenedor del stepper.
+    container-color: var(--md-sys-color-surface),
+    // Color de la línea divisoria.
+    line-color: var(--md-sys-color-outline),
+    // Colores de las capas al hacer hover o focus.
+    header-hover-state-layer-color: var(--md-sys-color-inverse-surface),
+    header-focus-state-layer-color: var(--md-sys-color-inverse-surface),
+    // Color del texto de las etiquetas del header.
+    header-label-text-color: var(--md-sys-color-on-surface-variant),
+    header-optional-label-text-color: var(--md-sys-color-on-surface-variant),
+    header-selected-state-label-text-color: var(--md-sys-color-surface-variant),
+    // Colores para estados de error.
+    header-error-state-label-text-color: var(--md-sys-color-error),
+    header-icon-background-color: var(--md-sys-color-on-surface-variant),
+    header-error-state-icon-foreground-color: var(--md-sys-color-error)
+  ));
+}
+
+::ng-deep {
+  .mat-horizontal-stepper-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mat-horizontal-content-container {
+    /* padding: 0 !important; */
+  }
+}

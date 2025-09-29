@@ -1,8 +1,8 @@
 @use '@angular/material' as mat;
-@import "./styles/base";
-@import "./styles/tokens/tokens";
-@import "./styles/tokens/colors.module";
-@import "./styles/tokens/typography.module";
+@forward "./styles/base";
+@forward "./styles/tokens/tokens";
+@forward "./styles/tokens/colors.module";
+@forward "./styles/tokens/typography.module";
 
 * {
   margin: 0;

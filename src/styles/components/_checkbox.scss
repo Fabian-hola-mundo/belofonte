@@ -1,0 +1,57 @@
+@use '@angular/material' as mat;
+
+:root {
+  @include mat.checkbox-overrides((
+    // Colores del texto
+    label-text-color: var(--md-sys-color-on-surface),
+    disabled-label-color: var(--md-sys-color-on-surface-variant),
+    
+    // Colores del icono
+    selected-icon-color: var(--md-sys-color-primary),
+    selected-checkmark-color: var(--md-sys-color-on-primary),
+    unselected-icon-color: var(--md-sys-color-on-surface-variant),
+    
+    // Estados deshabilitados
+    disabled-selected-icon-color: var(--md-sys-color-on-surface-variant),
+    disabled-unselected-icon-color: var(--md-sys-color-on-surface-variant),
+    disabled-selected-checkmark-color: var(--md-sys-color-surface),
+    
+    // Estados de hover
+    selected-hover-icon-color: var(--md-sys-color-primary),
+    unselected-hover-icon-color: var(--md-sys-color-on-surface),
+    
+    // Estados de focus
+    selected-focus-icon-color: var(--md-sys-color-primary),
+    unselected-focus-icon-color: var(--md-sys-color-on-surface),
+    
+    // Estados de pressed
+    selected-pressed-icon-color: var(--md-sys-color-primary),
+    
+    // Capas de estado
+    selected-focus-state-layer-color: var(--md-sys-color-primary),
+    selected-hover-state-layer-color: var(--md-sys-color-primary),
+    selected-pressed-state-layer-color: var(--md-sys-color-on-surface),
+    unselected-focus-state-layer-color: var(--md-sys-color-on-surface),
+    unselected-hover-state-layer-color: var(--md-sys-color-on-surface),
+    unselected-pressed-state-layer-color: var(--md-sys-color-primary),
+    
+    // Opacidades de las capas de estado
+    selected-focus-state-layer-opacity: 0.12,
+    selected-hover-state-layer-opacity: 0.08,
+    selected-pressed-state-layer-opacity: 0.12,
+    unselected-focus-state-layer-opacity: 0.12,
+    unselected-hover-state-layer-opacity: 0.08,
+    unselected-pressed-state-layer-opacity: 0.12,
+    
+    // Tipografía
+    label-text-font: var(--md-sys-typescale-body-medium-font),
+    label-text-size: var(--md-sys-typescale-body-medium-size),
+    label-text-line-height: var(--md-sys-typescale-body-medium-line-height),
+    label-text-weight: var(--md-sys-typescale-body-medium-weight),
+    label-text-tracking: var(--md-sys-typescale-body-medium-tracking),
+    
+    // Densidad
+    state-layer-size: 40px,
+    touch-target-display: block
+  ));
+}

@@ -1,0 +1,64 @@
+::ng-deep {
+  .markdown {
+    display: flex;
+  flex-direction: column;
+  gap: 16px;
+    body {
+
+    }
+
+    * {
+      line-height: 1.75;
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--md-sys-color-primary);
+    }
+
+    a {
+      text-decoration: underline var(--md-sys-color-primary);
+      color: var(--md-sys-color-tertiary);
+      font-weight: bolder;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    blockquote {
+      border-left: 4px solid #82aaff;
+      padding-left: 1em;
+      color: #a9b7c6;
+      font-style: italic;
+    }
+
+    code {
+      background-color: #2e3440;
+      color: #d8dee9;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    pre {
+      background-color: #2e3440;
+      padding: 1em;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    ul {
+      padding-left: 20px;
+      list-style-type: disc;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+      list-style-type: disc;
+    }
+    ol {
+      padding-left: 16px;
+      list-style-type: disc;
+    }
+  }
+}

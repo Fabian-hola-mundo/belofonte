@@ -1,0 +1,501 @@
+@use "@angular/material" as mat;
+
+// Estilos personalizados para tabs siguiendo las mejores prácticas de Material Angular
+:root {
+  @include mat.tabs-overrides(
+    (
+      // Dimensiones y formas
+      container-height: 48px,
+      active-indicator-height: 2px,
+      active-indicator-shape: 0,
+      divider-height: 1px,
+
+      // Colores principales
+      active-indicator-color: var(--md-sys-color-primary),
+      active-label-text-color: var(--md-sys-color-primary),
+      inactive-label-text-color: var(--md-sys-color-on-surface-variant),
+      // Estados hover y focus
+      active-hover-indicator-color: var(--md-sys-color-primary),
+      active-hover-label-text-color: var(--md-sys-color-primary),
+      active-focus-indicator-color: var(--md-sys-color-primary),
+      active-focus-label-text-color: var(--md-sys-color-primary),
+      inactive-hover-label-text-color: var(--md-sys-color-on-surface),
+      inactive-focus-label-text-color: var(--md-sys-color-on-surface),
+      // Efectos ripple
+      active-ripple-color: var(--md-sys-color-primary),
+      inactive-ripple-color: var(--md-sys-color-on-surface),
+      disabled-ripple-color: var(--md-sys-color-on-surface),
+      // Divisores y elementos de paginación
+      divider-color: var(--md-sys-color-outline-variant),
+      pagination-icon-color: var(--md-sys-color-primary),
+      // Tipografía simplificada
+      label-text-size: 14px,
+      label-text-weight: 500,
+      label-text-line-height: 1.4,
+
+      // Colores de fondo opcionales
+      background-color: var(--md-sys-color-surface),
+      foreground-color: var(--md-sys-color-on-surface)
+    )
+  );
+}
+
+// Estilos adicionales específicos para asegurar compatibilidad
+::ng-deep {
+  .mat-mdc-tab-group {
+    .mat-mdc-tab-labels {
+      background-color: var(--md-sys-color-surface) !important;
+    }
+
+    .mat-mdc-tab.mdc-tab {
+      .mdc-tab__text-label {
+        color: var(--md-sys-color-on-surface-variant) !important;
+        font-weight: 500 !important;
+        transition: color 0.2s ease, opacity 0.2s ease, font-weight 0.2s ease !important;
+      }
+
+      // Estado hover para tabs inactivas
+      &:hover:not(.mdc-tab--active) {
+        .mdc-tab__text-label {
+          color: var(--md-sys-color-on-surface) !important;
+        }
+      }
+
+      // Estado activo - FORZAR colores
+      &.mdc-tab--active {
+        .mdc-tab__text-label {
+          color: var(--md-sys-color-primary) !important;
+        }
+
+        // Estado hover para tab activa
+        &:hover {
+          .mdc-tab__text-label {
+            color: var(--md-sys-color-primary) !important;
+            opacity: 0.8 !important;
+          }
+        }
+
+        // Indicador activo específico - FORZAR colores
+        .mdc-tab-indicator.mdc-tab-indicator--active {
+          .mdc-tab-indicator__content--underline {
+            border-color: var(--md-sys-color-primary) !important;
+            border-width: 2px !important;
+          }
+        }
+      }
+
+      // Indicador base - FORZAR colores
+      .mdc-tab-indicator__content--underline {
+        border-color: var(--md-sys-color-primary) !important;
+        border-width: 2px !important;
+        transition: border-color 0.2s ease, border-width 0.2s ease,
+          box-shadow 0.2s ease !important;
+      }
+
+      // Estados focus mejorados
+      &:focus {
+        outline: none !important; // Removemos el outline por defecto
+      }
+
+      // Focus indicator de Material Angular - FORZAR estilos
+      &.mat-focus-indicator:focus-visible {
+        position: relative !important;
+        outline: none !important;
+
+        &::before {
+          content: "" !important;
+          position: absolute !important;
+          top: -2px !important;
+          left: -2px !important;
+          right: -2px !important;
+          bottom: -2px !important;
+          border: 2px solid var(--md-sys-color-primary) !important;
+          border-radius: 6px !important;
+          opacity: 0.8 !important;
+          animation: focusPulse 1.5s ease-in-out infinite !important;
+          z-index: 1 !important;
+        }
+
+        .mdc-tab__text-label {
+          color: var(--md-sys-color-primary) !important;
+          font-weight: 600 !important;
+        }
+      }
+
+      // Focus específico para tabs inactivas con focus indicator
+      &.mat-focus-indicator:focus-visible:not(.mdc-tab--active) {
+        background-color: var(--md-sys-color-surface-container) !important;
+
+        &::before {
+          border-color: var(--md-sys-color-primary) !important;
+        }
+
+        .mdc-tab__text-label {
+          color: var(--md-sys-color-on-surface) !important;
+          font-weight: 600 !important;
+        }
+      }
+
+      // Focus + hover combinado para mejor UX
+      &.mat-focus-indicator:focus-visible:hover {
+        &::before {
+          border-color: var(--md-sys-color-primary) !important;
+          animation: none !important;
+          opacity: 1 !important;
+        }
+      }
+
+      // Estados focus para tab activa con todas las clases específicas
+      &.mdc-tab--active.mat-focus-indicator:focus-visible {
+        .mdc-tab__text-label {
+          color: var(--md-sys-color-primary) !important;
+          text-shadow: 0 0 4px var(--md-sys-color-primary) !important;
+          font-weight: 700 !important;
+        }
+
+        .mdc-tab-indicator.mdc-tab-indicator--active {
+          .mdc-tab-indicator__content--underline {
+            border-width: 3px !important;
+            box-shadow: 0 0 6px var(--md-sys-color-primary) !important;
+            border-color: var(--md-sys-color-primary) !important;
+          }
+        }
+
+        &::before {
+          border-color: var(--md-sys-color-primary) !important;
+          box-shadow: 0 0 8px var(--md-sys-color-primary) !important;
+        }
+      }
+
+      // Estado activo + focus + hover (triple estado)
+      &.mdc-tab--active.mat-focus-indicator:focus-visible:hover {
+        .mdc-tab__text-label {
+          opacity: 0.9 !important;
+        }
+
+        &::before {
+          animation: none !important;
+          opacity: 1 !important;
+          transform: scale(1.01) !important;
+        }
+      }
+    }
+
+    .mat-mdc-tab-body-wrapper {
+      background-color: var(--md-sys-color-surface) !important;
+    }
+
+    // Estilos específicos para flechas de navegación (paginación)
+    .mat-mdc-tab-header-pagination {
+      .mat-mdc-tab-header-pagination-chevron {
+        color: var(--md-sys-color-primary) !important;
+        border-color: var(--md-sys-color-primary) !important;
+        opacity: 0.8 !important;
+        transition: all 0.2s ease !important;
+      }
+
+      &:hover {
+        .mat-mdc-tab-header-pagination-chevron {
+          color: var(--md-sys-color-primary) !important;
+          border-color: var(--md-sys-color-primary) !important;
+          opacity: 1 !important;
+          transform: scale(1.1) !important;
+        }
+      }
+
+      &:disabled {
+        .mat-mdc-tab-header-pagination-chevron {
+          color: var(--md-sys-color-on-surface-variant) !important;
+          border-color: var(--md-sys-color-on-surface-variant) !important;
+          opacity: 0.4 !important;
+        }
+      }
+
+      // Estados focus para las flechas
+      &:focus-visible {
+        outline: 2px solid var(--md-sys-color-primary) !important;
+        outline-offset: 2px !important;
+        border-radius: 4px !important;
+        background-color: var(--md-sys-color-surface-container) !important;
+
+        .mat-mdc-tab-header-pagination-chevron {
+          color: var(--md-sys-color-primary) !important;
+          border-color: var(--md-sys-color-primary) !important;
+          opacity: 1 !important;
+        }
+      }
+    }
+
+    // Forzar colores en el header de tabs
+    .mat-mdc-tab-header {
+      .mat-mdc-tab-label-container {
+        .mat-mdc-tab-list {
+          .mat-mdc-tab.mdc-tab {
+            .mdc-tab__content {
+              .mdc-tab__text-label {
+                color: var(--md-sys-color-on-surface-variant) !important;
+              }
+            }
+
+            &.mdc-tab--active {
+              .mdc-tab__content {
+                .mdc-tab__text-label {
+                  color: var(--md-sys-color-primary) !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Estilos específicos para sidebar tabs con mayor especificidad
+  .sidebar-tabs.mat-mdc-tab-group {
+    .mat-mdc-tab-header {
+      border-bottom: 1px solid var(--md-sys-color-outline-variant) !important;
+      background-color: var(--md-sys-color-surface) !important;
+    }
+
+    .mat-mdc-tab-body-content {
+      overflow: visible !important;
+      padding: 0 !important;
+    }
+
+    // Mejoras específicas para sidebar con máxima especificidad
+    .mat-mdc-tab-labels {
+      .mat-mdc-tab.mdc-tab {
+        min-width: auto !important;
+
+        &:hover {
+          background-color: var(--md-sys-color-surface-container) !important;
+          border-radius: 4px 4px 0 0 !important;
+        }
+
+        // Focus mejorado para sidebar con clases específicas
+        &.mat-focus-indicator:focus-visible {
+          &::before {
+            border-radius: 8px 8px 0 0 !important;
+            background-color: var(--md-sys-color-primary-container) !important;
+            opacity: 0.1 !important;
+          }
+        }
+
+        // Tab activa en sidebar con focus
+        &.mdc-tab--active.mat-focus-indicator:focus-visible {
+          background-color: var(--md-sys-color-primary-container) !important;
+
+          &::before {
+            background-color: var(--md-sys-color-primary) !important;
+            opacity: 0.05 !important;
+          }
+        }
+
+        // Forzar colores específicos para sidebar
+        .mdc-tab__text-label {
+          color: var(--md-sys-color-on-surface-variant) !important;
+        }
+
+        &.mdc-tab--active {
+          .mdc-tab__text-label {
+            color: var(--md-sys-color-primary) !important;
+          }
+
+          .mdc-tab-indicator.mdc-tab-indicator--active {
+            .mdc-tab-indicator__content--underline {
+              border-color: var(--md-sys-color-primary) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animación para el efecto pulse del focus
+@keyframes focusPulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.02);
+  }
+}
+
+// ============================================
+// ESTILOS PARA MAT-TAB-NAV-BAR (diferentes a mat-tab-group)
+// ============================================
+
+.mat-mdc-tab-link.mdc-tab--active .mdc-tab__text-label {
+  color: var(--md-sys-color-primary) !important;
+  font-weight: 600 !important;
+}
+
+
+.mat-mdc-tab-link .mdc-tab__text-label {
+  color: var(--md-sys-color-on-surface-variant) !important;
+  font-weight: 500 !important;
+  transition: color 0.2s ease, opacity 0.2s ease, font-weight 0.2s ease !important;
+}
+
+.mat-mdc-tab-link .mdc-tab-indicator__content--underline {
+  border-color: var(--md-sys-color-primary) !important;
+}
+
+.mat-mdc-tab-nav-bar.mdc-tab-bar {
+  background-color: var(--md-sys-color-surface) !important;
+  border-bottom: 1px solid var(--md-sys-color-outline-variant) !important;
+
+  .mat-mdc-tab-link.mdc-tab {
+    .mdc-tab__text-label {
+      color: var(--md-sys-color-on-surface-variant) !important;
+      font-weight: 500 !important;
+      transition: color 0.2s ease, opacity 0.2s ease, font-weight 0.2s ease !important;
+    }
+
+    // Estado hover para nav links inactivos
+    &:hover:not(.mdc-tab--active) {
+      background-color: var(--md-sys-color-surface-container) !important;
+      border-radius: 4px 4px 0 0 !important;
+
+      .mdc-tab__text-label {
+        color: var(--md-sys-color-on-surface) !important;
+      }
+    }
+
+    // Estado activo para nav links - FORZAR colores
+    &.mdc-tab--active {
+      background-color: var(--md-sys-color-primary-container) !important;
+
+      .mdc-tab__text-label {
+        color: var(--md-sys-color-primary) !important;
+        font-weight: 600 !important;
+      }
+
+      // Estado hover para nav link activo
+      &:hover {
+        background-color: var(--md-sys-color-primary-container) !important;
+
+        .mdc-tab__text-label {
+          color: var(--md-sys-color-primary) !important;
+          opacity: 0.8 !important;
+        }
+      }
+
+      // Indicador activo específico para nav bar
+      .mdc-tab-indicator.mdc-tab-indicator--active {
+        .mdc-tab-indicator__content--underline {
+          border-color: var(--md-sys-color-primary) !important;
+          border-width: 3px !important;
+        }
+      }
+    }
+
+    // Indicador base para nav links
+    .mdc-tab-indicator__content--underline {
+      border-color: var(--md-sys-color-primary) !important;
+      border-width: 2px !important;
+      transition: border-color 0.2s ease, border-width 0.2s ease,
+        box-shadow 0.2s ease !important;
+    }
+
+    // Estados focus para nav links
+    &:focus {
+      outline: none !important;
+    }
+
+    // Focus visible para nav links
+    &.mat-focus-indicator:focus-visible {
+      position: relative !important;
+      outline: none !important;
+
+      &::before {
+        content: "" !important;
+        position: absolute !important;
+        top: -2px !important;
+        left: -2px !important;
+        right: -2px !important;
+        bottom: -2px !important;
+        border: 2px solid var(--md-sys-color-primary) !important;
+        border-radius: 6px !important;
+        opacity: 0.8 !important;
+        animation: focusPulse 1.5s ease-in-out infinite !important;
+        z-index: 1 !important;
+      }
+
+      .mdc-tab__text-label {
+        color: var(--md-sys-color-primary) !important;
+        font-weight: 600 !important;
+      }
+    }
+
+    // Focus específico para nav links inactivos
+    &.mat-focus-indicator:focus-visible:not(.mdc-tab--active) {
+      background-color: var(--md-sys-color-surface-container) !important;
+
+      &::before {
+        border-color: var(--md-sys-color-primary) !important;
+      }
+
+      .mdc-tab__text-label {
+        color: var(--md-sys-color-on-surface) !important;
+        font-weight: 600 !important;
+      }
+    }
+
+    // Focus + hover combinado para nav links
+    &.mat-focus-indicator:focus-visible:hover {
+      &::before {
+        border-color: var(--md-sys-color-primary) !important;
+        animation: none !important;
+        opacity: 1 !important;
+      }
+    }
+
+    // Estados focus para nav link activo
+    &.mdc-tab--active.mat-focus-indicator:focus-visible {
+      background-color: var(--md-sys-color-primary-container) !important;
+
+      .mdc-tab__text-label {
+        color: var(--md-sys-color-primary) !important;
+        text-shadow: 0 0 4px var(--md-sys-color-primary) !important;
+        font-weight: 700 !important;
+      }
+
+      .mdc-tab-indicator.mdc-tab-indicator--active {
+        .mdc-tab-indicator__content--underline {
+          border-width: 4px !important;
+          box-shadow: 0 0 6px var(--md-sys-color-primary) !important;
+          border-color: var(--md-sys-color-primary) !important;
+        }
+      }
+
+      &::before {
+        border-color: var(--md-sys-color-primary) !important;
+        box-shadow: 0 0 8px var(--md-sys-color-primary) !important;
+      }
+    }
+
+    // Estado activo + focus + hover para nav links
+    &.mdc-tab--active.mat-focus-indicator:focus-visible:hover {
+      .mdc-tab__text-label {
+        opacity: 0.9 !important;
+      }
+
+      &::before {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: scale(1.01) !important;
+      }
+    }
+  }
+
+  // Contenedor específico para nav panel
+  + .mat-mdc-tab-nav-panel {
+    background-color: var(--md-sys-color-surface) !important;
+    border-top: none !important;
+  }
+}

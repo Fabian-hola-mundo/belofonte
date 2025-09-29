@@ -9,7 +9,7 @@
   & bel-items-added {
     border: 1px solid var(--md-sys-color-outline-variant);
     width: 100%;
-    @extend .surface;
+    @extend .surface !optional;
     border-radius: 12px;
     overflow: hidden;
   }

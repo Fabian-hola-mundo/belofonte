@@ -1,4 +1,5 @@
-@import "../../../../../../../src/styles.scss";
+@use "../../../../../../../src/styles/variables" as *;
+@use "../../../../../../../src/styles/placeholder" as *;
 
 :host {
   width: 100%;

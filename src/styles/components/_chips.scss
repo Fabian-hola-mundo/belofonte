@@ -1,0 +1,18 @@
+
+::ng-deep {
+
+  .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+    background-color: var(--md-sys-color-on-surface) !important;
+  }
+  
+  .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) .mdc-evolution-chip__text-label {
+    color: var(--md-sys-color-surface) !important;
+  }
+
+  .mat-mdc-chip-selected {
+    background-color: var(--md-sys-color-primary) !important;
+    & * {
+      color: var(--md-sys-color-on-primary) !important;
+    }
+  }
+}

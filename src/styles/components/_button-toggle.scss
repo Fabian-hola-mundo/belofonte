@@ -1,0 +1,18 @@
+::ng-deep {
+  .mat-button-toggle-appearance-standard {
+    background-color: transparent !important;
+    & * {
+    }
+    & * span {
+      color: var(--md-sys-color-primary) !important;
+    }
+  }
+  .mat-button-toggle-group {
+    border: 1px solid var(--md-sys-color-outline-variant) !important;
+  }
+
+  mat-button-toggle {
+    border-left: 1px solid var(--md-sys-color-outline-variant) !important;
+    border-right: 1px solid var(--md-sys-color-outline-variant) !important;
+  }
+}
