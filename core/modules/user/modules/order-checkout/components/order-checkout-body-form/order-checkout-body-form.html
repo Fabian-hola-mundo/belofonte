@@ -11,7 +11,7 @@
         <form [formGroup]="firstFormGroup">
           <ng-template matStepLabel>Datos personales</ng-template>
           <bel-order-checkout-body-form-step-1
-            [stepper]="this.stepper"
+            [stepper]="stepper || null"
             [formGroup]="firstFormGroup"
           />
         </form>
@@ -35,8 +35,8 @@
   <bel-order-checkout-actions
   (backClicked)="prevStep()"
   (forwardClicked)="nextStep()"
-  (payClicked)="submitToWompi(wompiForm)"
-  [orderCheckoutBodyForm]="stepper.selectedIndex"
+  (payClicked)="onPayClick()"
+  [orderCheckoutBodyForm]="stepper?.selectedIndex"
   ></bel-order-checkout-actions>
 
 </section>

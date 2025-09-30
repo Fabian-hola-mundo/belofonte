@@ -4,7 +4,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { OrderCheckoutBodyFormComponent } from '../order-checkout-body-form/order-checkout-body-form';
 import { EventEmitter } from 'stream';
-import { MatStepper } from '@angular/material/stepper';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ResumenDesktopComponent } from '../order-checkout-resumen-desktop/resumen.desktop.component';
 
@@ -28,7 +27,6 @@ import { ResumenDesktopComponent } from '../order-checkout-resumen-desktop/resum
 export class OrderCheckoutBodyComponent {
   isMobile = true;
   readonly panelOpenState = signal(false);
-  @ViewChild('stepper', { static: false }) stepper?: MatStepper;
   @ViewChild(OrderCheckoutBodyFormComponent)
   orderCheckoutBodyForm!: OrderCheckoutBodyFormComponent;
   constructor(

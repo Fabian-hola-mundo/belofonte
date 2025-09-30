@@ -3,9 +3,9 @@
 @use "./animations/show.scss";
 
 //Components
+@forward "./components/button";
 
 /* @use "./components/avatar";
-@use "./components/button";
 @use "./components/menu";
 @use "./components/tables";
 @use "./components/autocomplete";

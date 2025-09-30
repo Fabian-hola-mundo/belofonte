@@ -1,11 +1,14 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   inject,
   Renderer2,
   signal,
   ViewChild,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -51,7 +54,7 @@ import { PaymentData } from '../../interfaces/order.interface';
   templateUrl: './order-checkout-body-form.html',
   styleUrl: './order-checkout-body-form.scss',
 })
-export class OrderCheckoutBodyFormComponent {
+export class OrderCheckoutBodyFormComponent implements AfterViewInit {
   productForm!: any;
   private _formBuilder = inject(FormBuilder);
   @ViewChild('stepper') stepper!: MatStepper;
@@ -66,7 +69,8 @@ export class OrderCheckoutBodyFormComponent {
     private cartService: CartService,
     private breakpointObserver: BreakpointObserver,
     private checkoutService: CheckoutService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   async generateIntegrityHash(
@@ -142,10 +146,26 @@ export class OrderCheckoutBodyFormComponent {
   }
 
   nextStep() {
-    this.stepper.next();
+    if (isPlatformBrowser(this.platformId) && this.stepper) {
+      this.stepper.next();
+    }
   }
   prevStep() {
-    this.stepper.previous();
+    if (isPlatformBrowser(this.platformId) && this.stepper) {
+      this.stepper.previous();
+    }
+  }
+
+  ngAfterViewInit() {
+    // El stepper ya está disponible aquí
+  }
+
+  onPayClick() {
+    if (isPlatformBrowser(this.platformId) && this.wompiForm?.nativeElement) {
+      this.submitToWompi(this.wompiForm.nativeElement);
+    } else {
+      console.error('Error: Form element is not ready for payment submission or not in browser');
+    }
   }
 
   goToPay() {
@@ -227,9 +247,12 @@ export class OrderCheckoutBodyFormComponent {
           form.removeChild(form.firstChild);
         }
 
+        // Obtener la URL base de forma segura
+        const baseUrl = isPlatformBrowser(this.platformId) ? window.location.origin : 'https://belofonte.com';
+
         // Añade los campos requeridos
         this.addHiddenInput(form, 'reference', this.shoppingCart.get('uniqueReference')?.value ?? '');
-        this.addHiddenInput(form, 'redirect-url', `${window.location.origin}/payment-result/${orderId}`);
+        this.addHiddenInput(form, 'redirect-url', `${baseUrl}/payment-result/${orderId}`);
         this.addHiddenInput(form, 'amount-in-cents', this.shoppingCart.get('totalPrice')?.value?.toString() ?? '');
         this.addHiddenInput(form, 'currency', this.shoppingCart.get('currency')?.value ?? '');
         this.addHiddenInput(form, 'expiration-time', this.shoppingCart.get('expiration')?.value ?? '');
@@ -249,8 +272,10 @@ export class OrderCheckoutBodyFormComponent {
         this.addHiddenInput(form, 'shipping-address:country', 'CO');
         this.addHiddenInput(form, 'shipping-address:phone-number', this.firstFormGroup.get('phoneCtrl')?.value ?? '');
 
-        // Guardar el ID del pedido en localStorage para usarlo en la página de resultado
-        localStorage.setItem('currentOrderId', orderId);
+        // Guardar el ID del pedido en localStorage para usarlo en la página de resultado (solo en browser)
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('currentOrderId', orderId);
+        }
 
         form.submit();
       } catch (error) {

@@ -1,41 +1,341 @@
 
-@include mat.form-field-overrides((
-  // Outline dimensions y colores
-  outlined-outline-width: 1px,
-  outlined-focus-outline-width: 2px, // Más grosor al tener focus
-  outlined-outline-color: var(--md-sys-color-outline-variant),
-  outlined-focus-outline-color: var(--md-sys-color-primary),
-  outlined-hover-outline-color: var(--md-sys-color-outline),
-  outlined-disabled-outline-color: var(--md-sys-color-surface-container-low),
-  outlined-error-outline-color: var(--md-sys-color-error),
-  outlined-error-focus-outline-color: var(--md-sys-color-error),
-  outlined-error-hover-outline-color: var(--md-sys-color-error),
+@use '@angular/material' as mat;
 
-  // Label: colores en distintos estados
-  outlined-label-text-color: var(--md-sys-color-on-surface),
-  outlined-hover-label-text-color: var(--md-sys-color-on-surface-variant),
-  outlined-focus-label-text-color: var(--md-sys-color-primary),
-  outlined-disabled-label-text-color: var(--md-sys-color-surface-container-low),
-  outlined-error-label-text-color: var(--md-sys-color-error),
-  outlined-error-focus-label-text-color: var(--md-sys-color-error),
-  outlined-error-hover-label-text-color: var(--md-sys-color-error),
+// Configuración usando los mixins oficiales de Angular Material 19.2.19
+:root {
+  // Tokens del sistema de tipografía que Material usa como fallback
+  --mat-sys-body-large-font: 'Roboto, sans-serif';
+  --mat-sys-body-large-size: 16px;
+  --mat-sys-body-large-line-height: 24px;
+  --mat-sys-body-large-tracking: 0.5px;
+  --mat-sys-body-large-weight: 400;
+  --mat-sys-body-small-font: 'Roboto, sans-serif';
+  --mat-sys-body-small-size: 12px;
+  --mat-sys-body-small-line-height: 16px;
+  --mat-sys-body-small-tracking: 0.4px;
+  --mat-sys-body-small-weight: 400;
 
-  // Input text y placeholder
-  outlined-input-text-color: var(--md-sys-color-on-surface),
-  outlined-disabled-input-text-color: var(--md-sys-color-on-surface-variant),
-  outlined-input-text-placeholder-color: var(--md-sys-color-outline),
+  // Aplicar mixins oficiales de form-field-overrides
+  @include mat.form-field-overrides((
+    // Outlined form-fields
+    outlined-outline-width: 1px,
+    outlined-focus-outline-width: 2px,
+    outlined-container-shape: 8px,
+    outlined-caret-color: var(--md-sys-color-primary),
+    outlined-focus-outline-color: var(--md-sys-color-primary),
+    outlined-focus-label-text-color: var(--md-sys-color-primary),
+    outlined-label-text-color: var(--md-sys-color-on-surface-variant),
+    outlined-hover-label-text-color: var(--md-sys-color-on-surface),
+    outlined-disabled-label-text-color: var(--md-sys-color-on-surface),
+    outlined-input-text-color: var(--md-sys-color-on-surface),
+    outlined-disabled-input-text-color: var(--md-sys-color-on-surface),
+    outlined-input-text-placeholder-color: var(--md-sys-color-on-surface-variant),
+    outlined-error-caret-color: var(--md-sys-color-error),
+    outlined-error-focus-label-text-color: var(--md-sys-color-error),
+    outlined-error-label-text-color: var(--md-sys-color-error),
+    outlined-error-hover-label-text-color: var(--md-sys-color-on-error-container),
+    outlined-outline-color: var(--md-sys-color-outline),
+    outlined-disabled-outline-color: var(--md-sys-color-on-surface),
+    outlined-hover-outline-color: var(--md-sys-color-on-surface),
+    outlined-error-focus-outline-color: var(--md-sys-color-error),
+    outlined-error-hover-outline-color: var(--md-sys-color-on-error-container),
+    outlined-error-outline-color: var(--md-sys-color-error),
+    outlined-label-text-font: 'Roboto, sans-serif',
+    outlined-label-text-size: 16px,
+    outlined-label-text-tracking: 0.5px,
+    outlined-label-text-weight: 400,
 
-  // Caret (cursor)
-  outlined-caret-color: var(--md-sys-color-primary),
-  outlined-error-caret-color: var(--md-sys-color-error),
+    // Filled form-fields
+    filled-active-indicator-height: 1px,
+    filled-focus-active-indicator-height: 2px,
+    filled-container-shape: 8px,
+    filled-caret-color: var(--md-sys-color-primary),
+    filled-focus-active-indicator-color: var(--md-sys-color-primary),
+    filled-focus-label-text-color: var(--md-sys-color-primary),
+    filled-container-color: var(--md-sys-color-surface-container-highest),
+    filled-disabled-container-color: var(--md-sys-color-on-surface),
+    filled-label-text-color: var(--md-sys-color-on-surface-variant),
+    filled-hover-label-text-color: var(--md-sys-color-on-surface-variant),
+    filled-disabled-label-text-color: var(--md-sys-color-on-surface),
+    filled-input-text-color: var(--md-sys-color-on-surface),
+    filled-disabled-input-text-color: var(--md-sys-color-on-surface),
+    filled-input-text-placeholder-color: var(--md-sys-color-on-surface-variant),
+    filled-error-hover-label-text-color: var(--md-sys-color-on-error-container),
+    filled-error-focus-label-text-color: var(--md-sys-color-error),
+    filled-error-label-text-color: var(--md-sys-color-error),
+    filled-error-caret-color: var(--md-sys-color-error),
+    filled-active-indicator-color: var(--md-sys-color-on-surface-variant),
+    filled-disabled-active-indicator-color: var(--md-sys-color-on-surface),
+    filled-hover-active-indicator-color: var(--md-sys-color-on-surface),
+    filled-error-active-indicator-color: var(--md-sys-color-error),
+    filled-error-focus-active-indicator-color: var(--md-sys-color-error),
+    filled-error-hover-active-indicator-color: var(--md-sys-color-on-error-container),
+    filled-label-text-font: 'Roboto, sans-serif',
+    filled-label-text-size: 16px,
+    filled-label-text-tracking: 0.5px,
+    filled-label-text-weight: 400,
 
-  // Redondeado: establece la forma del contenedor (outline)
-  outlined-container-shape: 8px,
+    // General form-field tokens
+    focus-select-arrow-color: var(--md-sys-color-primary),
+    disabled-input-text-placeholder-color: var(--md-sys-color-on-surface),
+    state-layer-color: var(--md-sys-color-on-surface),
+    error-text-color: var(--md-sys-color-error),
+    leading-icon-color: var(--md-sys-color-on-surface-variant),
+    disabled-leading-icon-color: var(--md-sys-color-on-surface),
+    trailing-icon-color: var(--md-sys-color-on-surface-variant),
+    disabled-trailing-icon-color: var(--md-sys-color-on-surface),
+    error-focus-trailing-icon-color: var(--md-sys-color-error),
+    error-hover-trailing-icon-color: var(--md-sys-color-on-error-container),
+    error-trailing-icon-color: var(--md-sys-color-error),
+    enabled-select-arrow-color: var(--md-sys-color-on-surface-variant),
+    disabled-select-arrow-color: var(--md-sys-color-on-surface),
+    hover-state-layer-opacity: 0.08,
+    focus-state-layer-opacity: 0.12,
 
-  // Tipografía del label (opcional, para tener full control)
-  outlined-label-text-font: 'Roboto, sans-serif',
-  outlined-label-text-size: 16px,
-  outlined-label-text-tracking: 0.5px,
-  outlined-label-text-weight: 400,
-  outlined-label-text-populated-size: 12px
-));
+    // Typography tokens
+    container-text-font: 'Roboto, sans-serif',
+    container-text-line-height: 24px,
+    container-text-size: 16px,
+    container-text-tracking: 0.5px,
+    container-text-weight: 400,
+    outlined-label-text-populated-size: 12px,
+    subscript-text-font: 'Roboto, sans-serif',
+    subscript-text-line-height: 16px,
+    subscript-text-size: 12px,
+    subscript-text-tracking: 0.4px,
+    subscript-text-weight: 400,
+
+    // Density tokens
+    container-height: 56px,
+    container-vertical-padding: 16px,
+  ));
+}
+
+// Estilos directos para elementos internos específicos usando ::ng-deep
+::ng-deep {
+  // Targeting directo de los elementos que realmente tienen el borde
+  .mat-mdc-form-field-appearance-outline {
+    
+    // El contenedor principal del outline
+    .mdc-notched-outline {
+      border-radius: 8px !important;
+      
+      // Los tres elementos que forman el borde outlined
+      .mdc-notched-outline__leading {
+        border: 1px solid var(--md-sys-color-outline) !important;
+        border-right: none !important;
+        border-radius: 8px 0 0 8px !important;
+      }
+      
+      .mdc-notched-outline__notch {
+        border-top: 1px solid var(--md-sys-color-outline) !important;
+        border-bottom: 1px solid var(--md-sys-color-outline) !important;
+        border-left: none !important;
+        border-right: none !important;
+      }
+      
+      .mdc-notched-outline__trailing {
+        border: 1px solid var(--md-sys-color-outline) !important;
+        border-left: none !important;
+        border-radius: 0 8px 8px 0 !important;
+      }
+    }
+
+    // Estados de focus
+    &.mat-focused .mdc-notched-outline {
+      .mdc-notched-outline__leading {
+        border-color: var(--md-sys-color-primary) !important;
+        border-width: 2px !important;
+        border-right: none !important;
+      }
+      
+      .mdc-notched-outline__notch {
+        border-top-color: var(--md-sys-color-primary) !important;
+        border-bottom-color: var(--md-sys-color-primary) !important;
+        border-top-width: 2px !important;
+        border-bottom-width: 2px !important;
+      }
+      
+      .mdc-notched-outline__trailing {
+        border-color: var(--md-sys-color-primary) !important;
+        border-width: 2px !important;
+        border-left: none !important;
+      }
+    }
+
+    // Estados de hover
+    &:hover:not(.mat-focused):not(.mat-form-field-disabled) .mdc-notched-outline {
+      .mdc-notched-outline__leading {
+        border-color: var(--md-sys-color-on-surface) !important;
+      }
+      
+      .mdc-notched-outline__notch {
+        border-top-color: var(--md-sys-color-on-surface) !important;
+        border-bottom-color: var(--md-sys-color-on-surface) !important;
+      }
+      
+      .mdc-notched-outline__trailing {
+        border-color: var(--md-sys-color-on-surface) !important;
+      }
+    }
+
+    // Estados de error
+    &.mat-form-field-invalid .mdc-notched-outline {
+      .mdc-notched-outline__leading {
+        border-color: var(--md-sys-color-error) !important;
+      }
+      
+      .mdc-notched-outline__notch {
+        border-top-color: var(--md-sys-color-error) !important;
+        border-bottom-color: var(--md-sys-color-error) !important;
+      }
+      
+      .mdc-notched-outline__trailing {
+        border-color: var(--md-sys-color-error) !important;
+      }
+    }
+
+    // Estados disabled
+    &.mat-form-field-disabled .mdc-notched-outline {
+      opacity: 0.6 !important;
+      
+      .mdc-notched-outline__leading {
+        border-color: var(--md-sys-color-on-surface) !important;
+      }
+      
+      .mdc-notched-outline__notch {
+        border-top-color: var(--md-sys-color-on-surface) !important;
+        border-bottom-color: var(--md-sys-color-on-surface) !important;
+      }
+      
+      .mdc-notched-outline__trailing {
+        border-color: var(--md-sys-color-on-surface) !important;
+      }
+    }
+  }
+
+  // Estilos para el input y label dentro del form-field
+  .mat-mdc-form-field {
+    // Label flotante
+    .mat-mdc-floating-label {
+      color: var(--md-sys-color-on-surface-variant) !important;
+      font-family: 'Roboto, sans-serif' !important;
+      font-size: 16px !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.5px !important;
+    }
+
+    &.mat-focused .mat-mdc-floating-label {
+      color: var(--md-sys-color-primary) !important;
+    }
+
+    &.mat-form-field-invalid .mat-mdc-floating-label {
+      color: var(--md-sys-color-error) !important;
+    }
+
+    &.mat-form-field-disabled .mat-mdc-floating-label {
+      color: var(--md-sys-color-on-surface) !important;
+      opacity: 0.6 !important;
+    }
+
+    // Input element - targeting específico para sobrescribir el color blue
+    .mat-mdc-input-element,
+    .mdc-text-field__input {
+      color: var(--md-sys-color-on-surface) !important;
+      font-family: 'Roboto, sans-serif' !important;
+      font-size: 16px !important;
+      font-weight: 400 !important;
+      caret-color: var(--md-sys-color-primary) !important;
+
+      &::placeholder {
+        color: var(--md-sys-color-on-surface-variant) !important;
+        opacity: 1 !important;
+      }
+    }
+
+    &.mat-form-field-invalid .mat-mdc-input-element {
+      caret-color: var(--md-sys-color-error) !important;
+    }
+
+    &.mat-form-field-disabled .mat-mdc-input-element {
+      color: var(--md-sys-color-on-surface) !important;
+      opacity: 0.6 !important;
+    }
+
+    // Container height y padding
+    .mdc-text-field {
+      height: 56px !important;
+      border-radius: 8px !important;
+      padding: 0 16px !important;
+    }
+
+    // Error messages
+    .mat-mdc-form-field-error {
+      color: var(--md-sys-color-error) !important;
+      font-family: 'Roboto, sans-serif' !important;
+      font-size: 12px !important;
+      margin-top: 4px !important;
+    }
+
+    // Hint text
+    .mat-mdc-form-field-hint {
+      color: var(--md-sys-color-on-surface-variant) !important;
+      font-family: 'Roboto, sans-serif' !important;
+      font-size: 12px !important;
+    }
+
+    // Iconos prefix y suffix
+    .mat-mdc-form-field-icon-prefix,
+    .mat-mdc-form-field-icon-suffix {
+      color: var(--md-sys-color-on-surface-variant) !important;
+    }
+
+    &.mat-focused .mat-mdc-form-field-icon-prefix,
+    &.mat-focused .mat-mdc-form-field-icon-suffix {
+      color: var(--md-sys-color-primary) !important;
+    }
+
+    &.mat-form-field-invalid .mat-mdc-form-field-icon-prefix,
+    &.mat-form-field-invalid .mat-mdc-form-field-icon-suffix {
+      color: var(--md-sys-color-error) !important;
+    }
+  }
+
+  // Selector ultra-específico para sobrescribir el color blue hardcodeado
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: var(--md-sys-color-on-surface) !important;
+  }
+
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mdc-text-field__input {
+    color: var(--md-sys-color-on-surface) !important;
+  }
+
+  // Asegurar que todos los inputs tengan el color correcto
+  .mat-mdc-form-field .mdc-text-field--outlined .mdc-text-field__input,
+  .mat-mdc-form-field .mdc-text-field__input,
+  .mat-mdc-form-field input {
+    color: var(--md-sys-color-on-surface) !important;
+    caret-color: var(--md-sys-color-primary) !important;
+  }
+
+  // Estados específicos para inputs
+  .mat-mdc-form-field.mat-form-field-invalid .mdc-text-field__input,
+  .mat-mdc-form-field.mat-form-field-invalid input {
+    caret-color: var(--md-sys-color-error) !important;
+  }
+
+  .mat-mdc-form-field.mat-form-field-disabled .mdc-text-field__input,
+  .mat-mdc-form-field.mat-form-field-disabled input {
+    color: var(--md-sys-color-on-surface) !important;
+    opacity: 0.6 !important;
+  }
+}
+
+
+::ng-deep {
+
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: var(--mat-sys-color-on-surface) !important;
+    caret-color: var(--mat-sys-color-primary) !important;
+}
+} 

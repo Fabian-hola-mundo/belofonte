@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CheckoutService } from '../../services/checkout.service';
 import { OrderService } from '../../services/order.service';
@@ -37,13 +37,14 @@ export class PaymentResultComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private checkoutService: CheckoutService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
-    // Obtener el ID del pedido de la URL o del localStorage
+    // Obtener el ID del pedido de la URL o del localStorage (solo en browser)
     this.route.params.subscribe(params => {
-      this.orderId = params['id'] || localStorage.getItem('currentOrderId');
+      this.orderId = params['id'] || (isPlatformBrowser(this.platformId) ? localStorage.getItem('currentOrderId') : null);
     });
 
     this.route.queryParams.subscribe(async (params: { [x: string]: any; }) => {
@@ -172,9 +173,11 @@ export class PaymentResultComponent implements OnInit {
   }
 
   storeTransaction(tx: any) {
-    const existing = localStorage.getItem('transactions_history');
-    let history = existing ? JSON.parse(existing) : [];
-    history.push(tx);
-    localStorage.setItem('transactions_history', JSON.stringify(history));
+    if (isPlatformBrowser(this.platformId)) {
+      const existing = localStorage.getItem('transactions_history');
+      let history = existing ? JSON.parse(existing) : [];
+      history.push(tx);
+      localStorage.setItem('transactions_history', JSON.stringify(history));
+    }
   }
 }

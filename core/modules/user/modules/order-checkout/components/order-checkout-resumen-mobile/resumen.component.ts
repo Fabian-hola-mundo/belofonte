@@ -34,6 +34,11 @@ export class ResumenComponent {
     public cartService: CartService,
   ) {}
 
+  // Getter seguro para obtener el selectedIndex del stepper
+  get currentStepIndex(): number | undefined {
+    return this.orderCheckoutBodyForm?.stepper?.selectedIndex;
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['orderCheckoutBodyForm'] && this.orderCheckoutBodyForm) {
     }
@@ -50,9 +55,13 @@ export class ResumenComponent {
   }
 
   continuar() {
-    this.orderCheckoutBodyForm.nextStep(); // Ahora puedes llamar a `nextStep` desde `OrderCheckoutBodyFormComponent`
+    if (this.orderCheckoutBodyForm) {
+      this.orderCheckoutBodyForm.nextStep(); // Ahora puedes llamar a `nextStep` desde `OrderCheckoutBodyFormComponent`
+    }
   }
   atras() {
-    this.orderCheckoutBodyForm.prevStep(); // Ahora puedes llamar a `nextStep` desde `OrderCheckoutBodyFormComponent`
+    if (this.orderCheckoutBodyForm) {
+      this.orderCheckoutBodyForm.prevStep(); // Ahora puedes llamar a `prevStep` desde `OrderCheckoutBodyFormComponent`
+    }
   }
 }

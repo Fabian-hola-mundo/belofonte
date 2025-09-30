@@ -1,10 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  ElementRef,
   Input,
-  ViewChild,
-  AfterViewInit,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -20,7 +17,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { departamentosList } from '../../../constants/departaments';
 import { departamentosYMunicipios } from '../../../constants/municipality';
 
-declare const google: any; // Asegúrate de que el objeto `google` esté accesible globalmente
 
 @Component({
   selector: 'bel-order-checkout-body-form-step-2',
@@ -41,7 +37,6 @@ declare const google: any; // Asegúrate de que el objeto `google` esté accesib
         <mat-label>Dirección (Calle & Número)</mat-label>
         <input
           formControlName="address"
-          #autocompleteInput
           matInput
           placeholder="Cra 9..."
         />
@@ -52,7 +47,6 @@ declare const google: any; // Asegúrate de que el objeto `google` esté accesib
         <mat-label>Información adicional</mat-label>
         <input
         formControlName="aditiionalAddress"
-        #autocompleteInput
         matInput
         placeholder="Apartamentos ... Casa ..."
         />
@@ -120,10 +114,8 @@ declare const google: any; // Asegúrate de que el objeto `google` esté accesib
     `,
   ],
 })
-export class OrderCheckoutBodyFormStep2Component implements AfterViewInit {
+export class OrderCheckoutBodyFormStep2Component {
   @Input() formGroup!: FormGroup; // Asegúrate de que este formGroup viene desde el padre
-  @ViewChild('autocompleteInput') autocompleteInput!: ElementRef; // Referencia al input de autocompletado
-  autocomplete!: any; // Variable para manejar el Autocomplete de Google
 
   // Listas de departamentos y municipios
   departamentosList: string[] = departamentosList;
@@ -132,67 +124,7 @@ export class OrderCheckoutBodyFormStep2Component implements AfterViewInit {
 
   constructor() {}
 
-  // Método para cargar el autocompletado de Google Places después de que la vista esté inicializada
-  ngAfterViewInit(): void {
-    /* this.loadGooglePlacesAutocomplete(); */
-  }
 
-  // Carga la funcionalidad de autocompletado de Google Places
-  loadGooglePlacesAutocomplete() {
-    const input = this.autocompleteInput.nativeElement;
-    if (typeof document !== 'undefined') {
-      if (google && google.maps && google.maps.places) {
-        this.autocomplete = new google.maps.places.Autocomplete(input, {
-          componentRestrictions: { country: 'co' }, // Restringir a Colombia
-          types: ['geocode'], // Solo sugerencias de direcciones
-        });
-
-        // Agrega un listener para cuando se selecciona un lugar
-        this.autocomplete.addListener('place_changed', () => {
-          const place = this.autocomplete.getPlace();
-          if (place.geometry) {
-            // Extraer y asignar la dirección completa
-            this.formGroup.get('address')?.setValue(place.formatted_address);
-
-            // Extraer los componentes de la dirección
-            const addressComponents = place.address_components;
-            let departamento = '';
-            let municipio = '';
-            let postalCode = '';
-
-            // Iterar sobre los componentes de la dirección para encontrar los valores necesarios
-            addressComponents.forEach(
-              (component: { types: any[]; long_name: string }) => {
-                const componentType = component.types[0];
-
-                if (componentType === 'administrative_area_level_1') {
-                  departamento = component.long_name; // Nivel de departamento
-                } else if (
-                  componentType === 'locality' ||
-                  componentType === 'administrative_area_level_2'
-                ) {
-                  municipio = component.long_name; // Nivel de ciudad o municipio
-                } else if (componentType === 'postal_code') {
-                  postalCode = component.long_name; // Código postal
-                }
-              }
-            );
-
-            // Asignar los valores extraídos a los controles del formulario
-            this.formGroup.get('departamento')?.setValue(departamento);
-            this.formGroup.get('municipio')?.setValue(municipio);
-            this.formGroup.get('municipio')?.enable();
-            this.formGroup.get('postalCode')?.setValue(postalCode);
-
-          }
-        });
-      } else {
-        console.error('Google Maps API no está disponible.');
-      }
-    }
-
-
-  }
 
   onDepartamentoChange(departamento: string) {
     // Actualizar la lista de municipios basados en el departamento seleccionado

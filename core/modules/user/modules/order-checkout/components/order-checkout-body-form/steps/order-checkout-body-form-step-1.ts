@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input, signal, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepper } from '@angular/material/stepper';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable, startWith, of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { documentTypes, documentTypesInterface } from '../../../constants/documentTypes';
 @Component({
@@ -55,17 +55,17 @@ import { documentTypes, documentTypesInterface } from '../../../constants/docume
         <mat-label>Nombres completos</mat-label>
         <input
           formControlName="nameCtrl"
-                  [matAutocomplete]="auto"
+          [matAutocomplete]="auto"
           autocomplete="name"
           matInput
           placeholder="Joe Doe"
         />
+        <mat-icon matSuffix>person</mat-icon>
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
             {{ option }}
           </mat-option>
         </mat-autocomplete>
-        <mat-icon matSuffix>person</mat-icon>
         <mat-error *ngIf="formGroup.get('nameCtrl')?.hasError('required')">
           El nombre es obligatorio
         </mat-error>
@@ -139,20 +139,22 @@ import { documentTypes, documentTypesInterface } from '../../../constants/docume
   }
   `,
 })
-export class OrderCheckoutBodyFormStep1Component {
+export class OrderCheckoutBodyFormStep1Component implements OnInit {
   productForm!: any;
   @Input() formGroup!: FormGroup;
   @Input() stepper!: MatStepper
   options: string[] = ['Juan Pérez', 'María García', 'Carlos López', 'Ana Martínez'];
-  filteredOptions!: Observable<string[]>;
+  filteredOptions: Observable<string[]> = of([]);
   documentTypes: documentTypesInterface[] = documentTypes
 
   ngOnInit() {
-    // Configurar el autocompletado del campo de nombres
-    this.filteredOptions = this.formGroup.get('nameCtrl')!.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value || '')),
-    );
+    // Configurar el autocompletado del campo de nombres solo si el formGroup está disponible
+    if (this.formGroup && this.formGroup.get('nameCtrl')) {
+      this.filteredOptions = this.formGroup.get('nameCtrl')!.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value || '')),
+      );
+    }
   }
 
   private _filter(value: string): string[] {
@@ -162,7 +164,7 @@ export class OrderCheckoutBodyFormStep1Component {
   }
 
   goToNextStep(): void {
-    if (this.formGroup.valid) {
+    if (this.formGroup?.valid && this.stepper) {
       this.stepper.next();  // Esto mueve el stepper al siguiente paso
     }
   }

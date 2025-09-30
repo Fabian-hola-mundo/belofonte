@@ -1,5 +1,5 @@
-@use "../../../../../../../src/styles/variables" as *;
-@use "../../../../../../../src/styles/placeholder" as *;
+@forward '../../../../../../../src/styles.scss';
+@use '../../../../../../../src/styles/variables' as *;
 
 :host {
   width: 100%;

@@ -1,22 +1,196 @@
-::ng-deep {
-  button.mat-mdc-raised-button {
-    text-transform: uppercase !important;
-    @extend .primary, .on-primary-text;
-    height: auto !important;
-    padding: 12px 24px;
-    border-radius: 48px;
+@use '@angular/material' as mat;
+
+// Customización de botones usando tokens del sistema de diseño Material 3
+:root {
+  @include mat.button-overrides((
+    // Botones filled (primarios)
+    filled-container-color: var(--md-sys-color-primary),
+    filled-label-text-color: var(--md-sys-color-on-primary),
+    filled-disabled-container-color: var(--md-sys-color-on-surface),
+    filled-disabled-label-text-color: var(--md-sys-color-on-surface),
+    filled-state-layer-color: var(--md-sys-color-on-primary),
+    filled-ripple-color: var(--md-sys-color-on-primary),
+    filled-container-shape: 8px,
+    filled-container-height: 48px,
+    filled-horizontal-padding: 24px,
+    
+    // Botones outlined (secundarios)
+    outlined-label-text-color: var(--md-sys-color-primary),
+    outlined-outline-color: var(--md-sys-color-outline),
+    outlined-disabled-outline-color: var(--md-sys-color-on-surface),
+    outlined-disabled-label-text-color: var(--md-sys-color-on-surface),
+    outlined-state-layer-color: var(--md-sys-color-primary),
+    outlined-ripple-color: var(--md-sys-color-primary),
+    outlined-container-shape: 8px,
+    outlined-container-height: 48px,
+    outlined-horizontal-padding: 24px,
+    outlined-outline-width: 2px,
+    
+    // Botones protected/raised (elevados)
+    protected-container-color: var(--md-sys-color-surface),
+    protected-label-text-color: var(--md-sys-color-primary),
+    protected-disabled-container-color: var(--md-sys-color-on-surface),
+    protected-disabled-label-text-color: var(--md-sys-color-on-surface),
+    protected-state-layer-color: var(--md-sys-color-primary),
+    protected-ripple-color: var(--md-sys-color-primary),
+    protected-container-shape: 8px,
+    protected-container-height: 48px,
+    protected-horizontal-padding: 24px,
+    
+    // Botones text (terciarios)
+    text-label-text-color: var(--md-sys-color-primary),
+    text-disabled-label-text-color: var(--md-sys-color-on-surface),
+    text-state-layer-color: var(--md-sys-color-primary),
+    text-ripple-color: var(--md-sys-color-primary),
+    text-container-shape: 8px,
+    text-container-height: 48px,
+    text-horizontal-padding: 16px,
+    
+    // Estados de hover/focus/pressed
+    filled-hover-state-layer-opacity: 0.08,
+    filled-focus-state-layer-opacity: 0.12,
+    filled-pressed-state-layer-opacity: 0.12,
+    outlined-hover-state-layer-opacity: 0.08,
+    outlined-focus-state-layer-opacity: 0.12,
+    outlined-pressed-state-layer-opacity: 0.12,
+    protected-hover-state-layer-opacity: 0.08,
+    protected-focus-state-layer-opacity: 0.12,
+    protected-pressed-state-layer-opacity: 0.12,
+    text-hover-state-layer-opacity: 0.08,
+    text-focus-state-layer-opacity: 0.12,
+    text-pressed-state-layer-opacity: 0.12,
+  ));
+  
+  @include mat.fab-overrides((
+    container-color: var(--md-sys-color-primary-container),
+    foreground-color: var(--md-sys-color-on-primary-container),
+    state-layer-color: var(--md-sys-color-on-primary-container),
+    ripple-color: var(--md-sys-color-on-primary-container),
+    container-shape: 16px,
+    hover-state-layer-opacity: 0.08,
+    focus-state-layer-opacity: 0.12,
+    pressed-state-layer-opacity: 0.12,
+  ));
+  
+  @include mat.icon-button-overrides((
+    icon-color: var(--md-sys-color-on-surface-variant),
+    disabled-icon-color: var(--md-sys-color-on-surface),
+    state-layer-color: var(--md-sys-color-on-surface-variant),
+    ripple-color: var(--md-sys-color-on-surface-variant),
+    icon-size: 24px,
+    state-layer-size: 48px,
+    hover-state-layer-opacity: 0.08,
+    focus-state-layer-opacity: 0.12,
+    pressed-state-layer-opacity: 0.12,
+  ));
+}
+
+// Estilos directos para asegurar que se apliquen correctamente
+// Botones raised/protected (mat-mdc-raised-button)
+.mat-mdc-raised-button:not(:disabled) {
+  color: var(--md-sys-color-on-primary) !important;
+  background-color: var(--md-sys-color-primary) !important;
+  border-radius: 8px !important;
+  height: 48px !important;
+  padding: 0 24px !important;
+  box-shadow: var(--mdc-protected-button-container-elevation-shadow, 0px 1px 3px 0px rgba(0, 0, 0, 0.30)) !important;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 92%, var(--md-sys-color-on-primary) 8%) !important;
   }
 
-  button.mat-mdc-button {
-    text-transform: uppercase !important;
-    height: auto !important;
-    border-radius: 48px;
-    padding: 12px 24px;
-    @extend .primary-text;
+  &:focus {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary) 12%) !important;
   }
 
-  button.mat-mdc-button-disabled{
-    @extend .on-surface, .surface-text;
+  &:active {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary) 12%) !important;
+  }
+}
+
+.mat-mdc-raised-button:disabled {
+  color: var(--md-sys-color-on-surface) !important;
+  background-color: var(--md-sys-color-on-surface) !important;
+  opacity: 0.38 !important;
+}
+
+// Botones filled (mat-mdc-unelevated-button)
+.mat-mdc-unelevated-button:not(:disabled) {
+  color: var(--md-sys-color-on-primary) !important;
+  background-color: var(--md-sys-color-primary) !important;
+  border-radius: 8px !important;
+  height: 48px !important;
+  padding: 0 24px !important;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 92%, var(--md-sys-color-on-primary) 8%) !important;
   }
 
+  &:focus {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary) 12%) !important;
+  }
+
+  &:active {
+    background-color: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary) 12%) !important;
+  }
+}
+
+.mat-mdc-unelevated-button:disabled {
+  color: var(--md-sys-color-on-surface) !important;
+  background-color: var(--md-sys-color-on-surface) !important;
+  opacity: 0.38 !important;
+}
+
+// Botones outlined (mat-mdc-outlined-button)
+.mat-mdc-outlined-button:not(:disabled) {
+  color: var(--md-sys-color-primary) !important;
+  background-color: transparent !important;
+  border: 2px solid var(--md-sys-color-outline) !important;
+  border-radius: 8px !important;
+  height: 48px !important;
+  padding: 0 24px !important;
+
+  &:hover {
+    background-color: color-mix(in srgb, transparent 92%, var(--md-sys-color-primary) 8%) !important;
+  }
+
+  &:focus {
+    background-color: color-mix(in srgb, transparent 88%, var(--md-sys-color-primary) 12%) !important;
+  }
+
+  &:active {
+    background-color: color-mix(in srgb, transparent 88%, var(--md-sys-color-primary) 12%) !important;
+  }
+}
+
+.mat-mdc-outlined-button:disabled {
+  color: var(--md-sys-color-on-surface) !important;
+  border-color: var(--md-sys-color-on-surface) !important;
+  opacity: 0.38 !important;
+}
+
+// Botones text (mat-mdc-button)
+.mat-mdc-button:not(:disabled) {
+  color: var(--md-sys-color-primary) !important;
+  background-color: transparent !important;
+  border-radius: 8px !important;
+  height: 48px !important;
+  padding: 0 16px !important;
+
+  &:hover {
+    background-color: color-mix(in srgb, transparent 92%, var(--md-sys-color-primary) 8%) !important;
+  }
+
+  &:focus {
+    background-color: color-mix(in srgb, transparent 88%, var(--md-sys-color-primary) 12%) !important;
+  }
+
+  &:active {
+    background-color: color-mix(in srgb, transparent 88%, var(--md-sys-color-primary) 12%) !important;
+  }
+}
+
+.mat-mdc-button:disabled {
+  color: var(--md-sys-color-on-surface) !important;
+  opacity: 0.38 !important;
 }

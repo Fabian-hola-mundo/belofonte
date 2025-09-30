@@ -11,7 +11,6 @@ import {
 import { OrderCheckoutBodyComponent } from '../components/order-checkout-body/order-checkout-body';
 import { ResumenComponent } from '../components/order-checkout-resumen-mobile/resumen.component';
 import { OrderCheckoutHeaderComponent } from '../components/order-checkout-header/order-checkout-header';
-import { MatStepper } from '@angular/material/stepper';
 import { ResumenDesktopComponent } from '../components/order-checkout-resumen-desktop/resumen.desktop.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 
@@ -34,6 +33,7 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
     <bel-order-checkout-header />
     <bel-order-checkout-body #orderBodyForm />
     <bel-resumen
+      *ngIf="orderBodyForm?.orderCheckoutBodyForm"
       [ngClass]="{ 'deviceInactive': !isMobile }"
       (payClicked)="onPayClicked()"
       [orderCheckoutBodyForm]="orderBodyForm.orderCheckoutBodyForm"
@@ -48,7 +48,6 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
   ],
 })
 export class OrderCheckoutContainer {
-  @ViewChild('stepper') stepper!: MatStepper; // Accedemos al mat-stepper
   @ViewChild(OrderCheckoutBodyComponent, { static: false })
   orderBodyForm!: OrderCheckoutBodyComponent;
   isMobile = true;
@@ -72,20 +71,19 @@ export class OrderCheckoutContainer {
   }
 
   ngAfterViewInit() {
-    // Una vez que el view está inicializado, pasamos el stepper al componente resumen.
+    // Detectar cambios después de la inicialización de la vista
     this.cdr.detectChanges();
-    if (isPlatformBrowser(this.platformId)) {
-      const resumenComponent = document.querySelector('bel-resumen') as any;
-      if (resumenComponent) {
-        resumenComponent.stepper = this.stepper;
-      }
-    }
   }
 
   onPayClicked() {
-    // Llamamos al método submitToWompi desde el componente OrderCheckoutBodyFormComponent
-    this.orderBodyForm.orderCheckoutBodyForm.submitToWompi(
-      this.orderBodyForm.orderCheckoutBodyForm.wompiForm.nativeElement
-    );
+    // Verificaciones de seguridad antes de llamar al método submitToWompi
+    if (isPlatformBrowser(this.platformId) && 
+        this.orderBodyForm?.orderCheckoutBodyForm?.wompiForm?.nativeElement) {
+      this.orderBodyForm.orderCheckoutBodyForm.submitToWompi(
+        this.orderBodyForm.orderCheckoutBodyForm.wompiForm.nativeElement
+      );
+    } else {
+      console.error('Error: Form elements are not ready for payment submission or not in browser');
+    }
   }
 }

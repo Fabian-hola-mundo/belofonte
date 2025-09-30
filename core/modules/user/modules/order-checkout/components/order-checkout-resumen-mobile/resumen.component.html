@@ -15,30 +15,21 @@
   </mat-accordion>
   <div class="actions">
     <button
-      *ngIf="
-        orderCheckoutBodyForm?.stepper?.selectedIndex !== undefined &&
-        orderCheckoutBodyForm.stepper.selectedIndex <= 1
-      "
+      *ngIf="currentStepIndex !== undefined && currentStepIndex <= 1"
       (click)="continuar()"
       mat-raised-button
     >
       Continuar
     </button>
     <button
-      *ngIf="
-        orderCheckoutBodyForm?.stepper?.selectedIndex !== undefined &&
-        orderCheckoutBodyForm.stepper.selectedIndex == 2
-      "
+      *ngIf="currentStepIndex !== undefined && currentStepIndex == 2"
       (click)="onPayClick()"
       mat-raised-button
     >
       IR A PAGAR
     </button>
     <button
-      *ngIf="
-        orderCheckoutBodyForm?.stepper?.selectedIndex !== undefined &&
-        orderCheckoutBodyForm.stepper.selectedIndex > 0
-      "
+      *ngIf="currentStepIndex !== undefined && currentStepIndex > 0"
       (click)="atras()"
       mat-button
     >
